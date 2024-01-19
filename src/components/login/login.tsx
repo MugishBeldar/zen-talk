@@ -1,42 +1,65 @@
-import React, { FormEvent, useState } from "react";
-import { TextField, Button, Container, Paper, ButtonBaseProps } from "@mui/material";
+import { useState } from "react";
+import {
+  TextField,
+  Button,
+  Paper,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import LoginController from "./login.controller";
 
 const Login = () => {
-  // State for storing the entered username and password
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formValue, setFormValue] = useState({
+    email: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Function to handle form submission
-  const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Add your login logic here
-    console.log("Username:", email);
-    console.log("Password:", password);
-    // Add logic for authentication
-  };
+  const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
+    LoginController({
+      formValue,
+      setShowPassword,
+      setFormValue,
+    });
 
   return (
     <div className="flex justify-center mt-5">
-      <Paper elevation={3} className="p-6 max-w-s">
+      <Paper elevation={3} className="p-6 w-[90%]">
         <form onSubmit={handleSubmit}>
           <TextField
+            required
             label="Email"
             variant="outlined"
             fullWidth
             margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formValue.email}
+            onChange={(e) => handleChange("email", e.target.value)}
             size="small"
           />
           <TextField
+            required
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             variant="outlined"
             fullWidth
             margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formValue.password}
+            onChange={(e) => handleChange("password", e.target.value)}
             size="small"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <Button
             type="submit"
@@ -44,7 +67,7 @@ const Login = () => {
             color="primary"
             size="small"
           >
-            Login   
+            Login
           </Button>
         </form>
       </Paper>
