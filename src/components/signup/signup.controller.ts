@@ -6,6 +6,7 @@ interface signUpControllerPropes {
     email: string;
     password: string;
     confirmPassword: string;
+    profilePicture: string;
   };
   setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
   setFormValue: React.Dispatch<
@@ -14,6 +15,7 @@ interface signUpControllerPropes {
       email: string;
       password: string;
       confirmPassword: string;
+      profilePicture: string;
     }>
   >;
 }
@@ -36,6 +38,7 @@ const SignUpController = ({
       email: "",
       password: "",
       confirmPassword: "",
+      profilePicture: "",
     });
   };
 

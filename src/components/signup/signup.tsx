@@ -16,14 +16,16 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    profilePicture: "",
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const { handleSubmit, handleTogglePasswordVisibility, handleChange } = SignUpController({
-    formValue,
-    setShowPassword,
-    setFormValue,
-  });
+  const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
+    SignUpController({
+      formValue,
+      setShowPassword,
+      setFormValue,
+    });
 
   return (
     <div className="flex justify-center mt-5">
@@ -83,6 +85,18 @@ const Signup = () => {
               ),
             }}
           />
+          <TextField
+            focused
+            label="Upload Picture"
+            type="file"
+            variant="standard"
+            fullWidth
+            margin="normal"
+            value={formValue.profilePicture}
+            onChange={(e) => handleChange("profilePicture", e.target.value)}
+            size="small"
+          />
+
           <Button
             type="submit"
             variant="contained"
