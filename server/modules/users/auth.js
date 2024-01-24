@@ -28,6 +28,7 @@ class Auth {
           success: true,
           message: "login successful",
           data: {
+            id: user._id,
             name: user.name,
             email: user.email,
             accessToken,

@@ -52,6 +52,7 @@ const LoginController = ({
       Cookies.set(
         "USER_INFO",
         JSON.stringify({
+          ID: response?.data?.data?.id,
           EMAIL: response?.data?.data?.email,
           NAME: response?.data?.data?.name,
         })
