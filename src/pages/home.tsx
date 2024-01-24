@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router"
+
 const Home = () => {
-  console.log('first')
   return (
-    <div>Home</div>
+    <div>
+      Home
+    </div>
   )
 }
 
