@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+// import loadingGif from '../../assets/loading.gif';
 import {
   TextField,
-  Button,
   Paper,
   InputAdornment,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SignUpController from "./signup.controller";
@@ -18,13 +20,17 @@ const Signup = () => {
     confirmPassword: "",
     profilePicture: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
-
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [buttonLoadingIndicator, setButtonLoadingIndicator] =
+    useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
     SignUpController({
       formValue,
       setShowPassword,
       setFormValue,
+      setButtonLoadingIndicator,
+      setLoading,
     });
 
   return (
@@ -38,7 +44,7 @@ const Signup = () => {
             fullWidth
             margin="normal"
             value={formValue.name}
-            onChange={(e) => handleChange("name", e.target.value)}
+            onChange={(e) => handleChange(e, "name", e.target.value)}
             size="small"
           />
           <TextField
@@ -48,8 +54,18 @@ const Signup = () => {
             fullWidth
             margin="normal"
             value={formValue.email}
-            onChange={(e) => handleChange("email", e.target.value)}
+            onChange={(e) => handleChange(e, "email", e.target.value)}
             size="small"
+            error={
+              !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValue.email) &&
+              formValue.email.length > 0
+            }
+            helperText={
+              !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValue.email) &&
+              formValue.email.length > 0
+                ? "Enter a valid email address"
+                : ""
+            }
           />
           <TextField
             required
@@ -59,8 +75,16 @@ const Signup = () => {
             fullWidth
             margin="normal"
             value={formValue.password}
-            onChange={(e) => handleChange("password", e.target.value)}
+            onChange={(e) => handleChange(e, "password", e.target.value)}
             size="small"
+            error={
+              formValue.password.length < 8 && formValue.password.length > 0
+            }
+            helperText={
+              formValue.password.length < 8 && formValue.password.length > 0
+                ? "Password must be at least 8 characters"
+                : ""
+            }
           />
           <TextField
             required
@@ -70,8 +94,20 @@ const Signup = () => {
             fullWidth
             margin="normal"
             value={formValue.confirmPassword}
-            onChange={(e) => handleChange("confirmPassword", e.target.value)}
+            onChange={(e) => handleChange(e, "confirmPassword", e.target.value)}
             size="small"
+            error={
+              formValue.confirmPassword !== formValue.password &&
+              formValue.password !== "" &&
+              formValue.confirmPassword !== ""
+            }
+            helperText={
+              formValue.confirmPassword !== formValue.password &&
+              formValue.password !== "" &&
+              formValue.confirmPassword !== ""
+                ? "Passwords do not match"
+                : ""
+            }
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -86,6 +122,7 @@ const Signup = () => {
             }}
           />
           <TextField
+            id="contained-button-file"
             focused
             label="Upload Picture"
             type="file"
@@ -93,18 +130,37 @@ const Signup = () => {
             fullWidth
             margin="normal"
             value={formValue.profilePicture}
-            onChange={(e) => handleChange("profilePicture", e.target.value)}
+            onChange={(e) => {
+              handleChange(e, "profilePicture", e.target.value);
+            }}
             size="small"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {loading ? (
+                    <img
+                      className="w-14"
+                      src={require("../../assets/Spinner-1s-200px.gif")}
+                      alt="loading..."
+                    />
+                  ) : null}
+                </InputAdornment>
+              ),
+            }}
           />
 
-          <Button
+          <LoadingButton
+            disabled={loading}
             type="submit"
             variant="contained"
             color="primary"
             size="small"
+            loading={buttonLoadingIndicator}
+            loadingPosition="center"
+            loadingIndicator=<CircularProgress color="success" size={16} />
           >
             Sign Up
-          </Button>
+          </LoadingButton>
         </form>
       </Paper>
     </div>

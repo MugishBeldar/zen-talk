@@ -1,0 +1,26 @@
+{
+    "server": {
+      "host": "0.0.0.0",
+      "port": "8080"
+    },
+  "JWTConfig" : {
+      "secretKey": "jwttoken",
+      "accessTokenLife": 3600, 
+      "refreshTokenLife": 86400,
+      "ssoTokenLife": null,
+      "accessSSOTokenLife": 3600,
+      "accessTokenForMobileLife": "24h",
+      "refreshTokenForMobileLife": "15d",
+      "accessTokenForImpersonateLife": "4h",
+      "refreshTokenForImpersonateLife": "1d"
+    },
+    "mongo":{
+      "host":[{"host":"development.qbxhprb.mongodb.net"}],
+      "db_name":"chat_application",
+      "username":"root",
+      "password":"root",
+      "debug":false,
+      "retryWrites": true
+    }
+  }
+  
