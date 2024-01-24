@@ -2,7 +2,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import authReducer from './auth/auth.reducer'
 import loadingIndicatorReducer from './loadingIndicator/loadingIndicator.reducer';
-let localStoreVar = null;
+let localStoreVar:any = null;
 
 // make function get all static reducer
 export const getStaticReducer = () => ({

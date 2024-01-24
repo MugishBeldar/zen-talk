@@ -35,7 +35,6 @@ const SignUpController = ({
   // setButtonLoadingIndicator,
   setLoading,
 }: signUpControllerPropes) => {
-
   const [profilePicLink, setProfilePicLink] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,9 +58,7 @@ const SignUpController = ({
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            const percent = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
+            Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           },
           (err) => console.log(err),
           () => {
@@ -78,13 +75,13 @@ const SignUpController = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      dispatch(clicked(true))
+      dispatch(clicked(true));
       const userData = {
         name: formValue.name,
         email: formValue.email,
         password: formValue.password,
         profilePicture: profilePicLink,
-      }
+      };
       await signup(userData);
       setFormValue({
         name: "",
@@ -93,11 +90,11 @@ const SignUpController = ({
         confirmPassword: "",
         profilePicture: "",
       });
-      dispatch(clicked(false))
-      navigate('home');
+      dispatch(clicked(false));
+      navigate("home");
     } catch (error) {
       console.error("Error during signup:", error);
-      dispatch(clicked(false))
+      dispatch(clicked(false));
     }
   };
 
