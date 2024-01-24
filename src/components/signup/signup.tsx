@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import loadingGif from '../../assets/loading.gif';
 import {
   TextField,
   Paper,
@@ -11,6 +10,7 @@ import { LoadingButton } from "@mui/lab";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SignUpController from "./signup.controller";
+import { useSelector } from "react-redux";
 
 const Signup = () => {
   const [formValue, setFormValue] = useState({
@@ -21,15 +21,15 @@ const Signup = () => {
     profilePicture: "",
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [buttonLoadingIndicator, setButtonLoadingIndicator] =
-    useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const buttonLoadingIndicator = useSelector(
+    (state: any) => state.loadingIndicatorstate.clicked
+  );
   const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
     SignUpController({
       formValue,
       setShowPassword,
       setFormValue,
-      setButtonLoadingIndicator,
       setLoading,
     });
 

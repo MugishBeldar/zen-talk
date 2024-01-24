@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router"
-
 const Home = () => {
   return (
     <div>

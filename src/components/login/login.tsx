@@ -1,14 +1,16 @@
 import { useState } from "react";
 import {
   TextField,
-  Button,
   Paper,
   InputAdornment,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginController from "./login.controller";
+import { LoadingButton } from "@mui/lab";
+import { useSelector } from "react-redux";
 
 const Login = () => {
   const [formValue, setFormValue] = useState({
@@ -16,6 +18,9 @@ const Login = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const buttonLoadingIndicator = useSelector(
+    (state: any) => state.loadingIndicatorstate.clicked
+  );
 
   const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
     LoginController({
@@ -61,14 +66,17 @@ const Login = () => {
               ),
             }}
           />
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             color="primary"
             size="small"
+            loading={buttonLoadingIndicator}
+            loadingPosition="center"
+            loadingIndicator=<CircularProgress color="primary" size={16} />
           >
             Login
-          </Button>
+          </LoadingButton>
         </form>
       </Paper>
     </div>

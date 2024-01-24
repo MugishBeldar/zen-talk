@@ -1,7 +1,11 @@
 import React, { FormEvent, useState } from "react";
 import storage from "../../firebaseConfig.js";
+import { clicked } from "../../store/loadingIndicator/loadingIndicator.action";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { signup } from "../../api/api.js";
+import { signup } from "../../api/api";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+
 interface signUpControllerPropes {
   formValue: {
     name: string;
@@ -20,7 +24,7 @@ interface signUpControllerPropes {
       profilePicture: string;
     }>
   >;
-  setButtonLoadingIndicator: React.Dispatch<React.SetStateAction<boolean>>;
+  // setButtonLoadingIndicator: React.Dispatch<React.SetStateAction<boolean>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -28,10 +32,13 @@ const SignUpController = ({
   setShowPassword,
   formValue,
   setFormValue,
-  setButtonLoadingIndicator,
+  // setButtonLoadingIndicator,
   setLoading,
 }: signUpControllerPropes) => {
+
   const [profilePicLink, setProfilePicLink] = useState<string>("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -70,17 +77,15 @@ const SignUpController = ({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formValue);
     try {
-      setButtonLoadingIndicator(true);
+      dispatch(clicked(true))
       const userData = {
         name: formValue.name,
         email: formValue.email,
         password: formValue.password,
         profilePicture: profilePicLink,
       }
-      const response = await signup(userData);
-      console.log(response, "222");
+      await signup(userData);
       setFormValue({
         name: "",
         email: "",
@@ -88,10 +93,11 @@ const SignUpController = ({
         confirmPassword: "",
         profilePicture: "",
       });
-      setButtonLoadingIndicator(false);
+      dispatch(clicked(false))
+      navigate('home');
     } catch (error) {
       console.error("Error during signup:", error);
-      setButtonLoadingIndicator(false);
+      dispatch(clicked(false))
     }
   };
 

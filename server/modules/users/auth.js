@@ -12,6 +12,13 @@ class Auth {
         });
       }
       const user = await req.App.activeDB.User.findOne({ email });
+      if(!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found please register",
+          type: "validation error",
+        })
+      }
       const rowPassword = await bcrypt.compare(password, user.password);
       if (user && rowPassword) {
         const jwtAuthObj = new jwtAuth();
@@ -29,12 +36,12 @@ class Auth {
           },
         });
       } else {
-        res
+        return res
           .status(401)
           .json({ success: false, message: "Invalid credentials" });
       }
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ success: false, message: "Internal server error" });
     }
