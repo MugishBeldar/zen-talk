@@ -7,7 +7,7 @@ class ChatController {
         router.post('/', chat.accessChat.bind(chat));
         router.get('/', chat.fetchChats.bind(chat));   
         router.post('/group', chat.createGroupChat.bind(chat)); 
-        // router.get('/rename', chat.renameGroup.bind(chat));   
+        router.put('/renamegroup', chat.renameGroup.bind(chat));   
         // router.get('/groupremove', chat.removeGroup.bind(chat));   
         // router.get('/groupadd', chat.addToGroup.bind(chat));   
 

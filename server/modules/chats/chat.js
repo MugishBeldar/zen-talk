@@ -107,16 +107,52 @@ class Chat {
         users,
         groupAdmin: user,
       });
-      const fullGroupChat = await App.activeDB.Chat
-        .findOne({
-          _id: groupCreated._id,
-        })
+      const fullGroupChat = await App.activeDB.Chat.findOne({
+        _id: groupCreated._id,
+      })
         .populate("users", "-password")
         .populate("groupAdmin", "-password");
       return res.status(200).json({
         success: true,
         message: "fetched group created chats",
         data: fullGroupChat,
+      });
+    } catch (error) {
+      console.log("Error:---", error);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  async renameGroup(req, res) {
+    try {
+      const { App } = req;
+      const { chatId, newGroupName } = req.body;
+      if (!chatId || !newGroupName) {
+        return res.status(400).json({
+          success: false,
+          message: "please provide chatId and newGroupName",
+        });
+      }
+      const updateGroupName = await App.activeDB.Chat.findByIdAndUpdate(
+        chatId,
+        {
+          chatName: newGroupName,
+        },
+        { new: true }
+      )
+        .populate("users", "-password")
+        .populate("groupAdmin", "-password");
+      if (!updateGroupName) {
+        return res
+          .status(404)
+          .json({ success: false, message: "group not found" });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "group name updated successfully",
+        data: updateGroupName,
       });
     } catch (error) {
       console.log("Error:---", error);
