@@ -12,18 +12,17 @@ class Auth {
         });
       }
       const user = await req.App.activeDB.User.findOne({ email });
-      if(!user) {
+      if (!user) {
         return res.status(404).json({
           success: false,
           message: "User not found please register",
           type: "validation error",
-        })
+        });
       }
       const rowPassword = await bcrypt.compare(password, user.password);
       if (user && rowPassword) {
-        const jwtAuthObj = new jwtAuth();
         const { accessToken, refreshToken, expiresIn } =
-          await jwtAuthObj.gererateToken({ id: user._id });
+          await jwtAuth.gererateToken({ id: user._id });
         return res.status(200).json({
           success: true,
           message: "login successful",
@@ -100,6 +99,49 @@ class Auth {
         type: "internal error",
       });
     }
+  }
+
+  async getUsers(req, res) {
+    try {
+      const { name, email } = req.query;
+      const { App, user } = req;
+
+      const query = this.buildQuery(name, email, user._id);
+
+      const users = await App.activeDB.User.find(query).lean();
+
+      res.status(201).json({
+        success: true,
+        totalCount: users.length,
+        message: "Users Fetched",
+        data: users,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        type: "internal error",
+      });
+    }
+  }
+
+  buildQuery(name, email, userId) {
+    const query = {};
+    if (name || email) {
+      query.$or = [];
+
+      if (name) {
+        query.$or.push({ name: { $regex: name, $options: "i" } });
+      }
+      if (email) {
+        query.$or.push({ email: { $regex: email, $options: "i" } });
+      }
+    }
+    if (userId) {
+      query._id = { $ne: userId };
+    }
+    return query;
   }
 }
 
