@@ -78,6 +78,53 @@ class Chat {
         .json({ success: false, message: "Internal server error" });
     }
   }
+
+  async createGroupChat(req, res) {
+    try {
+      const { App, user } = req;
+      if (!req.body.groupName) {
+        return res.status(400).json({
+          success: false,
+          message: "please provide groupName",
+        });
+      }
+      if (!req.body.users) {
+        return res.status(400).json({
+          success: false,
+          message: "please provide users",
+        });
+      }
+      let users = JSON.parse(req.body.users);
+      if (users.length < 2) {
+        return res.status(400).json({
+          success: false,
+          message: "please provide atleast 2 users",
+        });
+      }
+      const groupCreated = await App.activeDB.Chat.create({
+        chatName: req.body.groupName.trim(),
+        isGroupChat: true,
+        users,
+        groupAdmin: user,
+      });
+      const fullGroupChat = await App.activeDB.Chat
+        .findOne({
+          _id: groupCreated._id,
+        })
+        .populate("users", "-password")
+        .populate("groupAdmin", "-password");
+      return res.status(200).json({
+        success: true,
+        message: "fetched group created chats",
+        data: fullGroupChat,
+      });
+    } catch (error) {
+      console.log("Error:---", error);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  }
 }
 
 module.exports = new Chat();
