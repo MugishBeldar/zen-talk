@@ -45,7 +45,7 @@ class Chat {
         });
       }
     } catch (error) {
-      console.log("🚀 ~ Chat ~ accessChat ~ error:", error);
+      console.log("error:", error);
       return res
         .status(500)
         .json({ success: false, message: "Internal server error" });
@@ -153,6 +153,84 @@ class Chat {
         success: true,
         message: "group name updated successfully",
         data: updateGroupName,
+      });
+    } catch (error) {
+      console.log("Error:---", error);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  async addToGroup(req, res) {
+    try {
+      const { App } = req;
+      const { chatId, userId } = req.body;
+      if (!chatId || !userId) {
+        return res.status(400).json({
+          success: false,
+          message: "please provide chatId and userId",
+        });
+      }
+      const added = await App.activeDB.Chat.findByIdAndUpdate(
+        chatId,
+        {
+          $push: { users: userId },
+        },
+        {
+          new: true,
+        }
+      )
+        .populate("users", "-password")
+        .populate("groupAdmin", "-password");
+      if (!added) {
+        return res
+          .status(404)
+          .json({ success: false, message: "group not found" });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "user added successfully to the group",
+        data: added,
+      });
+    } catch (error) {
+      console.log("Error:---", error);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  async removeGroup(req, res) {
+    try {
+      const { App } = req;
+      const { chatId, userId } = req.body;
+      if (!chatId || !userId) {
+        return res.status(400).json({
+          success: false,
+          message: "please provide chatId and userId",
+        });
+      }
+      const removed = await App.activeDB.Chat.findByIdAndUpdate(
+        chatId,
+        {
+          $pull: { users: userId },
+        },
+        {
+          new: true,
+        }
+      )
+        .populate("users", "-password")
+        .populate("groupAdmin", "-password");
+      if (!removed) {
+        return res
+          .status(404)
+          .json({ success: false, message: "group not found" });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "user removed successfully from the group",
+        data: removed,
       });
     } catch (error) {
       console.log("Error:---", error);
