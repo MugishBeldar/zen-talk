@@ -19,26 +19,26 @@ const Tabs = () => {
   return (
     <>
       {/* Your other content */}
-      <div className="flex justify-center font-bold">
+      <div className="flex justify-center ">
         <a
           onClick={() => handleTabClick("login")}
-          className={`py-2 px-4 rounded mr-2 cursor-pointer text-lg ${
+          className={`py-3 px-4 rounded mr-10 cursor-pointer shadow-lg text-base  ${
             activeTab === "login"
               ? "bg-green-700 text-white"
               : "bg-white hover:bg-green-700 hover:text-white"
           }`}
         >
-          Login
+          LOGIN
         </a>
         <a
           onClick={() => handleTabClick("signup")}
-          className={`py-2 px-4 rounded cursor-pointer text-lg ${
+          className={`py-3 px-4 rounded cursor-pointer shadow-lg text-base ${
             activeTab === "signup"
               ? "bg-blue-500 text-white"
-              : "bg-white hover:bg-blue-500 hover:text-white"
+              : "bg-white  hover:bg-blue-500 hover:text-white"
           }`}
         >
-          Sign-Up
+          SIGN-UP
         </a>
       </div>
     </>

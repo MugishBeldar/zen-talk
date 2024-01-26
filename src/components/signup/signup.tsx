@@ -35,7 +35,7 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center m-5">
-      <Paper elevation={3} className="p-6 sm:w-[50%]">
+      <Paper elevation={3} className="p-6 sm:w-[40%]">
         <form onSubmit={handleSubmit}>
           <TextField
             required
@@ -148,7 +148,6 @@ const Signup = () => {
               ),
             }}
           />
-
           <LoadingButton
             disabled={loading}
             type="submit"
