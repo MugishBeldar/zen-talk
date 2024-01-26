@@ -5,5 +5,12 @@
 body {
   padding: 10px;
   box-sizing: border-box;
-  
+  width: 100vw;
+  height: 100vh;
+  background-image: url('./assets/mainbackground.jpg');
+  backdrop-filter: blur(2px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1; 
 }

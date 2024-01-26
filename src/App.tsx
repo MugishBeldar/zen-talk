@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.css";
 import { Provider } from "react-redux";
 import { getStore } from "./store/store";
@@ -9,10 +8,10 @@ import { ToastContainer } from "react-toastify";
 function App() {
   const store = getStore();
   return (
-    <Provider store={store}>
-      <MainRouting />
-      <ToastContainer />
-    </Provider>
+      <Provider store={store}>
+        <MainRouting />
+        <ToastContainer />
+      </Provider>
   );
 }
 

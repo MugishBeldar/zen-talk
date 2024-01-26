@@ -69,7 +69,7 @@ const Login = () => {
           <LoadingButton
             type="submit"
             variant="contained"
-            color="primary"
+            color="success"
             size="small"
             loading={buttonLoadingIndicator}
             loadingPosition="center"

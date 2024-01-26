@@ -1,24 +1,42 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logIn, signUp } from "../../store/auth/auth.action";
+
 const Tabs = () => {
   const dispatch = useDispatch();
+  const [activeTab, setActiveTab] = useState("login");
+
+  const handleTabClick = (tab: React.SetStateAction<string>) => {
+    if (tab === "login") {
+      dispatch(logIn());
+    } else if (tab === "signup") {
+      dispatch(signUp());
+    }
+    setActiveTab(tab);
+  };
+
   return (
     <>
-      {/* <div className="bg-blue-100 w-full h-16 rounded-lg sm:w-[80%] md:w-[60%] lg:w-[40%] mx-auto">
-        <p>Application</p>
-      </div> */}
-      <div className="flex justify-center">
-            <a
-            onClick={() => dispatch(logIn())}
-            className="text-blue-600 py-2 px-4 rounded mr-2 cursor-pointer hover:underline text-lg"
-            >
+      {/* Your other content */}
+      <div className="flex justify-center font-bold">
+        <a
+          onClick={() => handleTabClick("login")}
+          className={`py-2 px-4 rounded mr-2 cursor-pointer text-lg ${
+            activeTab === "login"
+              ? "bg-green-700 text-white"
+              : "bg-white hover:bg-green-700 hover:text-white"
+          }`}
+        >
           Login
         </a>
         <a
-          onClick={() => dispatch(signUp())}
-          className="text-green-600 py-2 px-4 rounded cursor-pointer hover:underline text-lg"
+          onClick={() => handleTabClick("signup")}
+          className={`py-2 px-4 rounded cursor-pointer text-lg ${
+            activeTab === "signup"
+              ? "bg-blue-500 text-white"
+              : "bg-white hover:bg-blue-500 hover:text-white"
+          }`}
         >
           Sign-Up
         </a>
