@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import LoginSignup from "../pages/login-signup";
-import Home from "../pages/home";
+import Chat from "../pages/chat";
 
 const MainRouting = () => {
   return (
@@ -11,7 +11,7 @@ const MainRouting = () => {
         {/* login and signup */}
         <Route path="/" element={<LoginSignup />} />
         {/* home page  */}
-        <Route path="/home" element={<Home/>}/>
+        <Route path="/chat" element={<Chat/>}/>
       </Routes>
     </>
   );
