@@ -10,8 +10,11 @@ const AXIOS = axios.create({
  
 AXIOS.interceptors.request.use(
   async (config) => {
-    const accessToken = Cookies.get('TOKEN');
-    const refreshToken = Cookies.get('REFRESH_TOKEN');
+    const tokens = Cookies.get('TOKEN');
+    //@ts-ignore
+    const {ACCESSTOKEN, REFRESH_TOKEN} = JSON.parse(tokens);
+    const accessToken = Cookies.get(ACCESSTOKEN);
+    const refreshToken = Cookies.get(REFRESH_TOKEN);
  
     if (config.url === "users/login") {
       config.headers["Content-Type"] = "application/json";
@@ -22,8 +25,8 @@ AXIOS.interceptors.request.use(
       config.headers["Content-Type"] = "application/json";
     }
  
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    if (ACCESSTOKEN) {
+      config.headers["Authorization"] = `Bearer ${ACCESSTOKEN}`;
       config.headers["Content-Type"] = "application/json";
     }
  
@@ -42,6 +45,7 @@ AXIOS.interceptors.response.use(
     return response;
   },
   async (error) => {
+    console.log("🚀 ~ error:", error)
     if (
       error.response &&
       error.response.data.detail === "Could not validate credentials"

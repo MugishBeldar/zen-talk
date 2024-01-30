@@ -59,7 +59,7 @@ const LoginController = ({
       );
       toast.success("Login Successfull..", { ...TOAST_OBJ });
       dispatch(clicked(false));
-      navigate("home");
+      navigate("chat");
     } catch (error) {
       console.log(error);
       dispatch(clicked(false));

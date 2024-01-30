@@ -12,3 +12,11 @@ export const login = (userData:any) => {
     throw error;
   }
 };
+
+export const searchUser = (name:string)=>{
+  try {
+    return AXIOS.get(`users?name=${name}`);
+  } catch (error) {
+    
+  }
+}

@@ -108,7 +108,7 @@ class Auth {
 
       const query = this.buildQuery(name, email, user._id);
 
-      const users = await App.activeDB.User.find(query).lean();
+      const users = await App.activeDB.User.find(query).select('-password');
 
       res.status(201).json({
         success: true,
