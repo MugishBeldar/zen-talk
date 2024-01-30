@@ -109,7 +109,7 @@ class Auth {
 
       const query = this.buildQuery(name, email, user._id);
 
-      const users = await App.activeDB.User.find(query).select('-password');
+      const users = await App.activeDB.User.find(query).select("-password");
 
       res.status(201).json({
         success: true,
@@ -143,6 +143,45 @@ class Auth {
       query._id = { $ne: userId };
     }
     return query;
+  }
+
+  async updateUserInfo(req, res) {
+    try {
+      const { name, email, profilePic } = req.body;
+      if (!name || !email) {
+        return res.status(400).json({
+          success: false,
+          message: "Please provide name and email",
+          type: "validation error",
+        });
+      }
+      const user = await req.App.activeDB.User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found please register",
+          type: "validation error",
+        });
+      }
+      const updateObj = { name };
+      if (profilePic) {
+        updateObj.profilePic = profilePic;
+      }
+      const updateUser = await req.App.activeDB.User.findByIdAndUpdate(
+        user._id,
+        updateObj,
+        { new: true }
+      ).select("-password");
+      return res.status(200).json({
+        success: true,
+        message: "user info updated successfully",
+        data: updateUser,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
   }
 }
 

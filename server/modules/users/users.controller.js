@@ -8,7 +8,7 @@ class UsersController {
         router.post('/login', auth.userAuthenticate.bind(auth));
         router.post('/signup', auth.registerUser.bind(auth));
         router.get('/', auth.getUsers.bind(auth));
-        // router.put('/update', auth.updateUserInfo.bind(auth));
+        router.put('/editprofile', auth.updateUserInfo.bind(auth));
         // Add this line to use the router in your app
         app.use('/api/v1/users', jwtAuth.protect.bind(jwtAuth), router);
     }
