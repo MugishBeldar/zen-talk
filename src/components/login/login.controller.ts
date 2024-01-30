@@ -55,6 +55,7 @@ const LoginController = ({
           ID: response?.data?.data?.id,
           EMAIL: response?.data?.data?.email,
           NAME: response?.data?.data?.name,
+          PROFILEPIC: response?.data?.data?.profilePic
         })
       );
       toast.success("Login Successfull..", { ...TOAST_OBJ });

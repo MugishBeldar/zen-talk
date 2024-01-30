@@ -30,6 +30,7 @@ class Auth {
             id: user._id,
             name: user.name,
             email: user.email,
+            profilePic: user.profilePic,
             accessToken,
             refreshToken,
             expiresIn,

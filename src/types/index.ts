@@ -9,3 +9,9 @@ export interface userTypes {
     _id: string;
   }
   
+export interface userType {
+  EMAIL: string;
+  ID: string;
+  NAME: string;
+  PROFILEPIC: string;
+}
