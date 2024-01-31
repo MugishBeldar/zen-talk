@@ -2,7 +2,7 @@ export interface userTypes {
     createdAt: string;
     email: string;
     name: string;
-    password: string;
+    // password: string;
     profilePic: string;
     updatedAt: string;
     __v: number;
@@ -14,4 +14,4 @@ export interface userType {
   ID: string;
   NAME: string;
   PROFILEPIC: string;
-}
+} 
