@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   TextField,
   Paper,
@@ -11,6 +11,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SignUpController from "./signup.controller";
 import { useSelector } from "react-redux";
+import Tabs from "../tabs/tabs";
 
 const Signup = () => {
   const [formValue, setFormValue] = useState({
@@ -34,8 +35,9 @@ const Signup = () => {
     });
 
   return (
-    <div className="flex justify-center m-5">
-      <Paper elevation={3} className="p-6 sm:w-[40%]">
+    <div className="flex justify-center items-center m-5 h-screen">
+      <Paper elevation={3} className="p-6 sm:w-[33%]">
+        <Tabs />
         <form onSubmit={handleSubmit}>
           <TextField
             required

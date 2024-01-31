@@ -1,17 +1,15 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
-
-import LoginSignup from "../pages/login-signup";
+import { Login, Signup } from "../components";
 import Chat from "../pages/chat";
 
 const MainRouting = () => {
   return (
     <>
       <Routes>
-        {/* login and signup */}
-        <Route path="/" element={<LoginSignup />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         {/* home page  */}
-        <Route path="/chat" element={<Chat/>}/>
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </>
   );

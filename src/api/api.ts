@@ -1,5 +1,5 @@
 import AXIOS from "./http";
-
+import {loginType, signupType} from '../types'
 // API ENDPOINTS
 type UpdateUserDataWithProfilePic = {
   name: string;
@@ -14,12 +14,14 @@ type UpdateUserDataWithoutProfilePic = {
 
 type UpdateUserData = UpdateUserDataWithProfilePic | UpdateUserDataWithoutProfilePic;
 
-export const signup = (userData:any) => {
+
+export const signup = (userData:signupType) => {
   console.log("🚀 ~ signup ~ userData:", userData)
   return AXIOS.post("users/signup", userData);
 };
 
-export const login = (userData:any) => {
+export const login = (userData:loginType) => {
+  console.log("🚀 ~ login ~ userData:", userData)
   try {
     return AXIOS.post("users/login", userData);
   } catch (error) {

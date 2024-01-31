@@ -3,7 +3,6 @@ import storage from "../../firebaseConfig.js";
 import { clicked } from "../../store/loadingIndicator/loadingIndicator.action";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { signup } from "../../api/api";
-import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 
 interface signUpControllerPropes {
@@ -36,7 +35,6 @@ const SignUpController = ({
   setLoading,
 }: signUpControllerPropes) => {
   const [profilePicLink, setProfilePicLink] = useState<string>("");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleTogglePasswordVisibility = () => {
@@ -90,8 +88,9 @@ const SignUpController = ({
         confirmPassword: "",
         profilePicture: "",
       });
+      // navigate("/");
+      window.location.reload();
       dispatch(clicked(false));
-      navigate("home");
     } catch (error) {
       console.error("Error during signup:", error);
       dispatch(clicked(false));

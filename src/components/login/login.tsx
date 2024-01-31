@@ -11,6 +11,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginController from "./login.controller";
 import { LoadingButton } from "@mui/lab";
 import { useSelector } from "react-redux";
+import Tabs from "../tabs/tabs";
 
 const Login = () => {
   const [formValue, setFormValue] = useState({
@@ -30,8 +31,9 @@ const Login = () => {
     });
 
   return (
-    <div className="flex justify-center mt-5">
-      <Paper elevation={3} className="p-6 w-[90%]">
+    <div className="flex justify-center items-center h-screen mt-5">
+      <Paper elevation={3} className="p-6">
+        <Tabs />
         <form onSubmit={handleSubmit}>
           <TextField
             required
