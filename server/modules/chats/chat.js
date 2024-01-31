@@ -18,10 +18,13 @@ class Chat {
       })
         .populate("users", "-password")
         .populate("latestMessage");
+      console.log(isChat, "L:L:Lddddddddddd");
+
       isChat = await req.App.activeDB.User(isChat, {
         path: "latestMessage.sender",
         select: "name email profilePic",
       });
+      console.log(isChat, "L:L:L");
       if (isChat.length > 0) {
         return res.status(200).json({
           success: true,

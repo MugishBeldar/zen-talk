@@ -44,3 +44,20 @@ export const updateUser = (updateUserData: UpdateUserData) => {
       throw error;
     }
   }
+
+export const getChats = () => {
+  try {
+    return AXIOS.get('chat');
+    
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getChatForAUser = (body: {userId: string}) => {
+  try {
+    return AXIOS.post('chat', body);
+  } catch (error) {
+    throw error;
+  }
+}
