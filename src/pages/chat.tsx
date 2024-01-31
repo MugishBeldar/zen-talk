@@ -15,7 +15,7 @@ const Chat = () => {
           <Profile />
         </div>
       </div>
-      <div>
+      <div className="h-[89vh]">
         <MyChats />
       </div>
     </div>

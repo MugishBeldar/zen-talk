@@ -78,7 +78,7 @@ class Auth {
         profilePic: profilePicture,
       });
 
-      console.log(storeUserInDB);
+      // console.log(storeUserInDB);
 
       const {
         name: storedName,

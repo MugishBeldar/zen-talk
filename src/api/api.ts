@@ -16,12 +16,12 @@ type UpdateUserData = UpdateUserDataWithProfilePic | UpdateUserDataWithoutProfil
 
 
 export const signup = (userData:signupType) => {
-  console.log("🚀 ~ signup ~ userData:", userData)
+  // console.log("🚀 ~ signup ~ userData:", userData)
   return AXIOS.post("users/signup", userData);
 };
 
 export const login = (userData:loginType) => {
-  console.log("🚀 ~ login ~ userData:", userData)
+  // console.log("🚀 ~ login ~ userData:", userData)
   try {
     return AXIOS.post("users/login", userData);
   } catch (error) {

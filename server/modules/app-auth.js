@@ -17,7 +17,7 @@ class JwntAuth {
   }
 
   async protect(req, res, next) {
-    console.log("🚀 ~ JwntAuth ~ protect ~ req.path:", req.path)
+    // console.log("🚀 ~ JwntAuth ~ protect ~ req.path:", req.path)
     console.log(req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer ") &&
       req.path !== "/login" &&
