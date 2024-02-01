@@ -1,3 +1,5 @@
+const moment = require("moment-timezone");
+
 class MessageModel {
   constructor(tenantDB) {
     const Schema = global.Mongoose.Schema;
@@ -6,8 +8,18 @@ class MessageModel {
       content: { type: String, trim: true },
       readby: [{ type: global.Mongoose.Schema.Types.ObjectId, ref: "User" }],
       chat: { type: global.Mongoose.Schema.Types.ObjectId, ref: "Chat" },
-      createdAt: { type: Date, default: Date.now },
-      updatedAt: { type: Date, default: Date.now },
+      createdAt: {
+        type: String,
+        default: moment
+          .tz("Asia/Calcutta")
+          .format("dddd DD-MM-YYYY hh:mm:ss A "),
+      },
+      updatedAt: {
+        type: String,
+        default: moment
+          .tz("Asia/Calcutta")
+          .format("dddd DD-MM-YYYY hh:mm:ss A "),
+      },
     });
     tenantDB["Message"] = tenantDB.model("Message", MessageSchema);
   }
