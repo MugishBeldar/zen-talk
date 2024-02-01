@@ -1,9 +1,13 @@
 import React, { FormEvent, useState } from "react";
-import storage from "../../firebaseConfig.js";
+import storage from "../../firebaseConfig";
 import { clicked } from "../../store/loadingIndicator/loadingIndicator.action";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { signup } from "../../api/api";
+import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
+// import { toast } from "react-toastify";
+// import { TOAST_OBJ } from "../../utils/enum";
+
 
 interface signUpControllerPropes {
   formValue: {
@@ -27,7 +31,7 @@ interface signUpControllerPropes {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignUpController = ({
+const RgisterController = ({
   setShowPassword,
   formValue,
   setFormValue,
@@ -36,7 +40,7 @@ const SignUpController = ({
 }: signUpControllerPropes) => {
   const [profilePicLink, setProfilePicLink] = useState<string>("");
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -88,9 +92,9 @@ const SignUpController = ({
         confirmPassword: "",
         profilePicture: "",
       });
-      // navigate("/");
-      window.location.reload();
       dispatch(clicked(false));
+      // toast.success("Login Successfull..", { ...TOAST_OBJ });
+      navigate("/");
     } catch (error) {
       console.error("Error during signup:", error);
       dispatch(clicked(false));
@@ -104,4 +108,4 @@ const SignUpController = ({
   };
 };
 
-export default SignUpController;
+export default RgisterController;

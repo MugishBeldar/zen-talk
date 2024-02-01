@@ -40,7 +40,7 @@ const Tabs = () => {
           onClick={() => handleTabClick("signup")}
           className={`py-3 px-4 rounded cursor-pointer shadow-lg text-base ${pathname==='/signup'?getTabColor():null}`}
         >
-          SIGN-UP
+          REGISTER
         </a>
       </div>
     </>

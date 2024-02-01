@@ -9,11 +9,11 @@ import {
 import { LoadingButton } from "@mui/lab";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import SignUpController from "./signup.controller";
+import RegisterController from "./register.controller";
 import { useSelector } from "react-redux";
 import Tabs from "../tabs/tabs";
 
-const Signup = () => {
+const Register = () => {
   const [formValue, setFormValue] = useState({
     name: "",
     email: "",
@@ -27,7 +27,7 @@ const Signup = () => {
     (state: any) => state.loadingIndicatorstate.clicked
   );
   const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
-    SignUpController({
+  RegisterController({
       formValue,
       setShowPassword,
       setFormValue,
@@ -160,7 +160,7 @@ const Signup = () => {
             loadingPosition="center"
             loadingIndicator=<CircularProgress color="success" size={16} />
           >
-            Sign Up
+            Register
           </LoadingButton>
         </form>
       </Paper>
@@ -168,4 +168,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Register;
