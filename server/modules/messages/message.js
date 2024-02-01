@@ -46,6 +46,40 @@ class Message {
       });
     }
   }
+
+  async allMessages(req, res) {
+    try {
+      const { App } = req;
+      const { chatId } = req.params;
+      if (!chatId) {
+        return res.status(400).json({
+          success: false,
+          message: "Please provide chatId",
+        });
+      }
+      let messages = await App.activeDB.Message.find({
+        chat: req.params.chatId,
+      })
+        .populate("sender", "name pic email")
+        .populate("chat");
+        messages = await App.activeDB.User.populate(messages, {
+          path: "chat.users",
+          select: "name profilePic email",
+        });
+      return res.status(200).json({
+        success: true,
+        message: "fetched messages",
+        data: messages,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        type: "internal error",
+      });
+    }
+  }
 }
 
 module.exports = new Message();
