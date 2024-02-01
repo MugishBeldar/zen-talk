@@ -11,7 +11,9 @@ const MyChats = () => {
   const [chatss, setChats] = React.useState<chatType[]>([]);
   const chats = useSelector((state: any) => state.chatState.chats);
   const [clickedUser, setClickedUser] = React.useState<userTypes | null>(null);
-  console.log("🚀 ~ MyChats ~ clickedUser:", clickedUser);
+  const [selectedChat, setSelectedChat] = React.useState<chatType | null>(null);
+  // console.log("🚀 ~ MyChats ~ selectedChat:", selectedChat)
+  // console.log("🚀 ~ MyChats ~ clickedUser:", clickedUser);
   const { fetchChats } = useMyChatsContrller({ setChats });
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType =
@@ -27,7 +29,10 @@ const MyChats = () => {
       if (firstChat && firstChat.users) {
         user = firstChat.users.find((user) => user._id !== loggedUser.ID);
       }
-      if(user)  setClickedUser(user)
+      if(user)  {
+        setClickedUser(user)
+        setSelectedChat(firstChat);
+      }
   }, [chats]);
 
   const getSender = (loggedUser: userType, users: userTypes[]) => {
@@ -45,17 +50,20 @@ const MyChats = () => {
       : `https://ui-avatars.com/api/?background=random&name=${selectedUser[0].name}`;
   };
 
-  const getSelectedUser = (loggedUser: userType, users: userTypes[]) => {
+  const getSelectedUser = (loggedUser: userType, chat:chatType) => {
     // console.log(loggedUser, "loogedUser");
     // console.log('chating user,', users);
-    const selectedUser: userTypes[] = users.filter(
-      (user) => user._id !== loggedUser.ID
-    );
-    setClickedUser(selectedUser[0]);
+    if(chat.users) {
+      const selectedUser: userTypes[] = chat.users.filter(
+        (user) => user._id !== loggedUser.ID
+        );
+        setClickedUser(selectedUser[0]);
+        setSelectedChat(chat);
+      }
   };
 
   return (
-    <div className="flex h-auto my-3 border-2 rounded-lg">
+    <div className="flex h-auto  border-2 rounded-lg">
       <div className="w-[30%] p-4 border-2 rounded-xl">
         <div className="flex bg-white px-2 py-4 mb-2 border-2 rounded-lg">
           <p className="text-2xl ml-3 w-[65%] text-gray-500">My Chats</p>
@@ -78,7 +86,7 @@ const MyChats = () => {
                     <li
                       onClick={() =>
                         chat.users
-                          ? getSelectedUser(loggedUser, chat?.users)
+                          ? getSelectedUser(loggedUser, chat)
                           : null
                       }
                       key={chat._id}
