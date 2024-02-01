@@ -13,18 +13,14 @@
     }
   }
 
-body {
-  padding: 10px;
-  box-sizing: border-box;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('./assets/mainbackground.jpg');
-  backdrop-filter: blur(2px); 
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1; 
-  /* background-repeat: no-repeat; */
-  /* background-size: cover; */
-  /* background-color: white; */
-}
+  body {
+    padding: 10px;
+    box-sizing: border-box;
+    background-image: url('./assets/photo-1533628635777-112b2239b1c7.avif');
+    backdrop-filter: blur(3px);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh; 
+  }
+  
