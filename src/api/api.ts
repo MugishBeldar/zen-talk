@@ -61,3 +61,19 @@ export const getChatForAUser = (body: {userId: string}) => {
     throw error;
   }
 }
+
+export const getUserMessages = (chatId:string)=> {
+  try {
+    return AXIOS.get(`message/${chatId}`);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const sendMessage = (body: {content: string, chatId:string}) => {
+  try {
+    return AXIOS.post('message', body);
+  } catch (error) {
+    throw error;
+  }
+}

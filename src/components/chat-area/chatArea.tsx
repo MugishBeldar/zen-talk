@@ -1,15 +1,67 @@
-import React from "react";
+import React, {
+  HTMLInputTypeAttribute,
+  KeyboardEvent,
+  useEffect,
+  useState,
+} from "react";
 import { Avatar } from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
-import { userTypes } from "../../types";
+import SendIcon from "@mui/icons-material/Send";
+import { chatType, userType, userTypes } from "../../types";
+import { getUserMessages, sendMessage } from "../../api/api";
+import Cookies from "js-cookie";
 
 interface ChatAreaProps {
-  clickedUser: userTypes | null
+  clickedUser: userTypes | null;
+  selectedChat: chatType | null;
 }
 
-const ChatArea = ({clickedUser}: ChatAreaProps) => {
+const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
+  const [userMessages, setuserMessages] = useState<any>(null);
+  const [currentMessage, setCurrentMessage] = useState<string | null>(null);
+  const [day, setDay] = useState<string | null>(null);
+  const [isDayRender, setIsDayRender] = useState<boolean>(false);
+  console.log("🚀 ~ ChatArea ~ day:", day);
+  // console.log("🚀 ~ ChatArea ~ currentMessage:", currentMessage)
+  console.log("🚀 ~ ChatArea ~ userMessages:", userMessages);
+
+  // console.log("🚀 ~ ChatArea ~ selectedChat:!!!!!!!1", selectedChat)
+  // console.log("🚀 ~ ChatArea ~ clickedUser:!!!!!!!!!!", clickedUser)
+  const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
+  const userInfo: userType = userInfoStringify && JSON.parse(userInfoStringify);
+
+  const fetchUserChats = async () => {
+    if (selectedChat) {
+      const response = await getUserMessages(selectedChat?._id);
+      if (response?.data?.data) {
+        setuserMessages(response.data.data);
+      }
+    }
+  };
+  useEffect(() => {
+    // console.log("🚀 ~ fetchUserChats ~ clickeUserChat:", clickeUserChat);
+    fetchUserChats();
+  }, [clickedUser]);
+
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setCurrentMessage(e.currentTarget.value);
+  };
+
+  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") {
+      console.log(currentMessage);
+      if (currentMessage && selectedChat?._id) {
+        const response = await sendMessage({
+          content: currentMessage,
+          chatId: selectedChat?._id,
+        });
+        console.log("🚀 ~ handleKeyDown ~ response:", response);
+      }
+      setCurrentMessage("");
+      fetchUserChats();
+    }
+  };
   return (
-    <div className="flex flex-col flex-grow bg-white rounded-lg">
+    <>
       {clickedUser && (
         <div className="flex bg-white p-2 mb-2 border-b-2 rounded-lg">
           <div className="text-2xl ml-3 w-[65%] text-gray-500">
@@ -33,12 +85,58 @@ const ChatArea = ({clickedUser}: ChatAreaProps) => {
           </div>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto">
-        {/* Messages go here */}
-        <h1>messages</h1>
+      <div className="flex-1 flex flex-col justify-end p-4">
+        {userMessages &&
+          userMessages.map((message: any, index: number) => {
+            if (message.createdAt.split(" ")[0] !== day) {
+              setDay(message.createdAt.split(" ")[0]);
+              setIsDayRender(true);
+            }
+            return (
+              <div
+                key={index}
+                className={`mb-2 ${
+                  message.sender._id === userInfo.ID ? "self-end" : "self-start"
+                }`}
+              >
+                {isDayRender ? (
+                  <>
+                    {setIsDayRender(false)}
+                    <p>{day}</p>
+                  </>
+                ) : null}
+                <div
+                  className={`max-w-xs rounded-lg overflow-hidden ${
+                    message.sender._id === userInfo.ID
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-800"
+                  }`}
+                >
+                  <div className="px-2 py-1">
+                    <p className="text-[16px]">
+                      {message.content}{" "}
+                      <span className="text-[10px] text-right">
+                        {message.createdAt
+                          .split(" ")[2]
+                          .split(":")
+                          .slice(0, 2)
+                          .join(":") +
+                          " " +
+                          message.createdAt.split(" ")[3]}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
       </div>
+
       <div className="flex items-center border-t-2">
         <input
+          value={currentMessage || ""}
+          onKeyDown={handleKeyDown}
+          onChange={handleInputChange}
           type="text"
           className="min-w-10 flex-1 inline m-2 p-[2%]  bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500  rounded-md sm:text-sm focus:ring-1 md:p-2"
           placeholder="Type your message..."
@@ -56,7 +154,7 @@ const ChatArea = ({clickedUser}: ChatAreaProps) => {
           Send
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

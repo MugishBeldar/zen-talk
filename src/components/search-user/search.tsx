@@ -27,7 +27,7 @@ const SearchUser = () => {
         
       }
       const response = await getChatForAUser(body);
-      console.log("🚀 ~ handleUserChange ~ response:", response)
+      // console.log("🚀 ~ handleUserChange ~ response:", response)
       const userSingleChat = response?.data?.data;
       // console.log('single user chat', userSingleChat);
       if(!userAllChats.find((chat:any)=>chat._id === userSingleChat._id)){

@@ -11,6 +11,14 @@
           -ms-overflow-style: none;  /* IE and Edge */
           scrollbar-width: none;  /* Firefox */
     }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 3px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #ccc; /* Gray color for scrollbar */
+      border-radius: 4px; /* Rounded corners for the thumb */
+    }
   }
 
   body {

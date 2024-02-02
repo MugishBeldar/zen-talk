@@ -1,3 +1,4 @@
+const moment = require("moment-timezone");
 class Message {
   async createMessage(req, res) {
     try {
@@ -15,6 +16,12 @@ class Message {
         sender: req.user._id,
         content: content,
         chat: chatId,
+        createdAt: moment
+          .tz("Asia/Calcutta")
+          .format("dddd DD-MM-YYYY hh:mm:ss A "),
+        updatedAt: moment
+          .tz("Asia/Calcutta")
+          .format("dddd DD-MM-YYYY hh:mm:ss A "),
       };
       var message = await App.activeDB.Message.create(newMessage);
       var messageQuery = await App.activeDB.Message.findOne({
@@ -62,10 +69,10 @@ class Message {
       })
         .populate("sender", "name pic email")
         .populate("chat");
-        messages = await App.activeDB.User.populate(messages, {
-          path: "chat.users",
-          select: "name profilePic email",
-        });
+      messages = await App.activeDB.User.populate(messages, {
+        path: "chat.users",
+        select: "name profilePic email",
+      });
       return res.status(200).json({
         success: true,
         message: "fetched messages",

@@ -5,6 +5,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { chatType, userType, userTypes } from "../../types";
 import Cookies from "js-cookie";
+import ScrollableFeed from "react-scrollable-feed";
 
 interface ChatListProps {
   setClickedUserFunction: React.Dispatch<
@@ -50,20 +51,63 @@ const ChatList = ({
     }
   };
   return (
-    <>
-      <div className="flex bg-white px-2 py-4 mb-2 border-2 rounded-lg ">
+    // <>
+    //   <div className="flex bg-white px-2 py-4 mb-2 border-2 rounded-lg ">
+    //     <p className="text-2xl ml-3 w-[65%] text-gray-500">My Chats</p>
+    //     <Button
+    //       sx={{ backgroundColor: "Blue", fontWeight: "bold" }}
+    //       variant="contained"
+    //       size="small"
+    //     >
+    //       Create group <AddIcon className="ml-[2px]" />
+    //     </Button>
+    //   </div>
+
+    // <div className="bg-white h-[79vh] border-2 rounded-lg ">
+    //   <ul className="overflow-scroll h-full no-scrollbar">
+    //     {chats &&
+    //       chats.map(
+    //         (chat: chatType) =>
+    //           chat &&
+    //           chat.users && (
+    //             <li
+    //               onClick={() =>
+    //                 chat.users ? getSelectedUser(loggedUser, chat) : null
+    //               }
+    //               key={chat._id}
+    //               className="h-[6vh] flex items-center mx-2 px-2 hover:bg-blue-100 hover:rounded-lg"
+    //             >
+    //               {chat.users && (
+    //                 <Avatar
+    //                   alt="Remy Sharp"
+    //                   src={getProfilePicture(loggedUser, chat.users)}
+    //                   sx={{ marginRight: "20px" }}
+    //                 />
+    //               )}
+    //               {!chat.isGroupChat && chat.users
+    //                 ? getSender(loggedUser, chat.users)
+    //                 : chat.chatName}
+    //             </li>
+    //           )
+    //       )}
+    //   </ul>
+    // </div>
+    // </>
+    <div className="w-full ">
+      <div className="flex  h-20 bg-white px-2 py-4 mb-2 border-2 border-black rounded-lg">
         <p className="text-2xl ml-3 w-[65%] text-gray-500">My Chats</p>
         <Button
           sx={{ backgroundColor: "Blue", fontWeight: "bold" }}
           variant="contained"
           size="small"
+          className="ml-auto"
         >
           Create group <AddIcon className="ml-[2px]" />
         </Button>
       </div>
 
-      <div className="bg-white h-[79vh] border-2 rounded-lg ">
-        <ul className="overflow-scroll h-full no-scrollbar">
+      <div className="bg-white h-[79vh]  border-2 rounded-lg">
+        <ScrollableFeed className="custom-scrollbar">
           {chats &&
             chats.map(
               (chat: chatType) =>
@@ -74,7 +118,7 @@ const ChatList = ({
                       chat.users ? getSelectedUser(loggedUser, chat) : null
                     }
                     key={chat._id}
-                    className="h-[6vh] flex items-center mx-2 px-2 hover:bg-blue-100 hover:rounded-lg"
+                    className="flex items-center m-2 p-2 hover:bg-blue-100 hover:rounded-lg"
                   >
                     {chat.users && (
                       <Avatar
@@ -89,9 +133,9 @@ const ChatList = ({
                   </li>
                 )
             )}
-        </ul>
+        </ScrollableFeed>
       </div>
-    </>
+    </div>
   );
 };
 

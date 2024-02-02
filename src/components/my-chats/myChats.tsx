@@ -13,7 +13,8 @@ const MyChats = () => {
   const chats = useSelector((state: any) => state.chatState.chats);
   const [clickedUser, setClickedUser] = React.useState<userTypes | null>(null);
   const [selectedChat, setSelectedChat] = React.useState<chatType | null>(null);
-  // console.log("🚀 ~ MyChats ~ clickedUser:", clickedUser);
+  console.log("🚀 ~ MyChats ~ selectedChat:", selectedChat)
+  console.log("🚀 ~ MyChats ~ clickedUser:", clickedUser);
   const { fetchChats } = useMyChatsContrller({ setChats });
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType =
@@ -36,15 +37,19 @@ const MyChats = () => {
   }, [chats]);
 
   return (
-    <div className="flex  border-2 rounded-lg">
-      <div className="w-[30%] p-4 border-2 rounded-xl hidden md:block lg:block xl:block 2xl:block">
+
+    <div className="flex h-full border-2 border-green-400">
+      {/* ChatList - Hidden on Small Screens */}
+      <div className="hidden w-[35%] border-2 border-red-400 sm:flex md:flex lg:flex xl:flex ">
         <ChatList
           setClickedUserFunction={setClickedUser}
           setSelectedChatFunction={setSelectedChat}
         />
       </div>
-      <div className="w-[100%] border-2 rounded-xl bg-white my-4 mr-4 md:flex md:flex-col md:w-[70%]">
-        <ChatArea clickedUser={clickedUser} />
+
+      {/* ChatArea - Full Width on Small Screens, Flex for Medium and larger screens */}
+      <div className="flex-1 border-2 border-red-400 flex flex-col bg-white rounded-lg">
+        <ChatArea clickedUser={clickedUser} selectedChat={selectedChat} />
       </div>
     </div>
   );
