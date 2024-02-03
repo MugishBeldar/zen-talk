@@ -6,12 +6,30 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginController from "./login.controller";
 import { LoadingButton } from "@mui/lab";
 import { useSelector } from "react-redux";
 import Tabs from "../tabs/tabs";
+
+const CustomeTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#040404",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#040404",
+    },
+    "&:hover fieldset": {
+      borderColor: "#040404",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#040404",
+    },
+  },
+});
 
 const Login = () => {
   const [formValue, setFormValue] = useState({
@@ -32,10 +50,13 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen mt-5">
-      <Paper elevation={3} className="p-6">
+      <Paper elevation={3} className="p-6" sx={{ borderRadius: "15px", backgroundColor:"#e4e4e4" }}>
         <Tabs />
         <form onSubmit={handleSubmit}>
-          <TextField
+          <CustomeTextField
+            sx={{
+              border: "#040404",
+            }}
             required
             label="Email"
             variant="outlined"
@@ -45,7 +66,7 @@ const Login = () => {
             onChange={(e) => handleChange("email", e.target.value)}
             size="small"
           />
-          <TextField
+          <CustomeTextField
             required
             label="Password"
             type={showPassword ? "text" : "password"}
@@ -68,14 +89,23 @@ const Login = () => {
               ),
             }}
           />
+
           <LoadingButton
+            sx={{
+              backgroundColor: "#040404",
+              ":hover": {
+                backgroundColor: "#7e7e7e",
+              },
+            }}
             type="submit"
             variant="contained"
-            color="success"
             size="small"
             loading={buttonLoadingIndicator}
             loadingPosition="center"
-            loadingIndicator=<CircularProgress color="primary" size={16} />
+            loadingIndicator=<CircularProgress
+              sx={{ color: "#040404" }}
+              size={16}
+            />
           >
             Login
           </LoadingButton>

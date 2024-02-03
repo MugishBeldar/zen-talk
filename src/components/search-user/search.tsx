@@ -8,12 +8,29 @@ import { Autocomplete } from "@mui/material";
 import {useDispatch, useSelector} from 'react-redux';
 import { getChatForAUser } from "../../api/api";
 import { chats } from "../../store/chats/chat.action";
+import { styled } from "@mui/material/styles";
 
+const CustomeTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#040404",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#040404",
+    },
+    "&:hover fieldset": {
+      borderColor: "#040404",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#040404",
+    },
+  },
+});
 
 const SearchUser = () => {
   const dispatch = useDispatch();
   const [users, setUsers] = useState<userTypes[]>([]);
-  const { handleInputSearch } = searchController({ setUsers });
+  const { handleInputSearch, clearSearchValue } = searchController({ setUsers });
   const [selectedChat, setSelectedChat] = useState<userTypes>();
   let userAllChats = useSelector((state:any)=>state.chatState.chats);
   // console.log("user all chats ", userAllChats);   
@@ -22,16 +39,17 @@ const SearchUser = () => {
     if (selectedUser) {
       // console.log("Selected User:", selectedUser);
       setSelectedChat(selectedUser);
+      clearSearchValue();
       const body = {
         userId: selectedUser._id,
         
       }
       const response = await getChatForAUser(body);
-      // console.log("🚀 ~ handleUserChange ~ response:", response)
+      console.log("🚀 ~ handleUserChange ~ response:", response)
       const userSingleChat = response?.data?.data;
-      // console.log('single user chat', userSingleChat);
+      console.log('single user chat', userSingleChat);
       if(!userAllChats.find((chat:any)=>chat._id === userSingleChat._id)){
-        console.log('inside if condition')
+        // console.log('inside if condition')
         userAllChats = [userSingleChat, ...userAllChats];
         dispatch(chats(userAllChats));
       }
@@ -39,10 +57,9 @@ const SearchUser = () => {
   };
 
   return (
-    <div className=" w-40 sm:w-80 ">
+    <div className=" w-40 sm:w-80 bg-[#e4e4e4]">
       <Autocomplete
         freeSolo
-        // onSelect={(user)=>{console.log(user)}}
         size="small"
         onInputChange={handleInputSearch}
         disableClearable
@@ -50,19 +67,22 @@ const SearchUser = () => {
         //@ts-ignore
         onChange={handleUserChange}
         //@ts-ignore
-        getOptionLabel={(user) => user.name} // Specify the property to be used as the label
+        getOptionLabel={(user) => user.name}
         renderInput={(params) => (
-          <TextField
+          <CustomeTextField
             {...params}
             label="Search user"
             InputProps={{
               ...params.InputProps,
               type: "search",
             }}
+            sx={{
+              backgroundColor:"#e4e4e4"
+            }}
           />
         )}
         renderOption={(props, user: userTypes) => (
-          <li {...props}>
+          <li {...props} className="ml-3">
             <div style={{ display: "flex", alignItems: "center" }}>
               <img
                 src={

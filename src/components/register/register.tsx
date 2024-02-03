@@ -12,6 +12,24 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import RegisterController from "./register.controller";
 import { useSelector } from "react-redux";
 import Tabs from "../tabs/tabs";
+import { styled } from "@mui/material/styles";
+
+const CustomeTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#040404",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#040404",
+    },
+    "&:hover fieldset": {
+      borderColor: "#040404",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#040404",
+    },
+  },
+});
 
 const Register = () => {
   const [formValue, setFormValue] = useState({
@@ -27,7 +45,7 @@ const Register = () => {
     (state: any) => state.loadingIndicatorstate.clicked
   );
   const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
-  RegisterController({
+    RegisterController({
       formValue,
       setShowPassword,
       setFormValue,
@@ -36,10 +54,14 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center m-5 h-screen">
-      <Paper elevation={3} className="p-6 sm:w-[33%]">
+      <Paper
+        elevation={3}
+        className="p-6 sm:w-[33%]"
+        sx={{ borderRadius: "15px", backgroundColor: "#e4e4e4" }}
+      >
         <Tabs />
         <form onSubmit={handleSubmit}>
-          <TextField
+          <CustomeTextField
             required
             label="Name"
             variant="outlined"
@@ -49,7 +71,7 @@ const Register = () => {
             onChange={(e) => handleChange(e, "name", e.target.value)}
             size="small"
           />
-          <TextField
+          <CustomeTextField
             required
             label="Email"
             variant="outlined"
@@ -69,7 +91,7 @@ const Register = () => {
                 : ""
             }
           />
-          <TextField
+          <CustomeTextField
             required
             label="Password"
             type={showPassword ? "text" : "password"}
@@ -88,7 +110,7 @@ const Register = () => {
                 : ""
             }
           />
-          <TextField
+          <CustomeTextField
             required
             label="Confirm Password"
             type={showPassword ? "text" : "password"}
@@ -123,7 +145,7 @@ const Register = () => {
               ),
             }}
           />
-          <TextField
+          <CustomeTextField
             id="contained-button-file"
             focused
             label="Upload Picture"
@@ -151,14 +173,23 @@ const Register = () => {
             }}
           />
           <LoadingButton
+            sx={{
+              backgroundColor: "#040404",
+              ":hover": {
+                backgroundColor: "#7e7e7e",
+              },
+            }}
             disabled={loading}
             type="submit"
             variant="contained"
-            color="primary"
+            // color="primary"
             size="small"
             loading={buttonLoadingIndicator}
             loadingPosition="center"
-            loadingIndicator=<CircularProgress color="success" size={16} />
+            loadingIndicator=<CircularProgress
+              sx={{ color: "#040404" }}
+              size={16}
+            />
           >
             Register
           </LoadingButton>

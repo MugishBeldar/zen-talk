@@ -1,7 +1,7 @@
 import React from "react";
-import { Tooltip } from "@mui/material";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import useEditController from "./edit.controller";
+import { Tooltip } from "@mui/material";
 
 interface editType {
     email: string;
@@ -13,7 +13,7 @@ const Edit = ({email, name}:editType) => {
   return (
     <>
       <Tooltip onClick={handleEdit} title="Edit" arrow placement="top-end">
-        <ModeEditOutlinedIcon className="cursor-pointer mr-6" color="primary" />
+        <ModeEditOutlinedIcon className="cursor-pointer mr-6" sx={{color:"#040404"}} />
       </Tooltip>
     </>
   );

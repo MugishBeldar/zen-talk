@@ -11,9 +11,9 @@ const Tabs = () => {
 
   const getTabColor = () => {
     if (pathname === '/signup') {
-      return 'bg-blue-500 text-white';
+      return 'bg-[#040404] text-white';
     } else {
-      return 'bg-green-700 text-white';
+      return 'bg-[#040404] text-white';
     }
   };
 
@@ -32,13 +32,13 @@ const Tabs = () => {
       <div className="flex justify-center">
         <a
           onClick={() => handleTabClick("login")}
-          className={`py-3 px-4 rounded mr-10 cursor-pointer shadow-lg text-base ${pathname==='/'?getTabColor():null}`}
+          className={`py-3 px-4 rounded mr-10 cursor-pointer shadow-lg text-base ${pathname==='/'?getTabColor():null} hover:bg-[#7e7e7e] hover:text-white`}
         >
           LOGIN
         </a>
         <a
           onClick={() => handleTabClick("signup")}
-          className={`py-3 px-4 rounded cursor-pointer shadow-lg text-base ${pathname==='/signup'?getTabColor():null}`}
+          className={`py-3 px-4 rounded cursor-pointer shadow-lg text-base ${pathname==='/signup'?getTabColor():null} hover:bg-[#7e7e7e] hover:text-white`}
         >
           REGISTER
         </a>

@@ -38,9 +38,9 @@ const MyChats = () => {
 
   return (
 
-    <div className="flex h-full border-2 border-green-400">
+    <div className="flex h-full">
       {/* ChatList - Hidden on Small Screens */}
-      <div className="hidden w-[35%] border-2 border-red-400 sm:flex md:flex lg:flex xl:flex ">
+      <div className="hidden w-[35%] sm:flex md:flex lg:flex xl:flex ">
         <ChatList
           setClickedUserFunction={setClickedUser}
           setSelectedChatFunction={setSelectedChat}
@@ -48,7 +48,7 @@ const MyChats = () => {
       </div>
 
       {/* ChatArea - Full Width on Small Screens, Flex for Medium and larger screens */}
-      <div className="flex-1 border-2 border-red-400 flex flex-col bg-white rounded-lg">
+      <div className="flex-1 mx-2 mt-5 flex flex-col bg-[#e4e4e4]  rounded-lg">
         <ChatArea clickedUser={clickedUser} selectedChat={selectedChat} />
       </div>
     </div>

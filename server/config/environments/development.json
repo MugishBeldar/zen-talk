@@ -15,12 +15,13 @@
       "refreshTokenForImpersonateLife": "1d"
     },
     "mongo":{
-      "host":[{"host":"development.qbxhprb.mongodb.net"}],
+      "host":[{"host":"mongodb://localhost:27017"}],
       "db_name":"chat_application",
-      "username":"root",
-      "password":"root",
+      "username":"",
+      "password":"",
       "debug":false,
       "retryWrites": true
     }
   }
+  
   

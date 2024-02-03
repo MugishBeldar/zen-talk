@@ -8,7 +8,7 @@ const Logout = () => {
   return (
     <>
       <Tooltip onClick={handleLogOut} title="Logout" arrow placement="top-end">
-        <LogoutIcon className="cursor-pointer " color="error" />
+        <LogoutIcon className="cursor-pointer " sx={{coloe:"#040404"}} />
       </Tooltip>
     </>
   );
