@@ -17,7 +17,7 @@ const useSearchController = ({setUsers}:searchUserTypes) => {
       if (debouncedValue) {
         try {
           const response = await searchUser(debouncedValue);
-          console.log("🚀 ~ fetchUsers ~ response:", response)
+          // console.log("🚀 ~ fetchUsers ~ response:", response)
           if (response && response.data && response.data.data && Array.isArray(response.data.data)) {
             const usersData: userTypes[] = response.data.data;
             setUsers(usersData);

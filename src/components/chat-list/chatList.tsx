@@ -5,6 +5,11 @@ import ScrollableFeed from "react-scrollable-feed";
 import { Avatar, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { chatType, userType, userTypes } from "../../types";
+import noChatFoundImage from '../../assets/noChatFound.png';
+
+// ...
+
+<img src={noChatFoundImage} alt="no chat found" />
 
 interface ChatListProps {
   setClickedUserFunction: React.Dispatch<
@@ -20,22 +25,23 @@ const ChatList = ({
   setSelectedChatFunction,
 }: ChatListProps) => {
   const chats = useSelector((state: any) => state.chatState.chats);
+  console.log("🚀 ~ chats:", chats);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType =
     userInfoStringify && JSON.parse(userInfoStringify);
   const getSender = (loggedUser: userType, users: userTypes[]) => {
     const senderName =
-      users[0]?._id === loggedUser?.ID ? users[1].name : users[0].name;
-    return senderName.charAt(0).toUpperCase() + senderName.slice(1);
+      users[0]?._id === loggedUser?.ID ? users[1]?.name : users[0]?.name;
+    return senderName?.charAt(0).toUpperCase() + senderName?.slice(1);
   };
 
   const getProfilePicture = (loggedUser: userType, users: userTypes[]) => {
     const selectedUser: userTypes[] = users.filter(
       (user) => user._id !== loggedUser.ID
     );
-    return selectedUser[0].profilePic
+    return selectedUser[0]?.profilePic
       ? selectedUser[0].profilePic
-      : `https://ui-avatars.com/api/?background=random&name=${selectedUser[0].name}`;
+      : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${selectedUser[0]?.name}`;
   };
 
   const getSelectedUser = (loggedUser: userType, chat: chatType) => {
@@ -62,6 +68,9 @@ const ChatList = ({
       </div>
 
       <div className="bg-[#e4e4e4] h-[79vh] rounded-lg">
+        {!chats.length && (<div className="h-[100%] flex items-center justify-center">
+          <img src={noChatFoundImage} alt="no chat found" className="object-fill md:h-[60%] md:w-[70%] " />
+        </div>)}
         <ScrollableFeed className="custom-scrollbar">
           {chats &&
             chats.map(

@@ -18,7 +18,7 @@ const renderUserInfo = (clickedUser: userTypes) => (
       src={
         clickedUser.profilePic
           ? clickedUser.profilePic
-          : `https://ui-avatars.com/api/?background=random&name=${clickedUser.name}`
+          : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${clickedUser.name}`
       }
       sx={{ marginRight: "20px", width: "50px", height: "50px" }}
     />

@@ -30,6 +30,7 @@ const CustomeTextField = styled(TextField)({
 const SearchUser = () => {
   const dispatch = useDispatch();
   const [users, setUsers] = useState<userTypes[]>([]);
+  console.log("🚀 ~ SearchUser ~ users:", users)
   const { handleInputSearch, clearSearchValue } = searchController({ setUsers });
   const [selectedChat, setSelectedChat] = useState<userTypes>();
   let userAllChats = useSelector((state:any)=>state.chatState.chats);
@@ -45,9 +46,9 @@ const SearchUser = () => {
         
       }
       const response = await getChatForAUser(body);
-      console.log("🚀 ~ handleUserChange ~ response:", response)
+      // console.log("🚀 ~ handleUserChange ~ response:", response)
       const userSingleChat = response?.data?.data;
-      console.log('single user chat', userSingleChat);
+      // console.log('single user chat', userSingleChat);
       if(!userAllChats.find((chat:any)=>chat._id === userSingleChat._id)){
         // console.log('inside if condition')
         userAllChats = [userSingleChat, ...userAllChats];
@@ -81,14 +82,15 @@ const SearchUser = () => {
             }}
           />
         )}
-        renderOption={(props, user: userTypes) => (
-          <li {...props} className="ml-3">
+        renderOption={(props, user: userTypes) => 
+          (
+          <li {...props} className="ml-3 mb-2">
             <div style={{ display: "flex", alignItems: "center" }}>
               <img
                 src={
                   user.profilePic
                     ? user.profilePic
-                    : `https://ui-avatars.com/api/?background=random&name=${user.name}`
+                    : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${user.name}`
                 }
                 alt={`Image for ${user.name}`}
                 style={{

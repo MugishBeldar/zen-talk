@@ -31,7 +31,7 @@ const Profile = () => {
               src={
                 userInfo.PROFILEPIC
                   ? userInfo.PROFILEPIC
-                  : `https://ui-avatars.com/api/?background=random&name=${userInfo.NAME}`
+                  : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${userInfo.NAME}`
               }
             />
           )}
@@ -55,7 +55,7 @@ const Profile = () => {
                       src={
                         userInfo.PROFILEPIC
                           ? userInfo.PROFILEPIC
-                          : `https://ui-avatars.com/api/?background=random&name=${userInfo.NAME}`
+                          : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${userInfo.NAME}`
                       }
                       sx={{
                         width: 60,
