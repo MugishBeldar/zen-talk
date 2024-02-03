@@ -6,7 +6,7 @@ const STATISTICS_API = {
   GET_DETAILS: `${API_ENDPOINT}/get-details`,
 };
 export const TOAST_OBJ = {
-  position: "bottom-right",
+  position: "top-center",
   autoClose: 2000,
   hideProgressBar: false,
   closeOnClick: true,

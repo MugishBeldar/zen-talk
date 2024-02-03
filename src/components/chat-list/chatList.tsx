@@ -18,11 +18,13 @@ interface ChatListProps {
   setSelectedChatFunction: React.Dispatch<
     React.SetStateAction<chatType | null>
   >;
+  clickedUser: userTypes | null;
 }
 
 const ChatList = ({
   setClickedUserFunction,
   setSelectedChatFunction,
+  clickedUser
 }: ChatListProps) => {
   const chats = useSelector((state: any) => state.chatState.chats);
   console.log("🚀 ~ chats:", chats);
@@ -82,7 +84,7 @@ const ChatList = ({
                       chat.users ? getSelectedUser(loggedUser, chat) : null
                     }
                     key={chat._id}
-                    className="flex items-center m-2 p-2 hover:bg-[#7e7e7e] hover:text-white hover:rounded-lg"
+                    className={`flex items-center m-2 p-2 hover:bg-[#7e7e7e] hover:text-black hover:rounded-lg ${chat.users[0]._id===clickedUser?._id || chat.users[1]._id===clickedUser?._id ? "bg-[#7e7e7e] rounded-lg" : null}`}
                   >
                     {chat.users && (
                       <Avatar

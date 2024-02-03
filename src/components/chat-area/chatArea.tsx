@@ -1,11 +1,12 @@
-import React, { HTMLInputTypeAttribute, KeyboardEvent, useEffect, useState } from "react";
+import React, { KeyboardEvent, useEffect, useState } from "react";
 import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { chatType, userType, userTypes } from "../../types";
 import { getUserMessages, sendMessage } from "../../api/api";
 import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
-
+import noMessage from '../../assets/noMessage.png'
+import chatArea from '../../assets/chatareaImage.png'
 interface ChatAreaProps {
   clickedUser: userTypes | null;
   selectedChat: chatType | null;
@@ -86,8 +87,27 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
         </div>
       )}
 
-      <div className="h-[680px] p-4 mb-2 border-[#040404]">
+      {!clickedUser && (
+        <div className=" bg-[#e4e4e4] p-1 my-4 border-b-2 rounded-lg">
+          <div className=" text-[#040404]">
+            <p className="uppercase text-center text-2xl">Chose a conversation on the left to start chatting</p>
+
+          </div>
+        </div>
+      )}
+
+      <div className="h-[83%] p-4 mb-2 border-[#040404]">
         <ScrollableFeed className="custom-scrollbar">
+          {clickedUser && !userMessages?.length && (
+             (<div className="h-[100%] flex items-center justify-center">
+             <img src={noMessage} alt="no chat found" className="object-fill " />
+           </div>)
+          )}
+          {!clickedUser && !userMessages?.length && (
+             (<div className="h-[100%] flex items-center justify-center">
+             <img src={chatArea} alt="no chat found" className="object-fill " />
+           </div>)
+          )}
           {userMessages &&
             userMessages.map((message: any, index: number) => (
               <React.Fragment key={index}>

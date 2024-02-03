@@ -5,9 +5,9 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { signup } from "../../api/api";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-// import { toast } from "react-toastify";
-// import { TOAST_OBJ } from "../../utils/enum";
-
+import { toast } from "react-toastify";
+import { TOAST_OBJ } from "../../utils/enum";
+import { AxiosError } from "axios";
 
 interface signUpControllerPropes {
   formValue: {
@@ -97,6 +97,7 @@ const RgisterController = ({
       navigate("/");
     } catch (error) {
       console.error("Error during signup:", error);
+      toast.error(`Email alredy register ples login`, { ...TOAST_OBJ });
       dispatch(clicked(false));
     }
   };

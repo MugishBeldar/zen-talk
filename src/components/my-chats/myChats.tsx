@@ -44,6 +44,7 @@ const MyChats = () => {
         <ChatList
           setClickedUserFunction={setClickedUser}
           setSelectedChatFunction={setSelectedChat}
+          clickedUser={clickedUser}
         />
       </div>
 
