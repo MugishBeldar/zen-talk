@@ -5,8 +5,9 @@ import { chatType, userType, userTypes } from "../../types";
 import { getUserMessages, sendMessage } from "../../api/api";
 import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
-import noMessage from '../../assets/noMessage.png'
-import chatArea from '../../assets/chatareaImage.png'
+import noMessage from "../../assets/noMessage.png";
+import chatArea from "../../assets/chatareaImage.png";
+import { useChatAreaController } from "./chatArea.controller";
 interface ChatAreaProps {
   clickedUser: userTypes | null;
   selectedChat: chatType | null;
@@ -23,7 +24,9 @@ const renderUserInfo = (clickedUser: userTypes) => (
       }
       sx={{ marginRight: "20px", width: "50px", height: "50px" }}
     />
-    <p>{clickedUser.name.charAt(0).toUpperCase() + clickedUser.name.slice(1)}</p>
+    <p>
+      {clickedUser.name.charAt(0).toUpperCase() + clickedUser.name.slice(1)}
+    </p>
   </div>
 );
 
@@ -32,27 +35,34 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const userInfo: userType = userInfoStringify && JSON.parse(userInfoStringify);
-
-  const fetchUserChats = async () => {
-    if (selectedChat) {
-      const response = await getUserMessages(selectedChat?._id);
-      mapUserMessages(response?.data?.data);
-    }
-  };
-
-  const mapUserMessages = (data: any) => {
-    let day: string = "";
-    const mapedData = data.map((message: any) => {
-      if (day !== message.createdAt.split(" ")[0]) {
-        day = message.createdAt.split(" ")[0];
-        message.day = true;
-        return message;
-      }
-      message.day = false;
-      return message;
+  const { fetchUserChats, handleInputChange, handleKeyDown } =
+    useChatAreaController({
+      clickedUser,
+      selectedChat,
+      setuserMessages,
+      setCurrentMessage,
+      currentMessage,
     });
-    setuserMessages(mapedData);
-  };
+  // const fetchUserChats = async () => {
+  //   if (selectedChat) {
+  //     const response = await getUserMessages(selectedChat?._id);
+  //     mapUserMessages(response?.data?.data);
+  //   }
+  // };
+
+  // const mapUserMessages = (data: any) => {
+  //   let day: string = "";
+  //   const mapedData = data.map((message: any) => {
+  //     if (day !== message.createdAt.split(" ")[0]) {
+  //       day = message.createdAt.split(" ")[0];
+  //       message.day = true;
+  //       return message;
+  //     }
+  //     message.day = false;
+  //     return message;
+  //   });
+  //   setuserMessages(mapedData);
+  // };
 
   useEffect(() => {
     if (clickedUser) {
@@ -60,22 +70,22 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
     }
   }, [clickedUser, selectedChat]);
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setCurrentMessage(e.currentTarget.value);
-  };
+  // const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+  //   setCurrentMessage(e.currentTarget.value);
+  // };
 
-  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === "Enter") {
-      if (currentMessage && selectedChat?._id) {
-        await sendMessage({
-          content: currentMessage,
-          chatId: selectedChat?._id,
-        });
-      }
-      setCurrentMessage("");
-      fetchUserChats();
-    }
-  };
+  // const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.code === "Enter") {
+  //     if (currentMessage && selectedChat?._id) {
+  //       await sendMessage({
+  //         content: currentMessage,
+  //         chatId: selectedChat?._id,
+  //       });
+  //     }
+  //     setCurrentMessage("");
+  //     fetchUserChats();
+  //   }
+  // };
 
   return (
     <>
@@ -90,58 +100,77 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       {!clickedUser && (
         <div className=" bg-[#e4e4e4] p-1 my-4 border-b-2 rounded-lg">
           <div className=" text-[#040404]">
-            <p className="uppercase text-center text-2xl">Chose a conversation on the left to start chatting</p>
-
+            <p className="uppercase text-center text-2xl">
+              Chose a conversation on the left to start chatting
+            </p>
           </div>
         </div>
       )}
 
-      <div className="h-[83%] p-4 mb-2 border-[#040404]">
-        <ScrollableFeed className="custom-scrollbar">
-          {clickedUser && !userMessages?.length && (
-             (<div className="h-[100%] flex items-center justify-center">
-             <img src={noMessage} alt="no chat found" className="object-fill " />
-           </div>)
-          )}
-          {!clickedUser && !userMessages?.length && (
-             (<div className="h-[100%] flex items-center justify-center">
-             <img src={chatArea} alt="no chat found" className="object-fill " />
-           </div>)
-          )}
-          {userMessages &&
-            userMessages.map((message: any, index: number) => (
-              <React.Fragment key={index}>
-                <div key={`day-${index}`}>
-                  {message.day ? (
-                    <div className="w-full flex justify-center ">
-                      <p className="w-fit text-c700pxtext-black/50 my-2 py-1 px-4 rounded-lg bg-[#7e7e7e] text-white shadow-lg">
-                        {message.createdAt.split(" ")[0].toUpperCase()}
-                      </p>
-                    </div>
-                  ) : null}
-                </div>
-                <div
-                  key={index}
-                  className={`mb-2 ${
-                    message.sender._id === userInfo.ID ? "w-full flex justify-end" : "w-full self-start"
-                  }`}
-                >
-                  <p className={`text-[#040404] ${message.sender._id === userInfo.ID ? 'w-fit text-right bg-[#040404] text-white px-3 py-1 mr-2 rounded-lg' : 'w-fit bg-[#7e7e7e] text-white px-3 py-1 rounded-lg'}`}>
-                    {message.content}{" "}
-                    <span className="text-[10px]">
-                      {message.createdAt
-                        .split(" ")[2]
-                        .split(":")
-                        .slice(0, 2)
-                        .join(":") +
-                        " " +
-                        message.createdAt.split(" ")[3]}
-                    </span>
-                  </p>
-                </div>
-              </React.Fragment>
-            ))}
-        </ScrollableFeed>
+      <div className="h-[84%] flex flex-col">
+        <div className="flex-grow h-full p-4 mb-2 border-[#040404]">
+          <ScrollableFeed className="custom-scrollbar h-full">
+            {clickedUser && !userMessages?.length && (
+              <div className="h-full flex items-center justify-center">
+                <img
+                  src={noMessage}
+                  alt="no chat found"
+                  className="object-fill "
+                />
+              </div>
+            )}
+            {!clickedUser && !userMessages?.length && (
+              <div className="h-full flex items-center justify-center">
+                <img
+                  src={chatArea}
+                  alt="no chat found"
+                  className="object-fill "
+                />
+              </div>
+            )}
+            {userMessages &&
+              userMessages.map((message: any, index: number) => (
+                <React.Fragment key={index}>
+                  <div key={`day-${index}`}>
+                    {message.day ? (
+                      <div className="w-full flex justify-center ">
+                        <p className="w-fit text-c700pxtext-black/50 my-2 py-1 px-4 rounded-lg bg-[#7e7e7e] text-white shadow-lg">
+                          {message.createdAt.split(" ")[0].toUpperCase()}
+                        </p>
+                      </div>
+                    ) : null}
+                  </div>
+                  <div
+                    key={index}
+                    className={`mb-2 ${
+                      message.sender._id === userInfo.ID
+                        ? "w-full flex justify-end"
+                        : "w-full self-start"
+                    }`}
+                  >
+                    <p
+                      className={`text-[#040404] ${
+                        message.sender._id === userInfo.ID
+                          ? "w-fit text-right bg-[#040404] text-white px-3 py-1 mr-2 rounded-lg"
+                          : "w-fit bg-[#7e7e7e] text-white px-3 py-1 rounded-lg"
+                      }`}
+                    >
+                      {message.content}{" "}
+                      <span className="text-[10px]">
+                        {message.createdAt
+                          .split(" ")[2]
+                          .split(":")
+                          .slice(0, 2)
+                          .join(":") +
+                          " " +
+                          message.createdAt.split(" ")[3]}
+                      </span>
+                    </p>
+                  </div>
+                </React.Fragment>
+              ))}
+          </ScrollableFeed>
+        </div>
       </div>
 
       <div className="flex items-center border-t border-[#7e7e7e]">

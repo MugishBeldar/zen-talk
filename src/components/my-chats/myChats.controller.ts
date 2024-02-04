@@ -5,12 +5,14 @@ import { useDispatch } from "react-redux";
 
 interface useMyChatsContrllerProps {
   setChats: React.Dispatch<React.SetStateAction<chatType[]>>;
+  setSelectedChat: React.Dispatch<React.SetStateAction<chatType | null>>;
 }
 
-const useMyChatsContrller = ({ setChats }: useMyChatsContrllerProps) => {
+const useMyChatsContrller = ({ setChats, setSelectedChat }: useMyChatsContrllerProps) => {
   const dispatch = useDispatch();
   const fetchChats = async () => {
     try {
+      setSelectedChat(null)
       const response = await getChats();
       if(response?.data?.data) {
         dispatch(chats(response?.data?.data));

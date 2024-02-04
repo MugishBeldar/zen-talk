@@ -15,7 +15,7 @@ const MyChats = () => {
   const [selectedChat, setSelectedChat] = React.useState<chatType | null>(null);
   // console.log("🚀 ~ MyChats ~ selectedChat:", selectedChat)
   // console.log("🚀 ~ MyChats ~ clickedUser:", clickedUser);
-  const { fetchChats } = useMyChatsContrller({ setChats });
+  const { fetchChats } = useMyChatsContrller({ setChats, setSelectedChat });
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType =
     userInfoStringify && JSON.parse(userInfoStringify);

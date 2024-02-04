@@ -19,6 +19,9 @@
       background-color: #ccc; /* Gray color for scrollbar */
       border-radius: 4px; /* Rounded corners for the thumb */
     }
+    .chat-area-scrollbar-height::-webkit-scrollbar-thumb {
+      height: 100%;
+    }
   }
 
   body {
