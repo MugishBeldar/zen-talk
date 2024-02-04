@@ -1,8 +1,7 @@
-import React, { KeyboardEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { chatType, userType, userTypes } from "../../types";
-import { getUserMessages, sendMessage } from "../../api/api";
 import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
 import noMessage from "../../assets/noMessage.png";
@@ -43,49 +42,12 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       setCurrentMessage,
       currentMessage,
     });
-  // const fetchUserChats = async () => {
-  //   if (selectedChat) {
-  //     const response = await getUserMessages(selectedChat?._id);
-  //     mapUserMessages(response?.data?.data);
-  //   }
-  // };
-
-  // const mapUserMessages = (data: any) => {
-  //   let day: string = "";
-  //   const mapedData = data.map((message: any) => {
-  //     if (day !== message.createdAt.split(" ")[0]) {
-  //       day = message.createdAt.split(" ")[0];
-  //       message.day = true;
-  //       return message;
-  //     }
-  //     message.day = false;
-  //     return message;
-  //   });
-  //   setuserMessages(mapedData);
-  // };
 
   useEffect(() => {
     if (clickedUser) {
       fetchUserChats();
     }
   }, [clickedUser, selectedChat]);
-
-  // const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-  //   setCurrentMessage(e.currentTarget.value);
-  // };
-
-  // const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.code === "Enter") {
-  //     if (currentMessage && selectedChat?._id) {
-  //       await sendMessage({
-  //         content: currentMessage,
-  //         chatId: selectedChat?._id,
-  //       });
-  //     }
-  //     setCurrentMessage("");
-  //     fetchUserChats();
-  //   }
-  // };
 
   return (
     <>

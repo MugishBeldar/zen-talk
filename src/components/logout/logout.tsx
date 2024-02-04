@@ -1,6 +1,5 @@
 import { Tooltip } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import React from "react";
 import useLogOutController from "./logout.controller";
 
 const Logout = () => {

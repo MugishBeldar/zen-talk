@@ -5,9 +5,6 @@ import TextField from "@mui/material/TextField";
 import searchController from "./search.controller";
 import { userTypes } from "../../types";
 import { Autocomplete } from "@mui/material";
-import {useDispatch, useSelector} from 'react-redux';
-import { getChatForAUser } from "../../api/api";
-import { chats } from "../../store/chats/chat.action";
 import { styled } from "@mui/material/styles";
 
 const CustomeTextField = styled(TextField)({
@@ -28,34 +25,8 @@ const CustomeTextField = styled(TextField)({
 });
 
 const SearchUser = () => {
-  const dispatch = useDispatch();
   const [users, setUsers] = useState<userTypes[]>([]);
-  console.log("🚀 ~ SearchUser ~ users:", users)
-  const { handleInputSearch, clearSearchValue } = searchController({ setUsers });
-  const [selectedChat, setSelectedChat] = useState<userTypes>();
-  let userAllChats = useSelector((state:any)=>state.chatState.chats);
-  // console.log("user all chats ", userAllChats);   
-
-  const handleUserChange = async (event: any, selectedUser: userTypes | null) => {
-    if (selectedUser) {
-      // console.log("Selected User:", selectedUser);
-      setSelectedChat(selectedUser);
-      clearSearchValue();
-      const body = {
-        userId: selectedUser._id,
-        
-      }
-      const response = await getChatForAUser(body);
-      // console.log("🚀 ~ handleUserChange ~ response:", response)
-      const userSingleChat = response?.data?.data;
-      // console.log('single user chat', userSingleChat);
-      if(!userAllChats.find((chat:any)=>chat._id === userSingleChat._id)){
-        // console.log('inside if condition')
-        userAllChats = [userSingleChat, ...userAllChats];
-        dispatch(chats(userAllChats));
-      }
-    }
-  };
+  const { handleInputSearch, handleUserChange } = searchController({ setUsers });
 
   return (
     <div className=" w-40 sm:w-80 bg-[#e4e4e4]">

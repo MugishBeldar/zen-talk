@@ -37,9 +37,7 @@ const Login = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const buttonLoadingIndicator = useSelector(
-    (state: any) => state.loadingIndicatorstate.clicked
-  );
+  const buttonLoadingIndicator = useSelector((state: any) => state.loadingIndicatorstate.clicked);
 
   const { handleSubmit, handleTogglePasswordVisibility, handleChange } =
     LoginController({
@@ -50,7 +48,7 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen mt-5">
-      <Paper elevation={3} className="p-6" sx={{ borderRadius: "15px", backgroundColor:"#e4e4e4" }}>
+      <Paper elevation={3} className="p-6" sx={{ borderRadius: "15px", backgroundColor: "#e4e4e4" }}>
         <Tabs />
         <form onSubmit={handleSubmit}>
           <CustomeTextField

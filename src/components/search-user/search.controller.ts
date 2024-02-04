@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { searchUser } from "../../api/api";
+import { getChatForAUser, searchUser } from "../../api/api";
 import useDebounce from "../../hooks/useDebounce";
 import {userTypes} from '../../types'
+import { useDispatch, useSelector } from "react-redux";
+import { chats } from "../../store/chats/chat.action";
 
 interface searchUserTypes {
     setUsers: React.Dispatch<React.SetStateAction<userTypes[]>>
@@ -10,14 +12,15 @@ interface searchUserTypes {
 const useSearchController = ({setUsers}:searchUserTypes) => {
 
   const [searchvalue, setSearchValue] = useState<string>();
-  const debouncedValue = useDebounce(searchvalue, 1000);
+  let userAllChats = useSelector((state:any)=>state.chatState.chats);
 
+  const debouncedValue = useDebounce(searchvalue, 1000);
+  const dispatch = useDispatch()
   useEffect(() => {
     const fetchUsers = async () => {
       if (debouncedValue) {
         try {
           const response = await searchUser(debouncedValue);
-          // console.log("🚀 ~ fetchUsers ~ response:", response)
           if (response && response.data && response.data.data && Array.isArray(response.data.data)) {
             const usersData: userTypes[] = response.data.data;
             setUsers(usersData);
@@ -43,7 +46,22 @@ const useSearchController = ({setUsers}:searchUserTypes) => {
     setSearchValue("");
   };
 
-  return { handleInputSearch, clearSearchValue };
+  const handleUserChange = async (event:any, selectedUser: userTypes | null) => {
+    if (selectedUser) {
+      clearSearchValue();
+      const body = {
+        userId: selectedUser._id,
+      }
+      const response = await getChatForAUser(body);
+      const userSingleChat = response?.data?.data;
+      if(!userAllChats.find((chat:any)=>chat._id === userSingleChat._id)){
+        userAllChats = [userSingleChat, ...userAllChats];
+        dispatch(chats(userAllChats));
+      }
+    }
+  };
+
+  return { handleInputSearch, clearSearchValue, handleUserChange };
 };
 
 export default useSearchController;

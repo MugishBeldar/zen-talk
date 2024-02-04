@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { TOAST_OBJ } from "../../utils/enum";
-import { AxiosError } from "axios";
 
 interface signUpControllerPropes {
   formValue: {
@@ -27,7 +26,6 @@ interface signUpControllerPropes {
       profilePicture: string;
     }>
   >;
-  // setButtonLoadingIndicator: React.Dispatch<React.SetStateAction<boolean>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -35,7 +33,6 @@ const RgisterController = ({
   setShowPassword,
   formValue,
   setFormValue,
-  // setButtonLoadingIndicator,
   setLoading,
 }: signUpControllerPropes) => {
   const [profilePicLink, setProfilePicLink] = useState<string>("");
@@ -93,7 +90,6 @@ const RgisterController = ({
         profilePicture: "",
       });
       dispatch(clicked(false));
-      // toast.success("Login Successfull..", { ...TOAST_OBJ });
       navigate("/");
     } catch (error) {
       console.error("Error during signup:", error);
