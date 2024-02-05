@@ -7,6 +7,8 @@ import ScrollableFeed from "react-scrollable-feed";
 import noMessage from "../../assets/noMessage.png";
 import chatArea from "../../assets/chatareaImage.png";
 import { useChatAreaController } from "./chatArea.controller";
+// import Emoji from "../emoji/emoji";
+
 interface ChatAreaProps {
   clickedUser: userTypes | null;
   selectedChat: chatType | null;
@@ -32,9 +34,10 @@ const renderUserInfo = (clickedUser: userTypes) => (
 const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   const [userMessages, setuserMessages] = useState<any>(null);
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
+  console.log("🚀 ~ ChatArea ~ currentMessage:", currentMessage)
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const userInfo: userType = userInfoStringify && JSON.parse(userInfoStringify);
-  const { fetchUserChats, handleInputChange, handleKeyDown } =
+  const { fetchUserChats, handleInputChange, handleKeyDown, handleSend } =
     useChatAreaController({
       clickedUser,
       selectedChat,
@@ -48,6 +51,10 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       fetchUserChats();
     }
   }, [clickedUser, selectedChat]);
+
+  // const toggleEmojiPicker = () => {
+  //   setEmojiPickerVisible(!emojiPickerVisible);
+  // };
 
   return (
     <>
@@ -104,18 +111,16 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
                   </div>
                   <div
                     key={index}
-                    className={`mb-2 ${
-                      message.sender._id === userInfo.ID
+                    className={`mb-2 ${message.sender._id === userInfo.ID
                         ? "w-full flex justify-end"
                         : "w-full self-start"
-                    }`}
+                      }`}
                   >
                     <p
-                      className={`text-[#040404] ${
-                        message.sender._id === userInfo.ID
+                      className={`text-[#040404] ${message.sender._id === userInfo.ID
                           ? "w-fit text-right bg-[#040404] text-white px-3 py-1 mr-2 rounded-lg"
                           : "w-fit bg-[#7e7e7e] text-white px-3 py-1 rounded-lg"
-                      }`}
+                        }`}
                     >
                       {message.content}{" "}
                       <span className="text-[10px]">
@@ -135,12 +140,14 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
         </div>
       </div>
 
-      <div className="flex items-center border-t border-[#7e7e7e]">
-        <button className="p-[2%] ml-[1%] rounded-lg bg-[#040404] text-white hover:bg-[#7e7e7e] hover:text-[#040404] md:px-4 md:py-2">
+      <div className="flex items-center border-t border-[#7e7e7e] relative">
+        {/* {emojiPickerVisible && (
+          <div className="absolute mb-[50%]"><Emoji setEmojiPickerVisible={setEmojiPickerVisible} setCurrentMessage={setCurrentMessage} emojiPickerVisible={emojiPickerVisible}/></div>
+        )}
+        <button onClick={toggleEmojiPicker} className="p-[2%] ml-[1%] rounded-lg bg-[#040404] text-white hover:bg-[#7e7e7e] hover:text-[#040404] md:px-4 md:py-2">
           😀 Emoji
-        </button>
-
-        <button className="mx-2 p-[2%] rounded-lg bg-[#040404] text-white hover:bg-[#7e7e7e] hover:text-[#040404] md:px-4 md:py-2">
+        </button> */}
+        <button onClick={handleSend} className="mx-2 p-[2%] rounded-lg bg-[#040404] text-white hover:bg-[#7e7e7e] hover:text-[#040404] md:px-4 md:py-2">
           <SendIcon fontSize="small" className="mr-1 flex items-center" />
           Send
         </button>

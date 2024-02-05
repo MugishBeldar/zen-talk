@@ -80,7 +80,7 @@ const ChatList = ({
                       chat.users ? getSelectedUser(loggedUser, chat) : null
                     }
                     key={chat._id}
-                    className={`flex items-center m-2 p-2 hover:bg-[#7e7e7e] hover:text-black hover:rounded-lg ${chat.users[0]._id === clickedUser?._id || chat.users[1]._id === clickedUser?._id ? "bg-[#7e7e7e] rounded-lg" : null}`}
+                    className={`flex items-center m-2 p-2 hover:bg-[#7e7e7e] hover:text-white hover:rounded-lg ${chat.users[0]._id === clickedUser?._id || chat.users[1]._id === clickedUser?._id ? "bg-[#7e7e7e] rounded-lg text-white" : null}`}
                   >
                     {chat.users && (
                       <Avatar

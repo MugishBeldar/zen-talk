@@ -31,6 +31,7 @@ const useChatAreaController = ({clickedUser, selectedChat, setuserMessages, setC
       };
 
       const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        // setEmojiPickerVisible(false)
         setCurrentMessage(e.currentTarget.value);
       };
 
@@ -45,9 +46,22 @@ const useChatAreaController = ({clickedUser, selectedChat, setuserMessages, setC
           setCurrentMessage("");
           fetchUserChats();
         }
+        // setEmojiPickerVisible(false);
       };
 
-    return {fetchUserChats, handleInputChange, handleKeyDown}
+      const handleSend = async () => {
+        if(currentMessage && selectedChat?._id) {
+          await sendMessage({
+            content: currentMessage,
+            chatId: selectedChat?._id,
+          });
+          // setEmojiPickerVisible(false);
+          setCurrentMessage("");
+          fetchUserChats();
+        }
+      }
+
+    return {fetchUserChats, handleInputChange, handleKeyDown, handleSend}
 }
 
 export {useChatAreaController}

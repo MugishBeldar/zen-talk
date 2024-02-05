@@ -18,6 +18,7 @@ const MyChats = () => {
   const loggedUser: userType = userInfoStringify && JSON.parse(userInfoStringify);
 
   React.useEffect(() => {
+    setClickedUser(null);
     fetchChats();
   }, []);
 
