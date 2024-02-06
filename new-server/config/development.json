@@ -1,0 +1,13 @@
+{
+  "JWTConfig": {
+    "secretKey": "jwttoken",
+    "accessTokenLife": 3600,
+    "refreshTokenLife": 86400,
+    "ssoTokenLife": null,
+    "accessSSOTokenLife": 3600,
+    "accessTokenForMobileLife": "24h",
+    "refreshTokenForMobileLife": "15d",
+    "accessTokenForImpersonateLife": "4h",
+    "refreshTokenForImpersonateLife": "1d"
+  }
+}
