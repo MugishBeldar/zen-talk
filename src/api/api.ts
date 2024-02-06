@@ -15,68 +15,73 @@ type UpdateUserDataWithoutProfilePic = {
 type UpdateUserData = UpdateUserDataWithProfilePic | UpdateUserDataWithoutProfilePic;
 
 
-export const signup = (userData:signupType) => {
+export const signup = async (userData:signupType) => {
   // console.log("🚀 ~ signup ~ userData:", userData)
   try { 
-    return AXIOS.post("users/signup", userData);
+    return await AXIOS.post("users/signup", userData);
   } catch (error) {
     throw error;
   }
 };
 
-export const login = (userData:loginType) => {
+export const login = async (userData:loginType) => {
   // console.log("🚀 ~ login ~ userData:", userData)
   try {
-    return AXIOS.post("users/login", userData);
+    return await AXIOS.post("users/login", userData);
   } catch (error) {
     throw error;
   }
 };
 
-export const searchUser = (name:string)=>{
+export const searchUser = async (name:string)=>{
   try {
-    return AXIOS.get(`users?name=${name}`);
+    return await AXIOS.get(`users?name=${name}`);
   } catch (error) {
     throw error;
   }
 }
 
-export const updateUser = (updateUserData: UpdateUserData) => {
+export const updateUser = async (updateUserData: UpdateUserData) => {
     try {
-      return AXIOS.put(`users/editprofile`, updateUserData);
+      return await AXIOS.put(`users/editprofile`, updateUserData);
     } catch (error) {
       throw error;
     }
   }
 
-export const getChats = () => {
+export const getChats = async () => {
   try {
-    return AXIOS.get('chat');
+    return await AXIOS.get('chat');
     
   } catch (error) {
     throw error;
   }
 }
 
-export const getChatForAUser = (body: {userId: string}) => {
+export const getChatForAUser = async (body: {userId: string}) => {
   try {
-    return AXIOS.post('chat', body);
+    return await AXIOS.post('chat', body);
   } catch (error) {
     throw error;
   }
 }
 
-export const getUserMessages = (chatId:string)=> {
+export const getUserMessages = async (chatId:string)=> {
   try {
-    return AXIOS.get(`message/${chatId}`);
+    return await AXIOS.get(`message/${chatId}`);
   } catch (error) {
     throw error;
   }
 }
 
-export const sendMessage = (body: {content: string, chatId:string}) => {
+export const sendMessage = async (body: {content: string, chatId:string}, socket:any) => {
   try {
-    return AXIOS.post('message', body);
+    // console.log(body,"body in send message");
+    const response = await AXIOS.post('message', body);
+    // console.log(response,"api in")
+    console.log('socket', socket.id)
+    socket.emit('send', response.data.data);
+    return response
   } catch (error) {
     throw error;
   }

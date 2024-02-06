@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { KeyboardEvent, useEffect, useState } from "react";
 import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { chatType, userType, userTypes } from "../../types";
@@ -6,8 +7,12 @@ import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
 import noMessage from "../../assets/noMessage.png";
 import chatArea from "../../assets/chatareaImage.png";
-import { useChatAreaController } from "./chatArea.controller";
+import io from "socket.io-client";
+import { getUserMessages, sendMessage } from "../../api/api";
 // import Emoji from "../emoji/emoji";
+
+const ENDPOINT: string = "http://localhost:8080";
+var socket: any;
 
 interface ChatAreaProps {
   clickedUser: userTypes | null;
@@ -34,23 +39,90 @@ const renderUserInfo = (clickedUser: userTypes) => (
 const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   const [userMessages, setuserMessages] = useState<any>(null);
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
-  console.log("🚀 ~ ChatArea ~ currentMessage:", currentMessage)
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const userInfo: userType = userInfoStringify && JSON.parse(userInfoStringify);
-  const { fetchUserChats, handleInputChange, handleKeyDown, handleSend } =
-    useChatAreaController({
-      clickedUser,
-      selectedChat,
-      setuserMessages,
-      setCurrentMessage,
-      currentMessage,
+  // const { fetchUserChats, handleInputChange, handleKeyDown, handleSend } =
+  //   useChatAreaController({
+  //     clickedUser,
+  //     selectedChat,
+  //     setuserMessages,
+  //     setCurrentMessage,
+  //     currentMessage,
+  //   });
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit('setup', userInfo);
+    socket.on('connected', () => {
+      console.log('Connected to socket.io');
     });
+  }, []);
 
   useEffect(() => {
     if (clickedUser) {
       fetchUserChats();
+      socket.emit('joinChat', selectedChat?._id);
     }
   }, [clickedUser, selectedChat]);
+
+  useEffect(() => {
+    socket.on('recived', (response: any) => {
+      console.log(response, "received message");
+      fetchUserChats();
+    });
+  },[]);
+
+  const mapUserMessages = (data: any) => {
+    let day: string = "";
+    const mapedData = data.map((message: any) => {
+      if (day !== message.createdAt.split(" ")[0]) {
+        day = message.createdAt.split(" ")[0];
+        message.day = true;
+        return message;
+      }
+      message.day = false;
+      return message;
+    });
+    setuserMessages(mapedData);
+  };
+
+  const fetchUserChats = async () => {
+    if (selectedChat) {
+      const response = await getUserMessages(selectedChat?._id);
+      mapUserMessages(response?.data?.data);
+    }
+  };
+
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setCurrentMessage(e.currentTarget.value);
+  };
+
+  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") {
+      if (currentMessage && selectedChat?._id) {
+        await sendMessage({
+          content: currentMessage,
+          chatId: selectedChat?._id,
+        }, socket);
+      }
+      setCurrentMessage("");
+      fetchUserChats();
+    }
+  };
+
+
+
+
+  const handleSend = async () => {
+    if (currentMessage && selectedChat?._id) {
+      console.log('send socket', socket.id);
+      await sendMessage({
+        content: currentMessage,
+        chatId: selectedChat?._id,
+      }, socket);
+      setCurrentMessage("");
+      fetchUserChats();
+    }
+  };
 
   // const toggleEmojiPicker = () => {
   //   setEmojiPickerVisible(!emojiPickerVisible);
@@ -112,14 +184,14 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
                   <div
                     key={index}
                     className={`mb-2 ${message.sender._id === userInfo.ID
-                        ? "w-full flex justify-end"
-                        : "w-full self-start"
+                      ? "w-full flex justify-end"
+                      : "w-full self-start"
                       }`}
                   >
                     <p
                       className={`text-[#040404] ${message.sender._id === userInfo.ID
-                          ? "w-fit text-right bg-[#040404] text-white px-3 py-1 mr-2 rounded-lg"
-                          : "w-fit bg-[#7e7e7e] text-white px-3 py-1 rounded-lg"
+                        ? "w-fit text-right bg-[#040404] text-white px-3 py-1 mr-2 rounded-lg"
+                        : "w-fit bg-[#7e7e7e] text-white px-3 py-1 rounded-lg"
                         }`}
                     >
                       {message.content}{" "}
