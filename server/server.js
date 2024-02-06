@@ -25,6 +25,7 @@ try {
     });
 
     socket.on("joinChat", (selectedChatId) => {
+      console.log("🚀 ~ socket.on ~ selectedChatId:", selectedChatId)
       socket.join(selectedChatId);
     });
 
@@ -35,8 +36,9 @@ try {
         if (user._id === response.sender._id) {
           console.log(true, "sender user");
         }
-        socket.in(userChat._id,).emit("recived", response);
       });
+      console.log("🚀 ~ userChat.users.forEach ~ userChat._id:", userChat._id)
+      socket.in(userChat._id).emit("recived", response);
     });
   });
 } catch (error) {

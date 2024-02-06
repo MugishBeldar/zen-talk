@@ -55,14 +55,14 @@ const ChatList = ({
     <div className="w-full bg-[#e4e4e4] mt-5 rounded-lg ">
       <div className="flex h-15 bg-[#e4e4e4] px-1 py-4 border-2 mb-1 shadow-lg  rounded-lg">
         <p className="text-2xl ml-3 w-[65%] text-[#040404]">My Chats</p>
-        <Button
+        {/* <Button
           sx={{ backgroundColor: "#040404", fontWeight: "bold", ":hover": { backgroundColor: "#7e7e7e" } }}
           variant="contained"
           size="small"
           className="ml-auto"
         >
           Create group <AddIcon className="ml-[2px]" />
-        </Button>
+        </Button> */}
       </div>
 
       <div className="bg-[#e4e4e4] h-[79vh] rounded-lg">

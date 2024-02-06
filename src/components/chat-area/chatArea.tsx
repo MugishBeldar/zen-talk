@@ -67,9 +67,10 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   useEffect(() => {
     socket.on('recived', (response: any) => {
       console.log(response, "received message");
+      // setuserMessages([...userMessages, response])
       fetchUserChats();
     });
-  },[]);
+  });
 
   const mapUserMessages = (data: any) => {
     let day: string = "";
