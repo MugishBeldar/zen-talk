@@ -18,7 +18,6 @@ class Chat {
       })
         .populate("users", "-password")
         .populate("latestMessage");
-      console.log(isChat, "L:L:Lddddddddddd");
 
       // isChat = await req.App.activeDB.User(isChat, {
       //   path: "latestMessage.sender",

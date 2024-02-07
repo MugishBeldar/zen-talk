@@ -2,6 +2,7 @@ require("dotenv").config();
 require("./config/dbConnet");
 const express = require("express");
 const userRouter = require("./routes/Users/userRoutes");
+const chatRouter = require("./routes/Chats/chatRoutes");
 const { protect } = require("./middleware/jwtAuth");
 
 const app = express();
@@ -9,18 +10,20 @@ const app = express();
 // Middlewares
 app.use(express.json()); // Pass incoming payload
 app.use(protect);
+
 //---------
 // Routes
 //---------
 
-// User routes
-
+// User route
 app.use("/api/v1/users/", userRouter);
 
-// Chat routes
-// Message route
+// Chat route
+app.use('/api/v1/chats/', chatRouter)
 
-//Error handler middleware
+// Message route
+// app.use('/api/v1/messages/', )
+
 //Lister to server
 
 const PORT = process.env.PORT || 5000;
