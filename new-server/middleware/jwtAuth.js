@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../model/User/User");
-const config = require('../config/development.json');
+const config = require("../config/development.json");
 
 /**
  * Middleware for protecting routes requiring user authentication.
@@ -10,16 +10,15 @@ const config = require('../config/development.json');
  */
 async function protect(req, res, next) {
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer ") &&
-    req.path !== "/login" &&
-    req.path !== "/signup"
+    req.path !== "/api/v1/users/login" &&
+    req.path !== "/api/v1/users/register"
   ) {
-    const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(
-      token,
-      config.JWTConfig.secretKey,
-      async (err, decoded) => {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+    ) {
+      const token = req.headers.authorization.split(" ")[1];
+      jwt.verify(token, config.JWTConfig.secretKey, async (err, decoded) => {
         if (err) {
           return res.status(401).json({
             success: false,
@@ -29,8 +28,14 @@ async function protect(req, res, next) {
         }
         req.user = await User.findById(decoded.data).select("-passwords");
         next();
-      }
-    );
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "please provide auth token",
+        type: "authrization failed",
+      });
+    }
   } else {
     next();
   }

@@ -2,12 +2,13 @@ require("dotenv").config();
 require("./config/dbConnet");
 const express = require("express");
 const userRouter = require("./routes/Users/userRoutes");
+const { protect } = require("./middleware/jwtAuth");
 
 const app = express();
 
 // Middlewares
 app.use(express.json()); // Pass incoming payload
-
+app.use(protect);
 //---------
 // Routes
 //---------
