@@ -5,7 +5,6 @@ const moment = require("moment-timezone");
 const MessageSchema = mongoose.Schema({
   sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   content: { type: String, trim: true },
-  readby: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
   createdAt: {
     type: String,
