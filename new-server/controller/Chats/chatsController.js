@@ -30,7 +30,6 @@ const accessChat = async (req, res) => {
     } else {
       const chatData = {
         chatName: "sender",
-        isGroupChat: false,
         users: [req.user._id, userId],
       };
       const createdChat = await Chat.create(chatData);
@@ -59,7 +58,6 @@ const fetchAllChats = async (req, res) => {
     })
       .populate("users", "-password")
       .populate("latestMessage")
-      .populate("groupAdmin", "-password")
       .sort({ updatedAt: -1 });
     chats = await User.populate(chats, {
       path: "latestMessage.sender",
