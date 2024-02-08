@@ -3,10 +3,11 @@ require("./config/dbConnet");
 const { protect } = require("./middleware/jwtAuth");
 const express = require("express");
 const cors = require("cors");
+const io = require("socket.io");
 const userRouter = require("./routes/Users/userRoutes");
 const chatRouter = require("./routes/Chats/chatRoutes");
 const messageRouter = require("./routes/Messages/messageRoutes");
-const io = require("socket.io");
+const refreshTokenRouter = require("./routes/Refreshtoken/refreshTokenRoutes");
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.use(protect);
 //---------
 // Routes
 //---------
+
+// Refreshtoken route 
+app.use("/api/v1/token/", refreshTokenRouter);
 
 // User route
 app.use("/api/v1/users/", userRouter);

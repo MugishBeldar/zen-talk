@@ -49,7 +49,7 @@ AXIOS.interceptors.response.use(
     console.log("🚀 ~ error:", error);
     if (
       error.response &&
-      error.response.data.detail === "Could not validate credentials"
+      error.response.status === "401"
     ) {
       Cookies.remove("TOKEN");
       // await handleRefreshTokenAPI();

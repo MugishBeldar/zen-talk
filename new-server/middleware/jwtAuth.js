@@ -11,7 +11,8 @@ const config = require("../config/development.json");
 async function protect(req, res, next) {
   if (
     req.path !== "/api/v1/users/login" &&
-    req.path !== "/api/v1/users/register"
+    req.path !== "/api/v1/users/register" && 
+    req.path !== '/api/v1/token/refreshtoken'
   ) {
     if (
       req.headers.authorization &&
