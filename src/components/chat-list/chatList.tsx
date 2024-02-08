@@ -22,13 +22,28 @@ const ChatList = ({
   setSelectedChatFunction,
   clickedUser
 }: ChatListProps) => {
-  const chats = useSelector((state: any) => state.chatState.chats);
+  const allChats = useSelector((state: any) => state.chatState.chats);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType = userInfoStringify && JSON.parse(userInfoStringify);
 
-  const getSender = (loggedUser: userType, users: userTypes[]) => {
-    const senderName = users[0]?._id === loggedUser?.ID ? users[1]?.name : users[0]?.name;
-    return senderName?.charAt(0).toUpperCase() + senderName?.slice(1);
+  const getSender = (loggedUser: userType, chat: any) => {
+    if (chat?.users) {
+      const senderName = chat?.users[0]?._id === loggedUser?.ID ? chat?.users[1]?.name : chat?.users[0]?.name;
+      return (
+        <div className="w-[100%] flex">
+          <div className="flex-1">
+            <p className="text-lg">{senderName?.charAt(0).toUpperCase() + senderName?.slice(1)}</p>
+            <p className="text-[gray] text-[0.8rem] ml-1">{chat?.latestMessage?.content}</p>
+          </div>
+          <div className="flex items-center">
+            {
+              chat?.latestMessage && (
+                <p className="text-sm">{chat?.latestMessage?.createdAt.split(' ')[2].split(':')[0]}:{chat?.latestMessage?.createdAt.split(' ')[2].split(':')[1]} {chat?.latestMessage?.createdAt.split(' ')[3]}</p>
+              )
+            }
+          </div>
+        </div>)
+    }
   };
 
   const getProfilePicture = (loggedUser: userType, users: userTypes[]) => {
@@ -40,7 +55,7 @@ const ChatList = ({
       : `https://ui-avatars.com/api/?background=random&color=fff&name=${selectedUser[0]?.name}`;
   };
 
-  const getSelectedUser = (loggedUser: userType, chat: chatType) => {
+  const getSelectedUser = async (loggedUser: userType, chat: chatType) => {
     if (chat.users) {
       const selectedUser: userTypes[] = chat.users.filter(
         (user) => user._id !== loggedUser.ID
@@ -57,12 +72,12 @@ const ChatList = ({
       </div>
 
       <div className="bg-[whitesmoke] h-[79vh] rounded-lg">
-        {!chats.length && (<div className="h-[100%] flex items-center justify-center">
+        {!allChats.length && (<div className="h-[100%] flex items-center justify-center">
           <img src={noChatFoundImage} alt="no chat found" className="object-fill md:h-[60%] md:w-[70%] " />
         </div>)}
         <ScrollableFeed className="custom-scrollbar">
-          {chats &&
-            chats.map(
+          {allChats &&
+            allChats.map(
               (chat: chatType) =>
                 chat &&
                 chat.users && (
@@ -80,9 +95,9 @@ const ChatList = ({
                         sx={{ marginRight: "20px" }}
                       />
                     )}
-                    {!chat.isGroupChat && chat.users
-                      ? getSender(loggedUser, chat.users)
-                      : chat.chatName}
+                    {chat.users
+                      ? getSender(loggedUser, chat)
+                      : null}
                   </li>
                 )
             )}

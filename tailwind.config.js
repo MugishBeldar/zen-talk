@@ -5,11 +5,8 @@ module.exports = {
     extend: {},
     colors: {
       mainBackgroundColor: "#075E54",
-      // textColor: "#FFFFFF",
-      // smallText: 'D3D3D3',
       buttonColor: "#075e54",
-      hoverButtonColor: "#05bda8",
-      chatBackgroundColor: "white"
+      hoverButtonColor: "#158e80",
     },
   },
   plugins: [],

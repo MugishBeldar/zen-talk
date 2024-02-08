@@ -3,6 +3,7 @@ import axios from "axios";
 // import { USER_ACCESS_KEY } from "../utils";
 // import handleRefreshTokenAPI from "./authentication/refresh-token/";
 import Cookies from "js-cookie";
+import { handleRefreshTokenAPI } from "./api";
 const AXIOS = axios.create({
   baseURL: API_ENDPOINT,
 });
@@ -46,13 +47,21 @@ AXIOS.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("🚀 ~ error:", error);
+    const tokens = Cookies.get("TOKEN");
+    let ACCESSTOKEN;
+    let REFRESH_TOKEN;
+
+    if (tokens) {
+      ({ ACCESSTOKEN, REFRESH_TOKEN } = JSON.parse(tokens));
+    }
+
     if (
       error.response &&
       error.response.status === "401"
     ) {
       Cookies.remove("TOKEN");
-      // await handleRefreshTokenAPI();
+
+      await handleRefreshTokenAPI(REFRESH_TOKEN);
       window.location.reload();
     } else if (error.response.status === 500 || error.response.status === 503) {
       alert("Server under maintenance");

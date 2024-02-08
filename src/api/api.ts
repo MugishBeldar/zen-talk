@@ -1,5 +1,6 @@
 import AXIOS from "./http";
 import { loginType, signupType } from "../types";
+import Cookies from "js-cookie";
 
 // API ENDPOINTS
 type UpdateUserDataWithProfilePic = {
@@ -16,6 +17,24 @@ type UpdateUserDataWithoutProfilePic = {
 type UpdateUserData =
   | UpdateUserDataWithProfilePic
   | UpdateUserDataWithoutProfilePic;
+
+export const handleRefreshTokenAPI = async (REFRESH_TOKEN: string) => {
+  try {
+    const response = await AXIOS.post("token/refreshtoken", REFRESH_TOKEN);
+    if (response.data.data) {
+      Cookies.set(
+        "TOKEN",
+        JSON.stringify({
+          ACCESSTOKEN: response?.data?.data?.accessToken,
+          REFRESH_TOKEN: response?.data?.data?.refreshToken,
+          EXPIRES_IN: response?.data?.data?.expiresIn,
+        })
+      );
+    }
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const signup = async (userData: signupType) => {
   try {
