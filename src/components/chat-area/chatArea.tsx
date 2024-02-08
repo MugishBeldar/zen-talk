@@ -11,7 +11,7 @@ import io from "socket.io-client";
 import { getUserMessages, sendMessage } from "../../api/api";
 // import Emoji from "../emoji/emoji";
 
-const ENDPOINT: string = "http://localhost:8080";
+const ENDPOINT: string = "http://localhost:5000";
 var socket: any;
 
 interface ChatAreaProps {

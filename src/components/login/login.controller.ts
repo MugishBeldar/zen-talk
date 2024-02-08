@@ -65,6 +65,7 @@ const LoginController = ({
     } catch (error) {
       dispatch(clicked(false));
       const err = error as AxiosError;
+      console.log("🚀 ~ handleSubmit ~ err:", err);
       if (err.isAxiosError && err.response) {
         const { status } = err.response;
 
