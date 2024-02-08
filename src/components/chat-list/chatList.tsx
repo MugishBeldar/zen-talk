@@ -1,8 +1,7 @@
 import React from "react";
-import AddIcon from "@mui/icons-material/Add";
 import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
-import { Avatar, Button } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { useSelector } from "react-redux";
 import { chatType, userType, userTypes } from "../../types";
 import noChatFoundImage from '../../assets/noChatFound.png';
@@ -38,7 +37,7 @@ const ChatList = ({
     );
     return selectedUser[0]?.profilePic
       ? selectedUser[0].profilePic
-      : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${selectedUser[0]?.name}`;
+      : `https://ui-avatars.com/api/?background=random&color=fff&name=${selectedUser[0]?.name}`;
   };
 
   const getSelectedUser = (loggedUser: userType, chat: chatType) => {
@@ -52,20 +51,12 @@ const ChatList = ({
   };
 
   return (
-    <div className="w-full bg-[#e4e4e4] mt-5 rounded-lg ">
-      <div className="flex h-15 bg-[#e4e4e4] px-1 py-4 border-2 mb-1 shadow-lg  rounded-lg">
-        <p className="text-2xl ml-3 w-[65%] text-[#040404]">My Chats</p>
-        {/* <Button
-          sx={{ backgroundColor: "#040404", fontWeight: "bold", ":hover": { backgroundColor: "#7e7e7e" } }}
-          variant="contained"
-          size="small"
-          className="ml-auto"
-        >
-          Create group <AddIcon className="ml-[2px]" />
-        </Button> */}
+    <div className="w-full bg-[whitesmoke] mt-5 rounded-lg ">
+      <div className="flex h-15 bg-[whitesmoke] px-1 py-4 border-b-2 mb-3 border-mainBackgroundColor rounded">
+        <p className="text-2xl ml-3 w-[65%]">My Chats</p>
       </div>
 
-      <div className="bg-[#e4e4e4] h-[79vh] rounded-lg">
+      <div className="bg-[whitesmoke] h-[79vh] rounded-lg">
         {!chats.length && (<div className="h-[100%] flex items-center justify-center">
           <img src={noChatFoundImage} alt="no chat found" className="object-fill md:h-[60%] md:w-[70%] " />
         </div>)}
@@ -80,7 +71,7 @@ const ChatList = ({
                       chat.users ? getSelectedUser(loggedUser, chat) : null
                     }
                     key={chat._id}
-                    className={`flex items-center m-2 p-2 hover:bg-[#7e7e7e] hover:text-white hover:rounded-lg ${chat.users[0]._id === clickedUser?._id || chat.users[1]._id === clickedUser?._id ? "bg-[#7e7e7e] rounded-lg text-white" : null}`}
+                    className={`flex items-center p-2 hover:cursor-pointer ${chat.users[0]._id === clickedUser?._id || chat.users[1]._id === clickedUser?._id ? "border-l-4 border-[#075E54]" : null}`}
                   >
                     {chat.users && (
                       <Avatar

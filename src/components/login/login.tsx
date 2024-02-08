@@ -16,17 +16,17 @@ import Tabs from "../tabs/tabs";
 
 const CustomeTextField = styled(TextField)({
   "& label.Mui-focused": {
-    color: "#040404",
+    color: "#075E54",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#040404",
+      borderColor: "#075E54",
     },
-    "&:hover fieldset": {
-      borderColor: "#040404",
-    },
+    // "&:hover fieldset": {
+    //   borderColor: "#25D366",
+    // },
     "&.Mui-focused fieldset": {
-      borderColor: "#040404",
+      borderColor: "#075E54",
     },
   },
 });
@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen mt-5">
-      <Paper elevation={3} className="p-6" sx={{ borderRadius: "15px", backgroundColor: "#e4e4e4" }}>
+      <Paper elevation={3} className="p-6" sx={{ borderRadius: "15px", backgroundColor: "whitesmoke" }}>
         <Tabs />
         <form onSubmit={handleSubmit}>
           <CustomeTextField
@@ -90,9 +90,9 @@ const Login = () => {
 
           <LoadingButton
             sx={{
-              backgroundColor: "#040404",
+              backgroundColor: "#075e54",
               ":hover": {
-                backgroundColor: "#7e7e7e",
+                backgroundColor: "#05bda8",
               },
             }}
             type="submit"

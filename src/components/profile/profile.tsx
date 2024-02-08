@@ -29,7 +29,7 @@ const Profile = () => {
               src={
                 userInfo.PROFILEPIC
                   ? userInfo.PROFILEPIC
-                  : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${userInfo.NAME}`
+                  : `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${userInfo.NAME}`
               }
             />
           )}
@@ -41,7 +41,7 @@ const Profile = () => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box className="absolute w-[90%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border-2 rounded-lg p-4 h-80  md:w-[65%] lg:w-[30%]">
+        <Box className="absolute w-[90%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[whitesmoke] rounded-lg p-4 h-80  md:w-[65%] lg:w-[30%]">
           {userInfo && (
             <div>
               <div>
@@ -53,7 +53,7 @@ const Profile = () => {
                       src={
                         userInfo.PROFILEPIC
                           ? userInfo.PROFILEPIC
-                          : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${userInfo.NAME}`
+                          : `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${userInfo.NAME}`
                       }
                       sx={{
                         width: 60,
@@ -66,16 +66,14 @@ const Profile = () => {
                       {userInfo.NAME.charAt(0).toUpperCase() +
                         userInfo.NAME.slice(1)}
                     </p>
-                    <p className="text-sm">{userInfo.EMAIL}</p>
+                    <p className="text-sm text-[gray] ">{userInfo.EMAIL}</p>
                   </div>
                   <div className="ml-10 sm:ml-auto md:ml-auto lg:ml-auto">
                     <Edit email={userInfo.EMAIL} name={userInfo.NAME} />
                     <Logout />
                   </div>
                 </div>
-                <div></div>
               </div>
-              <div></div>
             </div>
           )}
 
@@ -87,8 +85,8 @@ const Profile = () => {
             <label className="block">
               <span
                 className={`after:content-['*'] after:ml-0.5 ${editState
-                    ? "after:text-[#040404] text-[#040404]"
-                    : "after:text-[#7e7e7e] text-[#7e7e7e]"
+                  ? "after:text-[#040404] text-[#040404]"
+                  : "after:text-[#7e7e7e] text-[#7e7e7e]"
                   } block text-sm font-medium `}
               >
                 Name
@@ -99,7 +97,7 @@ const Profile = () => {
                 type="text"
                 name="name"
                 // className="mb-3 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-                className={`mb-3 mt-1 px-3 py-2 bg-white border shadow-sm ${editState ? "border-[#777676] " : "border-[#cccaca]"
+                className={`mb-3 mt-1 px-3 py-2 bg-[whitesmoke] border shadow-sm ${editState ? "border-[#777676] " : "border-[#cccaca]"
                   } border-[#040404] placeholder-slate-400 focus:outline-none focus:border-[#040404]  block w-full rounded-md sm:text-sm `}
                 placeholder="John Doe"
               />
@@ -108,8 +106,8 @@ const Profile = () => {
             <label htmlFor="" className="block">
               <span
                 className={` mb-1 after:ml-0.5 ${editState
-                    ? "after:text-[#040404] text-[#040404]"
-                    : "after:text-[#7e7e7e] text-[#7e7e7e]"
+                  ? "after:text-[#040404] text-[#040404]"
+                  : "after:text-[#7e7e7e] text-[#7e7e7e]"
                   } block text-sm font-medium `}
               >
                 Profile Picture
@@ -119,8 +117,8 @@ const Profile = () => {
                 disabled={!editState}
                 type="file"
                 className={`block border shadow-sm border-slate-300 focus:outline-none ${editState
-                    ? "border-[#777676] file:text-[#777676]"
-                    : "border-[#cccaca] file:text-[#cccaca]"
+                  ? "border-[#777676] file:text-[#777676]"
+                  : "border-[#cccaca] file:text-[#cccaca]"
                   } rounded w-full text-sm mb-7 text-slate-400 file:mr-4 file:ml-3 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-200  hover:file:bg-blue-100 bottom-2 py-1`}
               />
             </label>
@@ -129,8 +127,8 @@ const Profile = () => {
               <button
                 disabled={!editState}
                 type="submit"
-                className={`px-4 py-1 ${editState ? "bg-[#040404]" : "bg-slate-200"
-                  } text-white rounded-md ${editState ? "hover:bg-[#7e7e7e]" : " cursor-not-allowed"
+                className={`px-4 py-1 ${editState ? "bg-buttonColor" : "bg-slate-200"
+                  } text-[#fff] rounded-md ${editState ? "hover:bg-hoverButtonColor" : " cursor-not-allowed"
                   }`}
               >
                 Submit

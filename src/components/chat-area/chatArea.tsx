@@ -26,7 +26,7 @@ const renderUserInfo = (clickedUser: userTypes) => (
       src={
         clickedUser.profilePic
           ? clickedUser.profilePic
-          : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${clickedUser.name}`
+          : `https://ui-avatars.com/api/?background=random&color=fff&name=${clickedUser.name}`
       }
       sx={{ marginRight: "20px", width: "50px", height: "50px" }}
     />
@@ -132,16 +132,16 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   return (
     <>
       {clickedUser && (
-        <div className="flex bg-[#e4e4e4] p-1 mt-2 border-b-2  shadow-lg rounded-lg">
-          <div className="text-2xl ml-3 w-[65%] text-[#040404]">
+        <div className="flex bg-[whitesmoke] p-1 mt-2 border-b-2 border-mainBackgroundColor rounded">
+          <div className="text-2xl ml-3 w-[65%]">
             {renderUserInfo(clickedUser)}
           </div>
         </div>
       )}
 
       {!clickedUser && (
-        <div className=" bg-[#e4e4e4] p-1 my-4 border-b-2 rounded-lg">
-          <div className=" text-[#040404]">
+        <div className=" bg-[whitesmoke] p-1 my-4 border-b-2 rounded-lg">
+          <div>
             <p className="uppercase text-center text-2xl">
               Chose a conversation on the left to start chatting
             </p>
@@ -150,7 +150,7 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       )}
 
       <div className="h-[84%] flex flex-col">
-        <div className="flex-grow h-full p-4 mb-2 border-[#040404]">
+        <div className="flex-grow h-full p-4 mb-2 ">
           <ScrollableFeed className="custom-scrollbar h-full">
             {clickedUser && !userMessages?.length && (
               <div className="h-full flex items-center justify-center">
@@ -176,7 +176,7 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
                   <div key={`day-${index}`}>
                     {message.day ? (
                       <div className="w-full flex justify-center ">
-                        <p className="w-fit text-c700pxtext-black/50 my-2 py-1 px-4 rounded-lg bg-[#7e7e7e] text-white shadow-lg">
+                        <p className="w-fit text-c700pxtext-black/50 my-2 py-1 px-4 rounded-lg bg-mainBackgroundColor text-[whitesmoke] shadow-lg">
                           {message.createdAt.split(" ")[0].toUpperCase()}
                         </p>
                       </div>
@@ -190,9 +190,9 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
                       }`}
                   >
                     <p
-                      className={`text-[#040404] ${message.sender._id === userInfo.ID
-                        ? "w-fit text-right bg-[#040404] text-white px-3 py-1 mr-2 rounded-lg"
-                        : "w-fit bg-[#7e7e7e] text-white px-3 py-1 rounded-lg"
+                      className={`text-[whitesmoke] bg-mainBackgroundColor ${message.sender._id === userInfo.ID
+                        ? "w-fit text-right  px-3 py-1 mr-2 rounded-lg"
+                        : "w-fit px-3 py-1 rounded-lg"
                         }`}
                     >
                       {message.content}{" "}
@@ -213,14 +213,14 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
         </div>
       </div>
 
-      <div className="flex items-center border-t border-[#7e7e7e] relative">
+      <div className="flex items-center border-t border-mainBackgroundColor relative">
         {/* {emojiPickerVisible && (
           <div className="absolute mb-[50%]"><Emoji setEmojiPickerVisible={setEmojiPickerVisible} setCurrentMessage={setCurrentMessage} emojiPickerVisible={emojiPickerVisible}/></div>
         )}
         <button onClick={toggleEmojiPicker} className="p-[2%] ml-[1%] rounded-lg bg-[#040404] text-white hover:bg-[#7e7e7e] hover:text-[#040404] md:px-4 md:py-2">
           😀 Emoji
         </button> */}
-        <button onClick={handleSend} className="mx-2 p-[2%] rounded-lg bg-[#040404] text-white hover:bg-[#7e7e7e] hover:text-[#040404] md:px-4 md:py-2">
+        <button onClick={handleSend} className="mx-2 p-[2%] rounded-lg bg-mainBackgroundColor text-[whitesmoke] hover:bg-hoverButtonColor md:px-4 md:py-2">
           <SendIcon fontSize="small" className="mr-1 flex items-center" />
           Send
         </button>
@@ -229,7 +229,7 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
           onKeyDown={handleKeyDown}
           onChange={handleInputChange}
           type="text"
-          className="min-w-10 flex-1 inline m-2 p-[2%]  bg-[#e4e4e4] border shadow-sm border-[#040404] placeholder-slate-400 focus:outline-none focus:border-[#040404] focus:ring-[#040404] rounded-md sm:text-sm focus:ring-1 md:p-2"
+          className="min-w-10 flex-1 inline m-2 p-[2%]  bg-[whitesmoke] border shadow-sm border-mainBackgroundColor placeholder-slate-400 focus:outline-none focus:border-mainBackgroundColor focus:ring-mainBackgroundColor rounded-md sm:text-sm focus:ring-1 md:p-2"
           placeholder="Type your message..."
         />
       </div>

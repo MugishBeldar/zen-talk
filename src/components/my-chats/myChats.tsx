@@ -47,7 +47,7 @@ const MyChats = () => {
       </div>
 
       {/* ChatArea - Full Width on Small Screens, Flex for Medium and larger screens */}
-      <div className="flex-1 mx-2 mt-5 flex flex-col bg-[#e4e4e4]  rounded-lg">
+      <div className="flex-1 mx-2 mt-5 flex flex-col bg-[whitesmoke] rounded-lg">
         <ChatArea clickedUser={clickedUser} selectedChat={selectedChat} />
       </div>
     </div>

@@ -9,19 +9,11 @@ const Tabs = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  const getTabColor = () => {
-    if (pathname === '/signup') {
-      return 'bg-[#040404] text-white';
-    } else {
-      return 'bg-[#040404] text-white';
-    }
-  };
-
   const handleTabClick = (tab: string) => {
     if (tab === "login") {
       dispatch(logIn());
       navigate('/');
-    } else if (tab === "signup" && pathname !== '/signup') {
+    } else {
       dispatch(signUp());
       navigate('signup');
     }
@@ -32,13 +24,13 @@ const Tabs = () => {
       <div className="flex justify-center">
         <a
           onClick={() => handleTabClick("login")}
-          className={`py-3 px-4 rounded mr-10 cursor-pointer shadow-lg text-base ${pathname==='/'?getTabColor():null} hover:bg-[#7e7e7e] hover:text-white`}
+          className={`py-3 px-4 rounded mr-10 cursor-pointer shadow-lg text-base  ${pathname === '/' ? 'bg-[#075e54] text-[#fff]' : null} hover:bg-hoverButtonColor hover:text-white`}
         >
           LOGIN
         </a>
         <a
           onClick={() => handleTabClick("signup")}
-          className={`py-3 px-4 rounded cursor-pointer shadow-lg text-base ${pathname==='/signup'?getTabColor():null} hover:bg-[#7e7e7e] hover:text-white`}
+          className={`py-3 px-4 rounded cursor-pointer shadow-lg text-base ${pathname === '/signup' ? 'bg-[#075e54] text-[#fff]' : null} hover:bg-hoverButtonColor hover:text-white`}
         >
           REGISTER
         </a>

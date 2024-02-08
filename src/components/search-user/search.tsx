@@ -9,17 +9,17 @@ import { styled } from "@mui/material/styles";
 
 const CustomeTextField = styled(TextField)({
   "& label.Mui-focused": {
-    color: "#040404",
+    color: "#075E54",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#040404",
+      borderColor: "#075E54",
     },
-    "&:hover fieldset": {
-      borderColor: "#040404",
-    },
+    // "&:hover fieldset": {
+    //   borderColor: "#25D366",
+    // },
     "&.Mui-focused fieldset": {
-      borderColor: "#040404",
+      borderColor: "#075E54",
     },
   },
 });
@@ -49,12 +49,12 @@ const SearchUser = () => {
               type: "search",
             }}
             sx={{
-              backgroundColor:"#e4e4e4"
+              backgroundColor: "whitesmoke"
             }}
           />
         )}
-        renderOption={(props, user: userTypes) => 
-          (
+        renderOption={(props, user: userTypes) =>
+        (
           <li {...props} className="ml-3 mb-2">
             <div style={{ display: "flex", alignItems: "center" }}>
               <img

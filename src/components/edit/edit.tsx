@@ -4,16 +4,16 @@ import useEditController from "./edit.controller";
 import { Tooltip } from "@mui/material";
 
 interface editType {
-    email: string;
-    name: string;
+  email: string;
+  name: string;
 }
 
-const Edit = ({email, name}:editType) => {
-  const {handleEdit} = useEditController();
+const Edit = ({ email, name }: editType) => {
+  const { handleEdit } = useEditController();
   return (
     <>
       <Tooltip onClick={handleEdit} title="Edit" arrow placement="top-end">
-        <ModeEditOutlinedIcon className="cursor-pointer mr-6" sx={{color:"#040404"}} />
+        <ModeEditOutlinedIcon className="cursor-pointer mr-6 " sx={{ color: "#075E54" }} />
       </Tooltip>
     </>
   );
