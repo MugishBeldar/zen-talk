@@ -4,6 +4,7 @@ const express = require("express");
 const userRouter = require("./routes/Users/userRoutes");
 const chatRouter = require("./routes/Chats/chatRoutes");
 const { protect } = require("./middleware/jwtAuth");
+const messageRouter = require("./routes/Messages/messageRoutes");
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.use("/api/v1/users/", userRouter);
 app.use('/api/v1/chats/', chatRouter)
 
 // Message route
-// app.use('/api/v1/messages/', )
+app.use('/api/v1/messages/', messageRouter)
 
 //Lister to server
 
