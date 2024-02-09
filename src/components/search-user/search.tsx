@@ -31,6 +31,9 @@ const SearchUser = () => {
   return (
     <div className=" w-40 sm:w-80 bg-[#e4e4e4]">
       <Autocomplete
+        sx={{
+          backgroundColor: "whitesmoke"
+        }}
         freeSolo
         size="small"
         onInputChange={handleInputSearch}
@@ -61,7 +64,7 @@ const SearchUser = () => {
                 src={
                   user.profilePic
                     ? user.profilePic
-                    : `https://ui-avatars.com/api/?background=000000&color=ffffff&name=${user.name}`
+                    : `https://ui-avatars.com/api/?background=random&color=fff&name=${user.name}`
                 }
                 alt={`Image for ${user.name}`}
                 style={{
@@ -69,6 +72,7 @@ const SearchUser = () => {
                   marginRight: "8px",
                   width: "50px",
                   height: "50px",
+                  backgroundColor: "whitesmoke"
                 }}
               />
               {user.name.charAt(0).toUpperCase() + user.name.slice(1)}

@@ -8,7 +8,10 @@ import ScrollableFeed from "react-scrollable-feed";
 import noMessage from "../../assets/noMessage.png";
 import chatArea from "../../assets/chatareaImage.png";
 import io from "socket.io-client";
-import { getUserMessages, sendMessage } from "../../api/api";
+import { getChats, getUserMessages, sendMessage } from "../../api/api";
+import { chats } from "../../store/chats/chat.action";
+import { useDispatch } from "react-redux";
+
 // import Emoji from "../emoji/emoji";
 
 const ENDPOINT: string = "http://localhost:5000";
@@ -37,6 +40,9 @@ const renderUserInfo = (clickedUser: userTypes) => (
 );
 
 const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
+  const dispatch = useDispatch();
+  const [fetch, setfetch] = useState(false)
+  console.log("🚀 ~ ChatArea ~ fetch:", fetch)
   const [userMessages, setuserMessages] = useState<userMessagesType[] | null>(null);
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
@@ -49,6 +55,8 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   //     setCurrentMessage,
   //     currentMessage,
   //   });
+
+
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit('setup', userInfo);
@@ -69,8 +77,20 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       console.log(response, "received message");
       // setuserMessages([...userMessages, response])
       fetchUserChats();
+      fetchChatsWithLetestMessage();
     });
   });
+
+  useEffect(() => {
+    fetchChatsWithLetestMessage();
+  }, [fetch])
+
+  const fetchUserChats = async () => {
+    if (selectedChat) {
+      const response = await getUserMessages(selectedChat?._id);
+      mapUserMessages(response?.data?.data);
+    }
+  };
 
   const mapUserMessages = (data: userMessagesType[]) => {
     let day: string = "";
@@ -86,12 +106,14 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
     setuserMessages(mapedData);
   };
 
-  const fetchUserChats = async () => {
-    if (selectedChat) {
-      const response = await getUserMessages(selectedChat?._id);
-      mapUserMessages(response?.data?.data);
+  const fetchChatsWithLetestMessage = async () => {
+    const response = await getChats();
+    console.log("🚀 ~ fetchChatsWithLetestMessage ~ response:", response)
+    if (response?.data?.data) {
+      dispatch(chats(response?.data?.data));
     }
-  };
+  }
+
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setCurrentMessage(e.currentTarget.value);
@@ -107,11 +129,9 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       }
       setCurrentMessage("");
       fetchUserChats();
+      setfetch(!fetch);
     }
   };
-
-
-
 
   const handleSend = async () => {
     if (currentMessage && selectedChat?._id) {
@@ -122,6 +142,7 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       }, socket);
       setCurrentMessage("");
       fetchUserChats();
+      setfetch(!fetch);
     }
   };
 

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
 import { Avatar } from "@mui/material";
 import { useSelector } from "react-redux";
 import { chatType, userType, userTypes } from "../../types";
 import noChatFoundImage from '../../assets/noChatFound.png';
+// import { getChats } from "../../api/api";
+// import { useDispatch } from "react-redux";
+// import { chats } from "../../store/chats/chat.action";
 
 // ...
 interface ChatListProps {
@@ -22,8 +25,11 @@ const ChatList = ({
   setSelectedChatFunction,
   clickedUser
 }: ChatListProps) => {
+  // const [maintainSelectedChat, setmaintainSelectedChat] = useState<chatType | null>(null);
+  // console.log("🚀 ~ maintainSelectedChat:", maintainSelectedChat);
+  // const dispatch = useDispatch();
   const allChats = useSelector((state: any) => state.chatState.chats);
-  // console.log("🚀 ~ allChats:", allChats)
+  console.log('all chats chatlist.tsx', allChats);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType = userInfoStringify && JSON.parse(userInfoStringify);
 
@@ -47,6 +53,7 @@ const ChatList = ({
     }
   };
 
+
   const getProfilePicture = (loggedUser: userType, users: userTypes[]) => {
     const selectedUser: userTypes[] = users.filter(
       (user) => user._id !== loggedUser.ID
@@ -57,13 +64,29 @@ const ChatList = ({
   };
 
   const getSelectedUser = async (loggedUser: userType, chat: chatType) => {
+    let selectedUser: userTypes[];
+    // const response = await getChats();
+    // console.log("🚀 ~ getSelectedUser ~ response:", response.data.data)
+    // if(response?.data?.data) {
+    //   dispatch(chats(response?.data?.data));
+    // }
     if (chat.users) {
-      const selectedUser: userTypes[] = chat.users.filter(
+      selectedUser = chat.users.filter(
         (user) => user._id !== loggedUser.ID
       );
-      setClickedUserFunction(selectedUser[0]);
+      // setmaintainSelectedChat(chat);
       setSelectedChatFunction(chat);
+      setClickedUserFunction(selectedUser[0]);
     }
+    // if (chat.users && maintainSelectedChat && maintainSelectedChat.users) {
+    //   selectedUser = maintainSelectedChat?.users.filter(
+    //     (user) => user._id !== loggedUser.ID
+    //   );
+    //   setSelectedChatFunction(chat);
+    //   setmaintainSelectedChat(chat);
+    //   setClickedUserFunction(selectedUser[0]);
+    // }
+
   };
 
   return (
