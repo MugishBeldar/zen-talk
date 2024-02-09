@@ -52,6 +52,7 @@ AXIOS.interceptors.response.use(
     let REFRESH_TOKEN;
 
     if (tokens) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ({ ACCESSTOKEN, REFRESH_TOKEN } = JSON.parse(tokens));
     }
 

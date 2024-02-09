@@ -2,7 +2,7 @@
 import React, { KeyboardEvent, useEffect, useState } from "react";
 import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { chatType, userType, userTypes } from "../../types";
+import { chatType, userMessagesType, userType, userTypes } from "../../types";
 import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
 import noMessage from "../../assets/noMessage.png";
@@ -37,7 +37,7 @@ const renderUserInfo = (clickedUser: userTypes) => (
 );
 
 const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
-  const [userMessages, setuserMessages] = useState<any>(null);
+  const [userMessages, setuserMessages] = useState<userMessagesType[] | null>(null);
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const userInfo: userType = userInfoStringify && JSON.parse(userInfoStringify);
@@ -72,9 +72,9 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
     });
   });
 
-  const mapUserMessages = (data: any) => {
+  const mapUserMessages = (data: userMessagesType[]) => {
     let day: string = "";
-    const mapedData = data.map((message: any) => {
+    const mapedData = data.map((message: userMessagesType) => {
       if (day !== message.createdAt.split(" ")[0]) {
         day = message.createdAt.split(" ")[0];
         message.day = true;
@@ -171,7 +171,7 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
               </div>
             )}
             {userMessages &&
-              userMessages.map((message: any, index: number) => (
+              userMessages.map((message: userMessagesType, index: number) => (
                 <React.Fragment key={index}>
                   <div key={`day-${index}`}>
                     {message.day ? (

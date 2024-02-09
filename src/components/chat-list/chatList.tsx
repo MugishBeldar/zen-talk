@@ -23,10 +23,11 @@ const ChatList = ({
   clickedUser
 }: ChatListProps) => {
   const allChats = useSelector((state: any) => state.chatState.chats);
+  // console.log("🚀 ~ allChats:", allChats)
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType = userInfoStringify && JSON.parse(userInfoStringify);
 
-  const getSender = (loggedUser: userType, chat: any) => {
+  const getSender = (loggedUser: userType, chat: chatType) => {
     if (chat?.users) {
       const senderName = chat?.users[0]?._id === loggedUser?.ID ? chat?.users[1]?.name : chat?.users[0]?.name;
       return (
