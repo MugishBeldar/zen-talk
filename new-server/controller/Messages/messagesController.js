@@ -1,6 +1,7 @@
 const Chat = require("../../model/Chat/Chat");
 const Message = require("../../model/messages/Message");
 const User = require('../../model/User/User');
+const moment = require('moment-timezone');
 
 const createMessage = async (req, res) => {
     try {
@@ -17,6 +18,8 @@ const createMessage = async (req, res) => {
         sender: req.user._id,
         content: content,
         chat: chatId,
+        createdAt:  moment.tz("Asia/Calcutta").format("dddd DD-MM-YYYY hh:mm:ss A "),
+        updatedAt:  moment.tz("Asia/Calcutta").format("dddd DD-MM-YYYY hh:mm:ss A "),
       };
       var message = await Message.create(newMessage);
       var messageQuery = await Message.findOne({

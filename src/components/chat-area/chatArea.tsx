@@ -8,10 +8,7 @@ import ScrollableFeed from "react-scrollable-feed";
 import noMessage from "../../assets/noMessage.png";
 import chatArea from "../../assets/chatareaImage.png";
 import io from "socket.io-client";
-import { getChats, getUserMessages, sendMessage } from "../../api/api";
-import { chats } from "../../store/chats/chat.action";
-import { useDispatch } from "react-redux";
-
+import { getUserMessages, sendMessage } from "../../api/api";
 // import Emoji from "../emoji/emoji";
 
 const ENDPOINT: string = "http://localhost:5000";
@@ -20,6 +17,10 @@ var socket: any;
 interface ChatAreaProps {
   clickedUser: userTypes | null;
   selectedChat: chatType | null;
+  setChatMaintain: React.Dispatch<React.SetStateAction<boolean>>;
+  chatMaintain: boolean;
+  userMessages: userMessagesType[] | null;
+  setUserMessages: React.Dispatch<React.SetStateAction<userMessagesType[] | null>>;
 }
 
 const renderUserInfo = (clickedUser: userTypes) => (
@@ -39,11 +40,7 @@ const renderUserInfo = (clickedUser: userTypes) => (
   </div>
 );
 
-const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
-  const dispatch = useDispatch();
-  const [fetch, setfetch] = useState(false)
-  console.log("🚀 ~ ChatArea ~ fetch:", fetch)
-  const [userMessages, setuserMessages] = useState<userMessagesType[] | null>(null);
+const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, setUserMessages, userMessages }: ChatAreaProps) => {
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const userInfo: userType = userInfoStringify && JSON.parse(userInfoStringify);
@@ -55,7 +52,6 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   //     setCurrentMessage,
   //     currentMessage,
   //   });
-
 
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -75,15 +71,9 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
   useEffect(() => {
     socket.on('recived', (response: any) => {
       console.log(response, "received message");
-      // setuserMessages([...userMessages, response])
       fetchUserChats();
-      fetchChatsWithLetestMessage();
     });
   });
-
-  useEffect(() => {
-    fetchChatsWithLetestMessage();
-  }, [fetch])
 
   const fetchUserChats = async () => {
     if (selectedChat) {
@@ -103,16 +93,9 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       message.day = false;
       return message;
     });
-    setuserMessages(mapedData);
+    console.log("🚀 ~ mapedData ~ mapedData:", mapedData);
+    setUserMessages(mapedData);
   };
-
-  const fetchChatsWithLetestMessage = async () => {
-    const response = await getChats();
-    console.log("🚀 ~ fetchChatsWithLetestMessage ~ response:", response)
-    if (response?.data?.data) {
-      dispatch(chats(response?.data?.data));
-    }
-  }
 
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -129,7 +112,7 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       }
       setCurrentMessage("");
       fetchUserChats();
-      setfetch(!fetch);
+      setChatMaintain(!chatMaintain);
     }
   };
 
@@ -142,7 +125,6 @@ const ChatArea = ({ clickedUser, selectedChat }: ChatAreaProps) => {
       }, socket);
       setCurrentMessage("");
       fetchUserChats();
-      setfetch(!fetch);
     }
   };
 

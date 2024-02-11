@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import useMyChatsContrller from "./myChats.controller";
-import { chatType, userType, userTypes } from "../../types";
+import { chatType, userType, userMessagesType, userTypes } from "../../types";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import ChatList from "../chat-list/chatList";
@@ -13,6 +13,12 @@ const MyChats = () => {
   const chats = useSelector((state: any) => state.chatState.chats);
   const [clickedUser, setClickedUser] = React.useState<userTypes | null>(null);
   const [selectedChat, setSelectedChat] = React.useState<chatType | null>(null);
+
+  const [chatMaintain, setChatMaintain] = React.useState<boolean>(false);
+  console.log("🚀 ~ MyChats ~ chatMaintain:", chatMaintain)
+  const [userMessages, setUserMessages] = React.useState<userMessagesType[] | null>(null);
+  console.log("🚀 ~ MyChats ~ userMessages:", userMessages);
+
   const { fetchChats } = useMyChatsContrller({ setChats, setSelectedChat });
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType = userInfoStringify && JSON.parse(userInfoStringify);
@@ -43,12 +49,14 @@ const MyChats = () => {
           setClickedUserFunction={setClickedUser}
           setSelectedChatFunction={setSelectedChat}
           clickedUser={clickedUser}
+          chatMaintain={chatMaintain}
+          selectedChat={selectedChat}
         />
       </div>
 
       {/* ChatArea - Full Width on Small Screens, Flex for Medium and larger screens */}
       <div className="flex-1 mx-2 mt-5 flex flex-col bg-[whitesmoke] rounded-lg">
-        <ChatArea clickedUser={clickedUser} selectedChat={selectedChat} />
+        <ChatArea clickedUser={clickedUser} selectedChat={selectedChat} setChatMaintain={setChatMaintain} chatMaintain={chatMaintain} userMessages={userMessages} setUserMessages={setUserMessages}/>
       </div>
     </div>
   );
