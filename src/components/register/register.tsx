@@ -137,7 +137,7 @@ const Register = () => {
               ),
             }}
           />
-          <CustomeTextField
+          {/* <CustomeTextField
             id="contained-button-file"
             focused
             label="Upload Picture"
@@ -163,7 +163,7 @@ const Register = () => {
                 </InputAdornment>
               ),
             }}
-          />
+          /> */}
           <LoadingButton
             sx={{
               backgroundColor: "#075e54",
