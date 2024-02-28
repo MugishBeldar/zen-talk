@@ -1,13 +1,14 @@
 import React, { FormEvent, useState } from "react";
-import storage from "../../firebaseConfig";
-import { clicked } from "../../store/loadingIndicator/loadingIndicator.action";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { signup } from "../../api/api";
-import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { TOAST_OBJ } from "../../utils/enum";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
+import { signup } from "../../api/api";
+import { TOAST_OBJ } from "../../utils/enum";
+import { clicked } from "../../store/loadingIndicator/loadingIndicator.action";
+
+import storage from "../../firebaseConfig";
 interface signUpControllerPropes {
   formValue: {
     name: string;

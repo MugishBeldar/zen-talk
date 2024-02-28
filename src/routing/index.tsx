@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import { Login, Signup } from "../components";
+
 import Chat from "../pages/chat";
+import { Login, Signup } from "../components";
 
 const MainRouting = () => {
   return (

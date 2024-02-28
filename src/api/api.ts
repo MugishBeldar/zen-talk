@@ -1,6 +1,7 @@
 import AXIOS from "./http";
-import { loginType, signupType } from "../types";
 import Cookies from "js-cookie";
+
+import { loginType, signupType } from "../types";
 
 // API ENDPOINTS
 type UpdateUserDataWithProfilePic = {

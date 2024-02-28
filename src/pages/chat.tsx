@@ -1,7 +1,7 @@
-import SearchUser from "../components/search-user/search";
-import Profile from "../components/profile/profile";
 import AppTitle from "../components/title/title";
+import Profile from "../components/profile/profile";
 import MyChats from "../components/my-chats/myChats";
+import SearchUser from "../components/search-user/search";
 
 const Chat = () => {
   return (

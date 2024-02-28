@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import searchController from "./search.controller";
-import { userTypes } from "../../types";
 import { Autocomplete } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+
+import { userTypes } from "../../types";
+import searchController from "./search.controller";
 
 const CustomeTextField = styled(TextField)({
   "& label.Mui-focused": {

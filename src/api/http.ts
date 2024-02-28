@@ -1,6 +1,7 @@
-import { API_ENDPOINT } from "../utils/enum";
 import axios from "axios";
 import Cookies from "js-cookie";
+
+import { API_ENDPOINT } from "../utils/enum";
 import { handleRefreshTokenAPI } from "./api";
 
 const AXIOS = axios.create({

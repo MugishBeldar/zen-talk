@@ -1,10 +1,11 @@
-import { Avatar, Box, Modal, Tooltip, Zoom } from "@mui/material";
-import { userType } from "../../types";
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import Logout from "../logout/logout";
-import Edit from "../edit/edit";
 import Cookies from "js-cookie";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Avatar, Box, Modal, Tooltip, Zoom } from "@mui/material";
+
+import Edit from "../edit/edit";
+import Logout from "../logout/logout";
+import { userType } from "../../types";
 import useProfileController from "./profile.controller";
 
 const Profile = () => {

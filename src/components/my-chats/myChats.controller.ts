@@ -1,7 +1,8 @@
+import { useDispatch } from "react-redux";
+
+import { chatType } from "../../types";
 import { getChats } from "../../api/api";
 import { chats } from "../../store/chats/chat.action";
-import { chatType } from "../../types";
-import { useDispatch } from "react-redux";
 
 interface useMyChatsContrllerProps {
   setChats: React.Dispatch<React.SetStateAction<chatType[]>>;

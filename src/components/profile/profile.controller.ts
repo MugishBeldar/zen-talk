@@ -1,14 +1,10 @@
-import {
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-  UploadTaskSnapshot,
-} from "firebase/storage";
-import storage from "../../firebaseConfig";
-import { updateUser } from "../../api/api";
-import { userType, userTypes } from "../../types";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
+import { getDownloadURL, ref, uploadBytesResumable, UploadTaskSnapshot, } from "firebase/storage";
+
+import { updateUser } from "../../api/api";
+import storage from "../../firebaseConfig";
+import { userType, userTypes } from "../../types";
 import { edit } from "../../store/edit/edit.action";
 import { clicked } from "../../store/loadingIndicator/loadingIndicator.action";
 

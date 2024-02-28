@@ -1,7 +1,7 @@
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import leftArrow from '../../assets/left-arrow.svg';
 import rightArrow from "../../assets/right-arrow.svg";
-import { useDispatch, useSelector } from "react-redux";
 import { drawerToggle } from "../../store/drawer/drawer.action";
 
 const Drawer = ({ chatList }: any) => {

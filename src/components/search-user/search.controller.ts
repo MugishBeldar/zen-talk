@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { getChatForAUser, searchUser } from "../../api/api";
-import useDebounce from "../../hooks/useDebounce";
-import {userTypes} from '../../types'
 import { useDispatch, useSelector } from "react-redux";
+
+import {userTypes} from '../../types'
+import useDebounce from "../../hooks/useDebounce";
 import { chats } from "../../store/chats/chat.action";
+import { getChatForAUser, searchUser } from "../../api/api";
 
 interface searchUserTypes {
     setUsers: React.Dispatch<React.SetStateAction<userTypes[]>>

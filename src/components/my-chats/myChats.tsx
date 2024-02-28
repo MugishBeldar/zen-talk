@@ -1,26 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import useMyChatsContrller from "./myChats.controller";
-import { chatType, userType, userMessagesType, userTypes } from "../../types";
-import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+
+import Drawer from "../drawer/drawer";
 import ChatList from "../chat-list/chatList";
 import ChatArea from "../chat-area/chatArea";
-import Drawer from "../drawer/drawer";
+import useMyChatsContrller from "./myChats.controller";
+import { chatType, userType, userMessagesType, userTypes } from "../../types";
 
 
 const MyChats = () => {
   const [chatss, setChats] = React.useState<chatType[]>([]);
   const chats = useSelector((state: any) => state.chatState.chats);
   const drawer = useSelector((state: any) => state.drawerState.drawer)
-  console.log("🚀 ~ MyChats ~ drawer:", drawer)
   const [clickedUser, setClickedUser] = React.useState<userTypes | null>(null);
   const [selectedChat, setSelectedChat] = React.useState<chatType | null>(null);
-
   const [chatMaintain, setChatMaintain] = React.useState<boolean>(false);
   const [userMessages, setUserMessages] = React.useState<userMessagesType[] | null>(null);
-
   const { fetchChats, } = useMyChatsContrller({ setChats, setSelectedChat });
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType = userInfoStringify && JSON.parse(userInfoStringify);

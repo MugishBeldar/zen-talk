@@ -1,10 +1,11 @@
 import React from "react";
 import Cookies from "js-cookie";
-import ScrollableFeed from "react-scrollable-feed";
 import { Avatar } from "@mui/material";
+import ScrollableFeed from "react-scrollable-feed";
 import { useDispatch, useSelector } from "react-redux";
-import { chatType, userType, userTypes } from "../../types";
+
 import noChatFoundImage from '../../assets/noChatFound.png';
+import { chatType, userType, userTypes } from "../../types";
 import { drawerToggle } from "../../store/drawer/drawer.action";
 
 interface ChatListProps {

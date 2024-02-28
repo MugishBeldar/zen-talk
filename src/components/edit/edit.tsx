@@ -1,7 +1,6 @@
-import React from "react";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import useEditController from "./edit.controller";
 import { Tooltip } from "@mui/material";
+import useEditController from "./edit.controller";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 
 interface editType {
   email: string;

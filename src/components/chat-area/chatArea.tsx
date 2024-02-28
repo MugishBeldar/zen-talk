@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { KeyboardEvent, useEffect, useState } from "react";
-import SendIcon from "@mui/icons-material/Send";
-import { chatType, userMessagesType, userType, userTypes } from "../../types";
 import Cookies from "js-cookie";
+import io from "socket.io-client";
+import SendIcon from "@mui/icons-material/Send";
 import ScrollableFeed from "react-scrollable-feed";
+import React, { KeyboardEvent, useEffect, useState } from "react";
+
 import noMessage from "../../assets/noMessage.png";
 import chatArea from "../../assets/chatareaImage.png";
-import io from "socket.io-client";
 import { getUserMessages, sendMessage } from "../../api/api";
+import { chatType, userMessagesType, userType, userTypes } from "../../types";
 // import Emoji from "../emoji/emoji";
 
 const ENDPOINT: string = "http://localhost:5000";

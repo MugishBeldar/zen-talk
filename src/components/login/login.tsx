@@ -1,18 +1,13 @@
 import { useState } from "react";
-import {
-  TextField,
-  Paper,
-  InputAdornment,
-  IconButton,
-  CircularProgress,
-} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import LoginController from "./login.controller";
-import { LoadingButton } from "@mui/lab";
-import { useSelector } from "react-redux";
+import { TextField, Paper, InputAdornment, IconButton, CircularProgress, } from "@mui/material";
+
 import Tabs from "../tabs/tabs";
+import LoginController from "./login.controller";
 
 const CustomeTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -22,9 +17,6 @@ const CustomeTextField = styled(TextField)({
     "& fieldset": {
       borderColor: "#075E54",
     },
-    // "&:hover fieldset": {
-    //   borderColor: "#25D366",
-    // },
     "&.Mui-focused fieldset": {
       borderColor: "#075E54",
     },
