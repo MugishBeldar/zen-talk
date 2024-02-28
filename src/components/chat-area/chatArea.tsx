@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { KeyboardEvent, useEffect, useState } from "react";
-import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { chatType, userMessagesType, userType, userTypes } from "../../types";
 import Cookies from "js-cookie";
@@ -23,22 +22,6 @@ interface ChatAreaProps {
   setUserMessages: React.Dispatch<React.SetStateAction<userMessagesType[] | null>>;
 }
 
-const renderUserInfo = (clickedUser: userTypes) => (
-  <div className="flex items-center">
-    <Avatar
-      alt="Remy Sharp"
-      src={
-        clickedUser.profilePic
-          ? clickedUser.profilePic
-          : `https://ui-avatars.com/api/?background=random&color=fff&name=${clickedUser.name}`
-      }
-      sx={{ marginRight: "20px", width: "50px", height: "50px" }}
-    />
-    <p>
-      {clickedUser.name.charAt(0).toUpperCase() + clickedUser.name.slice(1)}
-    </p>
-  </div>
-);
 
 const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, setUserMessages, userMessages }: ChatAreaProps) => {
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
@@ -52,6 +35,23 @@ const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, se
   //     setCurrentMessage,
   //     currentMessage,
   //   });
+  const renderUserInfo = (clickedUser: userTypes) => (
+    <div className="flex items-center ">
+      <img
+        alt="Remy Sharp"
+        src={
+          clickedUser.profilePic
+            ? clickedUser.profilePic
+            : `https://ui-avatars.com/api/?background=random&color=fff&name=${clickedUser.name}`
+        }
+        className="w-16 h-16 mr-3 rounded-full"
+      // sx={{ marginRight: "20px", width: "50px", height: "50px" }}
+      />
+      <p>
+        {clickedUser.name.charAt(0).toUpperCase() + clickedUser.name.slice(1)}
+      </p>
+    </div>
+  );
 
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -216,7 +216,7 @@ const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, se
         </div>
       </div>
 
-      <div className="flex items-center border-t border-mainBackgroundColor relative">
+      <div className="flex items-center border-t border-mainBackgroundColor">
         {/* {emojiPickerVisible && (
           <div className="absolute mb-[50%]"><Emoji setEmojiPickerVisible={setEmojiPickerVisible} setCurrentMessage={setCurrentMessage} emojiPickerVisible={emojiPickerVisible}/></div>
         )}

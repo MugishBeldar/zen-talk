@@ -2,9 +2,10 @@ import React from "react";
 import Cookies from "js-cookie";
 import ScrollableFeed from "react-scrollable-feed";
 import { Avatar } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { chatType, userType, userTypes } from "../../types";
 import noChatFoundImage from '../../assets/noChatFound.png';
+import { drawerToggle } from "../../store/drawer/drawer.action";
 
 interface ChatListProps {
   setClickedUserFunction: React.Dispatch<
@@ -26,6 +27,7 @@ const ChatList = ({
   const allChats = useSelector((state: any) => state.chatState.chats);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const loggedUser: userType = userInfoStringify && JSON.parse(userInfoStringify);
+  const dispatch = useDispatch();
 
   const getSender = (loggedUser: userType, chat: chatType) => {
     if (chat?.users) {
@@ -56,6 +58,7 @@ const ChatList = ({
       );
       setSelectedChatFunction(chat);
       setClickedUserFunction(selectedUser[0]);
+      dispatch(drawerToggle(false))
     }
   };
 

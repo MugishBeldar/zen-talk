@@ -1,5 +1,4 @@
 import SearchUser from "../components/search-user/search";
-import Notification from "../components/notification/notification";
 import Profile from "../components/profile/profile";
 import AppTitle from "../components/title/title";
 import MyChats from "../components/my-chats/myChats";

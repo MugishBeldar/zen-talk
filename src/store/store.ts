@@ -1,9 +1,10 @@
 // import requiredd dependencys
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore,  combineReducers } from 'redux';
 import authReducer from './auth/auth.reducer'
 import loadingIndicatorReducer from './loadingIndicator/loadingIndicator.reducer';
 import isEditReducer from './edit/edit.reducer';
 import isSetChatReducer from './chats/chat.reducer';
+import drawerReducer from './drawer/drawer.reducer';
 
 let localStoreVar:any = null;
 
@@ -13,6 +14,7 @@ export const getStaticReducer = () => ({
     loadingIndicatorstate: loadingIndicatorReducer,
     editState: isEditReducer,
     chatState :isSetChatReducer, 
+    drawerState: drawerReducer,
 });
 
 // combine all static reducers
