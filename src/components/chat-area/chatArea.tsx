@@ -27,14 +27,7 @@ const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, se
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
   const userInfo: userType = userInfoStringify && JSON.parse(userInfoStringify);
-  // const { fetchUserChats, handleInputChange, handleKeyDown, handleSend } =
-  //   useChatAreaController({
-  //     clickedUser,
-  //     selectedChat,
-  //     setuserMessages,
-  //     setCurrentMessage,
-  //     currentMessage,
-  //   });
+
   const renderUserInfo = (clickedUser: userTypes) => (
     <div className="flex items-center ">
       <img
@@ -45,7 +38,6 @@ const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, se
             : `https://ui-avatars.com/api/?background=random&color=fff&name=${clickedUser.name}`
         }
         className="w-16 h-16 mr-3 rounded-full"
-      // sx={{ marginRight: "20px", width: "50px", height: "50px" }}
       />
       <p>
         {clickedUser.name.charAt(0).toUpperCase() + clickedUser.name.slice(1)}
@@ -93,7 +85,6 @@ const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, se
       message.day = false;
       return message;
     });
-    console.log("🚀 ~ mapedData ~ mapedData:", mapedData);
     setUserMessages(mapedData);
   };
 
@@ -127,10 +118,6 @@ const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, se
       fetchUserChats();
     }
   };
-
-  // const toggleEmojiPicker = () => {
-  //   setEmojiPickerVisible(!emojiPickerVisible);
-  // };
 
   return (
     <>
@@ -217,12 +204,6 @@ const ChatArea = ({ clickedUser, selectedChat, setChatMaintain, chatMaintain, se
       </div>
 
       <div className="flex items-center border-t border-mainBackgroundColor">
-        {/* {emojiPickerVisible && (
-          <div className="absolute mb-[50%]"><Emoji setEmojiPickerVisible={setEmojiPickerVisible} setCurrentMessage={setCurrentMessage} emojiPickerVisible={emojiPickerVisible}/></div>
-        )}
-        <button onClick={toggleEmojiPicker} className="p-[2%] ml-[1%] rounded-lg bg-[#040404] text-white hover:bg-[#7e7e7e] hover:text-[#040404] md:px-4 md:py-2">
-          😀 Emoji
-        </button> */}
         <button onClick={handleSend} className="mx-2 p-[2%] rounded-lg bg-mainBackgroundColor text-[whitesmoke] hover:bg-hoverButtonColor md:px-4 md:py-2">
           <SendIcon fontSize="small" className="mr-1 flex items-center" />
           Send

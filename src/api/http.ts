@@ -1,9 +1,8 @@
 import { API_ENDPOINT } from "../utils/enum";
 import axios from "axios";
-// import { USER_ACCESS_KEY } from "../utils";
-// import handleRefreshTokenAPI from "./authentication/refresh-token/";
 import Cookies from "js-cookie";
 import { handleRefreshTokenAPI } from "./api";
+
 const AXIOS = axios.create({
   baseURL: API_ENDPOINT,
 });

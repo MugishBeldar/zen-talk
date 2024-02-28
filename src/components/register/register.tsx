@@ -22,9 +22,6 @@ const CustomeTextField = styled(TextField)({
     "& fieldset": {
       borderColor: "#075E54",
     },
-    // "&:hover fieldset": {
-    //   borderColor: "#25D366",
-    // },
     "&.Mui-focused fieldset": {
       borderColor: "#075E54",
     },
@@ -182,7 +179,6 @@ const Register = () => {
             disabled={loading}
             type="submit"
             variant="contained"
-            // color="primary"
             size="small"
             loading={buttonLoadingIndicator}
             loadingPosition="center"

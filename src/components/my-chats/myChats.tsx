@@ -19,11 +19,7 @@ const MyChats = () => {
   const [selectedChat, setSelectedChat] = React.useState<chatType | null>(null);
 
   const [chatMaintain, setChatMaintain] = React.useState<boolean>(false);
-  // console.log("🚀 ~ MyChats ~ chatMaintain:", chatMaintain)
   const [userMessages, setUserMessages] = React.useState<userMessagesType[] | null>(null);
-  // const [drawer, setDrawer] = React.useState<boolean>(true);
-
-  // console.log("🚀 ~ MyChats ~ userMessages:", userMessages);
 
   const { fetchChats, } = useMyChatsContrller({ setChats, setSelectedChat });
   const userInfoStringify: string | undefined = Cookies.get("USER_INFO");
@@ -49,7 +45,6 @@ const MyChats = () => {
   return (
 
     <div className="flex h-full relative">
-      {/* ChatList - Hidden on Small Screens */}
       <div className="hidden w-[35%] sm:flex md:flex lg:flex xl:flex ">
         <ChatList
           setClickedUserFunction={setClickedUser}
@@ -60,14 +55,7 @@ const MyChats = () => {
         />
       </div>
 
-      {/* <div className="flex absolute w-1/2 h-full top-5 ml-[-10px] sm:hidden" onClick={handleDrawer}>
-        <div className="w-full">{
-          drawer && <h1>drawer open</h1>
-        }</div>
-        <div>{drawer ? <img src={rightArrow} alt="Drawer" className="rounded-r-lg w-6" /> : <img src={leftArrow} alt="Drawer" className="rounded-r-lg w-6" />}</div>
-      </div> */}
-
-      {/* ChatArea - Full Width on Small Screens, Flex for Medium and larger screens */}
+      
       <div className={`ml-[-10px] absolute mt-5 sm:hidden ${drawer ? "w-2/3 bg-[whitesmoke] shadow-lg" : null}`}>
         <Drawer chatList={<ChatList
           setClickedUserFunction={setClickedUser}
