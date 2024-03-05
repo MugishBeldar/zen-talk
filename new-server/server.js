@@ -41,7 +41,7 @@ const createdServer = app.listen(
 );
 
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow requests from this origin
+  origin: "http://localhost:3001", // Allow requests from this origin
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Allow all methods
 };
 
