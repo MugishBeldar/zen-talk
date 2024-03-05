@@ -11,7 +11,7 @@ import { getUserMessages, sendMessage } from "../../api/api";
 import { chatType, userMessagesType, userType, userTypes } from "../../types";
 // import Emoji from "../emoji/emoji";
 
-const ENDPOINT: string = "http://localhost:5000";
+const ENDPOINT: string = "https://zen-talk-server.onrender.com";
 var socket: any;
 
 interface ChatAreaProps {
