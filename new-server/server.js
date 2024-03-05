@@ -41,7 +41,8 @@ const createdServer = app.listen(
 );
 
 const corsOptions = {
-  origin: "http://localhost:3001", // Allow requests from this origin
+  // origin: "http://localhost:3001", // Allow requests from this origin https://zen-talk-hnkvfkpqh-mugishbeldars-projects.vercel.app/
+  origin: "https://zen-talk-hnkvfkpqh-mugishbeldars-projects.vercel.app", // Allow requests from this origin https://zen-talk-hnkvfkpqh-mugishbeldars-projects.vercel.app/
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Allow all methods
 };
 
