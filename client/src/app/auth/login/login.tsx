@@ -26,7 +26,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-1 h-full items-center justify-center ">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-secondary-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -40,7 +40,7 @@ export default function Login() {
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus-visible:ring-none focus-visible:ring-offset-0"
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-indigo focus-visible:ring-none focus-visible:ring-offset-0"
                         placeholder="Enter your email"
                         {...field}
                       />
@@ -60,19 +60,19 @@ export default function Login() {
                         <Input
                           type={inputType}
                           disabled={isLoading}
-                          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus-visible:ring-none focus-visible:ring-offset-0"
+                          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-indigo focus-visible:ring-none focus-visible:ring-offset-0"
                           placeholder="Enter your password"
                           {...field}
                         />
                         {inputType === "password" ? (
                           <EyeOff
                             onClick={showPassword}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-gray cursor-pointer"
                           />
                         ) : (
                           <Eye
                             onClick={showPassword}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-gray cursor-pointer"
                           />
                         )}
                       </div>
@@ -88,7 +88,7 @@ export default function Login() {
               size={"sm"}
               type="submit"
               disabled={isLoading}
-              className="w-full py-2 px-4 mt-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-400 focus:ring-2 focus:ring-blue-400"
+              className="w-full py-2 px-4 mt-4 bg-primary-indigo text-primary-white text-lg rounded-lg hover:bg-secondary-indigo focus:ring-2 focus:ring-secondary-indigo"
             >
               Login
             </Button>
