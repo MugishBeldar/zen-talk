@@ -10,10 +10,11 @@ const { sendError } = require("../util/api-handler");
  * @param {function} next - Express next() function.
  */
 async function protect(req, res, next) {
+  console.log("File:-- jwtAuth.js, Line:-- 13 , req.path===> ", req.path);
   if (
     req.path !== "/api/v1/users/login" &&
-    req.path !== "/api/v1/users/register" && 
-    req.path !== '/api/v1/token/refreshtoken'
+    req.path !== "/api/v1/users/register" &&
+    req.path !== "/api/v1/token/refreshtoken"
   ) {
     if (
       req.headers.authorization &&
@@ -22,13 +23,13 @@ async function protect(req, res, next) {
       const token = req.headers.authorization.split(" ")[1];
       jwt.verify(token, config.JWTConfig.secretKey, async (err, decoded) => {
         if (err) {
-          return sendError(res, 401, "Invalid token")
+          return sendError(res, 401, "Invalid token");
         }
         req.user = await User.findById(decoded.data).select("-passwords");
         next();
       });
     } else {
-      return sendError(res, 401, "Invalid token")
+      return sendError(res, 401, "Invalid token");
     }
   } else {
     next();

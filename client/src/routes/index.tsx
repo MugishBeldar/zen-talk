@@ -3,15 +3,13 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import { Login, Signup } from "../app";
-import { AuthRoot } from "@/app/auth";
+import { AuthRoot, ChatArea, ChatContainer, Login, Signup } from "@/app";
 
 export const MainRouting = () => {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <AuthRoot />,
-      // loader: rootLoader,
       children: [
         {
           path: "/", // Redirect from root path
@@ -24,6 +22,29 @@ export const MainRouting = () => {
         {
           path: "signup",
           element: <Signup />,
+        },
+      ],
+    },
+    {
+      path: "/:loggedUserId/chat",
+      element: <ChatContainer />, // Main chat container layout
+      children: [
+        {
+          path: "",
+          element: (
+            <div style={{ display: "flex" }}>
+              <div>No chat selected</div>
+            </div>
+          ),
+        },
+        {
+          path: ":chatId", // Route for individual chat threads
+          element: (
+            <div style={{ display: "flex" }}>
+              {/* <ChatList /> Sidebar with chat list */}
+              <ChatArea />
+            </div>
+          ),
         },
       ],
     },

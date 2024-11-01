@@ -36,6 +36,24 @@ export default function Signup() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4">
+            <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="mb-2">
+                    <FormLabel className="">Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isLoading}
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-indigo focus-visible:ring-none focus-visible:ring-offset-0"
+                        placeholder="Enter your name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"

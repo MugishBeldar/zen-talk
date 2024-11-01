@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { FormError, FormSuccess } from "@/components/form-response";
 import { Eye, EyeOff } from "lucide-react";
 
-// src/routes/Login.jsx
 export default function Login() {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();

@@ -1,9 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { signUpSchema } from "@/schemas";
 import * as z from "zod";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { signup } from "@/api/api";
+import { TOAST_OBJ } from "@/utils/enum";
 
 interface UseSignUpControllerType {
   setError: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -23,6 +26,7 @@ const useSignUpController = ({
   const form = useForm({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -31,25 +35,21 @@ const useSignUpController = ({
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     // api call
-    console.log("sign up form value:---", values);
-    // const { error, success } = await createProduct(
-    //   values,
-    //   uploadedImageUrl,
-    //   category?.id,
-    //   tags,
-    //   keyFeatures,
-    //   productThumbnail
-    // );
-    // eslint-disable-next-line no-constant-condition
-    if (false) {
-      setError("Somethig went wrong");
-    }
-    // eslint-disable-next-line no-constant-condition
-    if (true) {
+    const signupBody = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+    try {
+      await signup(signupBody);
+      toast.success(`Signup successful`, { ...TOAST_OBJ });
       setSuccess("Sign Up Successful");
+      form.reset();
       navigate("/login", { replace: true });
+    } catch (error) {
+      console.log(error);
+      setError("Failed to Sign Up");
     }
-    form.reset();
     return;
   };
 
