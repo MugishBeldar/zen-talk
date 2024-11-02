@@ -12,7 +12,7 @@ import {
 import { Input } from "../../../components/ui/input";
 import { useState } from "react";
 import { FormError, FormSuccess } from "../../../components/form-response";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle } from "lucide-react";
 
 export default function Signup() {
   const [error, setError] = useState<string | undefined>();
@@ -36,7 +36,7 @@ export default function Signup() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4">
-            <FormField
+              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
@@ -145,7 +145,14 @@ export default function Signup() {
               disabled={isLoading}
               className="w-full py-2 px-4 mt-4 bg-primary-indigo text-primary-white text-lg rounded-lg hover:bg-secondary-indigo focus:ring-2 focus:ring-secondary-indigo"
             >
-              Sign Up
+              {isLoading ? (
+                <LoaderCircle
+                  className="animate-spin text-primary-white"
+                  style={{ width: "30px", height: "30px" }}
+                />
+              ) : (
+                <p> Sign Up</p>
+              )}
             </Button>
           </form>
         </Form>
