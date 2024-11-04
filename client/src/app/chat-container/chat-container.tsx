@@ -1,7 +1,7 @@
 // import { useAuth } from "@/hooks";
 import { Outlet } from "react-router-dom";
 import ChatList from "./chat-list/chat-list";
-
+import Sidebar from "../sidebar/sidebar";
 const ChatContainer = () => {
   // const isLoggedIn = useAuth();
   // const navigate = useNavigate();
@@ -20,14 +20,17 @@ const ChatContainer = () => {
   ];
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className="p-[20px] bg-primary-white box-border">
       {/* Chat List (Sidebar) */}
-      <ChatList chats={chats} />
+      <div className="flex gap-6 h-[calc(100vh-40px)]">
+        <Sidebar />
+        <ChatList chats={chats} />
 
-      {/* Chat Area (Messages) */}
-      <div style={{ flex: 1, padding: "10px", borderLeft: "1px solid #ccc" }}>
-        <h2>Welcome to Chat</h2>
-        <Outlet /> {/* This renders the child routes for chat area */}
+        {/* Chat Area (Messages) */}
+        <div className="flex-1 bg-secondary-white rounded-xl">
+          <h2>Welcome to Chat</h2>
+          <Outlet /> {/* This renders the child routes for chat area */}
+        </div>
       </div>
     </div>
   );

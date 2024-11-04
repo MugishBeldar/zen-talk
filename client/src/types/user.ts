@@ -20,3 +20,8 @@ export type LoggedUserType = {
   email: string;
   profilePic: string | undefined;
 };
+
+export type userType = LoggedUserType & {
+  _id: string;
+  __v: number;
+};

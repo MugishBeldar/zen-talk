@@ -83,3 +83,29 @@
 .toast-bg-color {
   background-color: #eff6fc !important;
 }
+
+/* Base scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px; /* Width of the scrollbar */
+  background-color: rgba(255, 255, 255, 0); /* Background color of the scrollbar track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0); /* White color for scrollbar when not hovered */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+/* Show scrollbar on hover and change thumb color */
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Gray color for scrollbar on hover */
+}
+
+/* Ensure scrollbar is visible when hovering */
+.custom-scrollbar:hover::-webkit-scrollbar {
+  display: block; /* Show scrollbar when hovering */
+}
+
+/* Show scrollbar when hovering over the container */
+.custom-scrollbar:hover::-webkit-scrollbar {
+  display: block; /* Show scrollbar on hover */
+}

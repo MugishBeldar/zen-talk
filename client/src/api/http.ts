@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-
 import { API_ENDPOINT } from "@/utils/enum";
 import { handleRefreshTokenAPI } from "./api";
 
@@ -25,47 +24,56 @@ AXIOS.interceptors.request.use(
     if (config.url === "/refresh_token") {
       config.headers["Authorization"] = `Bearer ${REFRESH_TOKEN}`;
       config.headers["Content-Type"] = "application/json";
-    }
-
-    if (ACCESSTOKEN) {
+    } else if (ACCESSTOKEN) {
       config.headers["Authorization"] = `Bearer ${ACCESSTOKEN}`;
       config.headers["Content-Type"] = "application/json";
     }
 
     return config;
   },
-  (error) => {
-    Promise.reject(new Error(error.response.data));
-  }
+  (error) => Promise.reject(error)
 );
 
 AXIOS.interceptors.response.use(
-  async (response) => {
-    if (response.config.url === "/refresh_token") {
-      Cookies.set("TOKEN", await response?.data?.accessToken);
+  (response) => {
+    // Handle /refresh_token response if needed
+    if (response.config.url === "/refresh_token" && response.data) {
+      const { accessToken, refreshToken } = response.data;
+      Cookies.set("TOKEN", JSON.stringify({ ACCESSTOKEN: accessToken, REFRESH_TOKEN: refreshToken }));
     }
     return response.data;
   },
   async (error) => {
-    const tokens = Cookies.get("TOKEN");
+    if (error.response && error.response.status === 401) {
+      console.log("401 Unauthorized - Attempting token refresh");
 
-    let ACCESSTOKEN;
-    let REFRESH_TOKEN;
+      const tokens = Cookies.get("TOKEN");
+      let REFRESH_TOKEN;
 
-    if (tokens) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      ({ ACCESSTOKEN, REFRESH_TOKEN } = JSON.parse(tokens));
-    }
+      if (tokens) {
+        ({ REFRESH_TOKEN } = JSON.parse(tokens));
+      }
 
-    if (error.response && error.response.status === "401") {
-      Cookies.remove("TOKEN");
+      try {
+        const newTokens = await handleRefreshTokenAPI(REFRESH_TOKEN);
 
-      await handleRefreshTokenAPI(REFRESH_TOKEN);
-      window.location.reload();
-    } else if (error.response.status === 500 || error.response.status === 503) {
+        if (newTokens) {
+          const { accessToken, refreshToken } = newTokens;
+          Cookies.set("TOKEN", JSON.stringify({ ACCESSTOKEN: accessToken, REFRESH_TOKEN: refreshToken }));
+          
+          // Retry the failed request with the new access token
+          error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+          return AXIOS.request(error.config);
+        }
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+        Cookies.remove("TOKEN");
+        window.location.reload(); // Redirect to login or handle logout
+      }
+    } else if (error.response && (error.response.status === 500 || error.response.status === 503)) {
       alert("Server under maintenance");
     } else {
-      throw error.response.data;
+      throw error;
     }
   }
 );

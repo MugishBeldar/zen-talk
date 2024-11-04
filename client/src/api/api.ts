@@ -20,10 +20,12 @@ import { LoginType, SignupType } from "@/types/user";
 //   | UpdateUserDataWithoutProfilePic;
 
 export const handleRefreshTokenAPI = async (REFRESH_TOKEN: string) => {
+  console.log(REFRESH_TOKEN);
   const response = await AXIOS.post(
     API_ROUTES.POST_REFRESHTOKEN,
     REFRESH_TOKEN
   );
+  console.log("::::::::handle refresh token api called::::::::");
   if (response.data.data) {
     Cookies.set(
       "TOKEN",
@@ -34,6 +36,7 @@ export const handleRefreshTokenAPI = async (REFRESH_TOKEN: string) => {
       })
     );
   }
+  return response.data.data;
 };
 
 export const signup = async (userData: SignupType) => {
@@ -44,13 +47,9 @@ export const login = async (userData: LoginType) => {
   return await AXIOS.post(API_ROUTES.POST_LOGIN, userData);
 };
 
-// export const searchUser = async (name: string) => {
-//   try {
-//     return await AXIOS.get(`users?name=${name}`);
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+export const searchUser = async (name: string) => {
+  return await AXIOS.get(`users?name=${name}`);
+};
 
 // export const updateUser = async (updateUserData: UpdateUserData) => {
 //   try {

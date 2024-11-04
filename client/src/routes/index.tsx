@@ -36,7 +36,7 @@ export const MainRouting = () => {
       ],
     },
     {
-      path: "/:loggedUserId/chat",
+      path: "/:userId/chat",
       element: <ChatContainer />,
       loader: checkAuth,
       children: [
