@@ -15,7 +15,13 @@ module.exports = function createMessageStreamConsumer({ kafka, ObjectId }) {
           // Use insertOne to create the message
           const insertedMsg = await global.dbConnection
             .collection("messages")
-            .insertOne(newMessage);
+            .insertOne({
+              sender: new ObjectId(newMessage.sender),
+              content: newMessage.content,
+              chat: new ObjectId(newMessage.chat),
+              createdAt: newMessage.createdAt,
+              updatedAt: newMessage.updatedAt,
+            });
 
           // Retrieve the newly created message
           let newLyInsertedMessage = await global.dbConnection
