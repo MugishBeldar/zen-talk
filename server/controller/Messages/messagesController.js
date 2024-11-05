@@ -1,6 +1,6 @@
 const Chat = require("../../model/Chat/Chat");
 const Message = require("../../model/messages/Message");
-const User = require('../../model/User/User');
+const User = require("../../model/User/User");
 const { sendError, sendResponse } = require("../../util/api-handler");
 
 // const createMessage = async (req, res) => {
@@ -40,27 +40,24 @@ const { sendError, sendResponse } = require("../../util/api-handler");
 //   }
 
 const allMessages = async (req, res) => {
-    try {
-      const { chatId } = req.params;
-      if (!chatId) {
-        return sendError(res, 400, "chatId is required")
-      }
-      let messages = await Message.find({
-        chat: req.params.chatId,
-      })
-        .populate("sender", "name pic email")
-        .populate("chat");
-      messages = await User.populate(messages, {
-        path: "chat.users",
-        select: "name profilePic email",
-      });
-      return sendResponse(res, 200, messages)
-    } catch (error) {
-      return sendError(res, 500, "Internal server error", error)
+  try {
+    const { chatId } = req.params;
+    console.log(": allMessages -> chatId", chatId);
+    if (!chatId) {
+      return sendError(res, 400, "chatId is required");
     }
-  }
+    let messages = await Message.find({ chat: req.params.chatId.trim() })
+      .populate("sender", "name pic email")
+      .populate("chat", "users");
+    console.log("Populated messages:", messages);
 
-  module.exports = {
-    // createMessage,
-    allMessages
-  };
+    return sendResponse(res, 200, messages);
+  } catch (error) {
+    return sendError(res, 500, "Internal server error", error);
+  }
+};
+
+module.exports = {
+  // createMessage,
+  allMessages,
+};
