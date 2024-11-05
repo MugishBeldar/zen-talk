@@ -1,5 +1,5 @@
 import { LoggedUserType } from "@/types/user";
-import LOGGED_USER_ACTION from "./logged-user.action.types";
+import { LOGGED_USER_ACTION } from "./logged-user.action.types";
 
 export const loggedUser = (value: LoggedUserType) => {
   return {

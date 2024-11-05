@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createStore, combineReducers } from "redux";
 import loggedUserReducer from "./logged-user/logged-user.reducer";
+import isSetChatListReducer from "./chat-list/chat-list.reducer";
 
 let localStoreVar: any = null;
 
@@ -15,23 +16,25 @@ const loadState = () => {
   }
 };
 
-// Helper function to save state to localStorage
 const saveState = (state: any) => {
   try {
-    const serializedState = JSON.stringify(state);
+    // Create a copy of the state without chatListState
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { chatListState, ...stateToPersist } = state;
+    const serializedState = JSON.stringify(stateToPersist);
     localStorage.setItem("reduxState", serializedState);
   } catch (error) {
     console.error("Could not save state to localStorage", error);
   }
 };
-
 // make function get all static reducer
 export const getStaticReducer = () => ({
   loggedUserState: loggedUserReducer,
+  chatListState: isSetChatListReducer, // here i dont have to persist this
 });
 
 // combine all static reducers
-export const configureStore = () => {
+export const configureLocalStore = () => {
   // Load initial state from localStorage
   const preloadedState = loadState();
 
@@ -51,7 +54,7 @@ export const configureStore = () => {
 
 export const getStore = () => {
   if (localStoreVar === null) {
-    return configureStore();
+    return configureLocalStore();
   }
   return localStoreVar;
 };

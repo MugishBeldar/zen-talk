@@ -25,3 +25,29 @@ export type userType = LoggedUserType & {
   _id: string;
   __v: number;
 };
+
+export type ChatListType = TimeStampType & {
+  _id: string;
+  chatName: string;
+  users?: (userType & TimeStampType)[];
+  latestMessage: MessageType;
+  __v: number;
+};
+
+export type MessageType = TimeStampType & {
+  _id: string;
+  sender: SenderType;
+  content: string;
+  chat: string;
+};
+
+export type SenderType = {
+  _id: string;
+  name: string;
+  email: string;
+};
+
+export type TimeStampType = {
+  createdAt: string;
+  updatedAt: string;
+};

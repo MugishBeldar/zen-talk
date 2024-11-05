@@ -1,5 +1,5 @@
 import { cloneDeep } from "lodash";
-import LOGGED_USER_ACTION from "./logged-user.action.types";
+import { LOGGED_USER_ACTION } from "./logged-user.action.types";
 import { LoggedUserType } from "@/types/user";
 
 interface ActionType {

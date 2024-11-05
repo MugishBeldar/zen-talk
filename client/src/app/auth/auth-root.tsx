@@ -4,14 +4,7 @@ import Footer from "./footer/footer";
 import { useAuth } from "@/hooks";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { LoggedUserType } from "@/types/user";
-
-export interface stateType {
-  loggedUserState: LoggedUserState;
-}
-export interface LoggedUserState {
-  loggedUser?: null | LoggedUserType;
-}
+import { stateType } from "@/types/store";
 
 function AuthRoot() {
   const isLoggedIn = useAuth();

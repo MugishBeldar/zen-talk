@@ -7,9 +7,11 @@ const STATISTICS_API = {
   POST_REFRESHTOKEN: `${API_ENDPOINT}/token/refreshtoken`,
   POST_SIGNUP: `${API_ENDPOINT}/users/register`,
   POST_LOGIN: `${API_ENDPOINT}/users/login`,
+  GET_USERS: `${API_ENDPOINT}/users`,
+  GET_CHATLIST: `${API_ENDPOINT}/chats`
 };
 export const TOAST_OBJ = {
-  className: 'toast-bg-color',
+  className: "toast-bg-color",
   position: "top-center",
   autoClose: 2000,
   hideProgressBar: false,

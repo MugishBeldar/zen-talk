@@ -24,7 +24,6 @@ dist-ssr
 *.sw?
 
 /src/store/auth
-/src/store/chats
 /src/store/drawer
 /src/store/edit 
 /src/store/loadingIndicator

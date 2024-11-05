@@ -1,8 +1,8 @@
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { MessageSquare, Bell, Settings, LogOut } from "lucide-react";
 import useSidebarController from "./sidebar-controller";
-import { stateType } from "../auth/auth-root";
 import { useSelector } from "react-redux";
+import { stateType } from "@/types/store";
 
 const Sidebar = () => {
   const { handleLogOut } = useSidebarController();

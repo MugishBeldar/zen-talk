@@ -1,4 +1,9 @@
-const LOGGED_USER_ACTION = {
+import { LoggedUserType } from "@/types/user";
+
+export const LOGGED_USER_ACTION = {
   LOGGED_USER: 'LOGGED_USER',
 };
-export default LOGGED_USER_ACTION;
+
+export interface LoggedUserStateType {
+  loggedUser?: null | LoggedUserType;
+}

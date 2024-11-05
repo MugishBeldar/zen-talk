@@ -48,7 +48,7 @@ export const login = async (userData: LoginType) => {
 };
 
 export const searchUser = async (name: string) => {
-  return await AXIOS.get(`users?name=${name}`);
+  return await AXIOS.get(`${API_ROUTES.GET_USERS}?name=${name}`);
 };
 
 // export const updateUser = async (updateUserData: UpdateUserData) => {
@@ -59,13 +59,9 @@ export const searchUser = async (name: string) => {
 //   }
 // };
 
-// export const getChats = async () => {
-//   try {
-//     return await AXIOS.get("chats");
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+export const getChatList = async () => {
+    return await AXIOS.get(API_ROUTES.GET_CHATLIST);
+};
 
 // export const getChatForAUser = async (body: { userId: string }) => {
 //   try {
