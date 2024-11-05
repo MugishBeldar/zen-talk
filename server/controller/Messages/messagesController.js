@@ -48,7 +48,8 @@ const allMessages = async (req, res) => {
     }
     let messages = await Message.find({ chat: req.params.chatId.trim() })
       .populate("sender", "name pic email")
-      .populate("chat", "users");
+      .populate("chat", "users")
+      .sort({ createdAt: 1 });
     console.log("Populated messages:", messages);
 
     return sendResponse(res, 200, messages);
