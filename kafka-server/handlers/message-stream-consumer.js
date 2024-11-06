@@ -19,8 +19,8 @@ module.exports = function createMessageStreamConsumer({ kafka, ObjectId }) {
               sender: new ObjectId(newMessage.sender),
               content: newMessage.content,
               chat: new ObjectId(newMessage.chat),
-              createdAt: newMessage.createdAt,
-              updatedAt: newMessage.updatedAt,
+              createdAt: Date.now(), 
+              updatedAt: Date.now(),
             });
 
           // Retrieve the newly created message

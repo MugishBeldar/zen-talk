@@ -41,7 +41,7 @@ const createdServer = app.listen(
 );
 
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow requests from this origin https://zen-talk-hnkvfkpqh-mugishbeldars-projects.vercel.app/
+  origin: "http://localhost:5173", // Allow requests from this origin https://zen-talk-hnkvfkpqh-mugishbeldars-projects.vercel.app/
   // origin: "https://zen-talk.vercel.app", // Allow requests from this origin https://zen-talk-hnkvfkpqh-mugishbeldars-projects.vercel.app/
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Allow all methods
 };
@@ -52,50 +52,17 @@ const ioInstance = io(createdServer, {
 });
 
 ioInstance.on("connection", (socket) => {
-  console.log("Connected to socket.io");
+  console.log(`⚡: ${socket.id} user just connected!`);
 
-  socket.on("setup", (userInfo) => {
-    socket.join(userInfo.ID);
-    socket.emit("connected");
+  // Listen for messages from clients
+  socket.on("message", (data) => {
+    console.log(data);
+
+    // Broadcast the message to all other clients except the sender
+    socket.emit("messageResponse", data); // This broadcasts to all other connected clients
   });
 
-  socket.on("joinChat", (selectedChatId) => {
-    console.log("🚀 ~ socket.on ~ selectedChatId:", selectedChatId);
-    socket.join(selectedChatId);
+  socket.on("disconnect", () => {
+    console.log("🔥: A user disconnected");
   });
-
-  socket.on("send", (response) => {
-    const userChat = response?.chat;
-    if (!userChat.users) return console.log("user not defined in chat");
-    userChat.users.forEach((user) => {
-      if (user._id === response.sender._id) {
-        console.log(true, "sender user");
-      }
-    });
-    console.log("🚀 ~ userChat.users.forEach ~ userChat._id:", userChat._id);
-    socket.in(userChat._id).emit("recived", response);
-  });
-
-  // io.on('connection', (socket) => {
-  // console.log("New user connected");
-
-  // // Emit all previous messages when a user connects
-  // // Message.find().then(messages => {
-  // //   socket.emit('previous_messages', messages);
-  // // });
-
-  // // Listen for incoming messages
-  // socket.on("send_message", (data) => {
-  //   // const message = new Message(data);
-  //   // message.save().then(() => {
-  //   // Emit message to all connected clients
-  //   socket.emit("receive_message", data);
-  //   // });
-  // });
-
-  // // Handle user disconnect
-  // socket.on("disconnect", () => {
-  //   console.log("User disconnected");
-  // });
-  // });
 });

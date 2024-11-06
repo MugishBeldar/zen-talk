@@ -1,5 +1,6 @@
 import { getChatList } from "@/api/api";
 import { chatList } from "@/store/chat-list/chat-list.action";
+import { ChatListType, LoggedUserType } from "@/types/user";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
@@ -12,16 +13,16 @@ const useChatListController = () => {
     })();
   }, [dispatch]);
 
-  function extractTime(dateTimeString: string): string {
-    const parts = dateTimeString.split(" ");
-    const timeInHourAndMinutes = `${parts[2].split(":")[0]}:${
-      parts[2].split(":")[1]
-    } `;
-    const AmOrPm = parts.slice(-2).join(" ");
-    return parts[0] + " " + timeInHourAndMinutes + AmOrPm;
+  
+
+  function getReciverUserId(chat: ChatListType, loggedUser: LoggedUserType) {
+    const reciverUserId = chat.users?.find(
+      (user) => loggedUser.id.trim() !== user._id
+    );
+    return reciverUserId?._id;
   }
 
-  return { extractTime };
+  return {  getReciverUserId };
 };
 
 export default useChatListController;

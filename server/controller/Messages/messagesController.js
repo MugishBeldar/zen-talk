@@ -50,7 +50,6 @@ const allMessages = async (req, res) => {
       .populate("sender", "name pic email")
       .populate("chat", "users")
       .sort({ createdAt: 1 });
-    console.log("Populated messages:", messages);
 
     return sendResponse(res, 200, messages);
   } catch (error) {

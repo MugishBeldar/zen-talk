@@ -8,7 +8,8 @@ const STATISTICS_API = {
   POST_SIGNUP: `${API_ENDPOINT}/users/register`,
   POST_LOGIN: `${API_ENDPOINT}/users/login`,
   GET_USERS: `${API_ENDPOINT}/users`,
-  GET_CHATLIST: `${API_ENDPOINT}/chats`
+  GET_CHATLIST: `${API_ENDPOINT}/chats`,
+  GET_CONVERSATION: `${API_ENDPOINT}/messages`,
 };
 export const TOAST_OBJ = {
   className: "toast-bg-color",
@@ -23,4 +24,13 @@ export const TOAST_OBJ = {
 } as const;
 export const API_ROUTES = {
   ...STATISTICS_API,
+};
+export const DAYS: { [key: number]: string } = {
+  0: "Sunday", // Adjusted Sunday to 0
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday",
 };

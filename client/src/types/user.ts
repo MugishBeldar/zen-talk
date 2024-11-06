@@ -51,3 +51,15 @@ export type TimeStampType = {
   createdAt: string;
   updatedAt: string;
 };
+
+// export type ConversationType = TimeStampType & {
+//   _id: string;
+//   sender: SenderType;
+//   content: string;
+//   chat: ChatType;
+// };
+
+export type ChatType = {
+  _id: string;
+  users: string[];
+};

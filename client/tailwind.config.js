@@ -9,17 +9,19 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        custom: "0 0 5px 3px rgba(0, 0, 0, 0.1)",
+      },
       colors: {
         "primary-white": "var(--color-bg-primary-white)",
-				"secondary-white": "var(--color-bg-secondary-white)",
+        "secondary-white": "var(--color-bg-secondary-white)",
 
         "primary-violet": "var(--color-primary-violet)",
 
         "primary-indigo": "var(--color-primary-indigo)",
-				"secondary-indigo": "var(--color-ring-indigo)",
+        "secondary-indigo": "var(--color-ring-indigo)",
 
-				"primary-gray": "var(--color-text-gray)",
-				
+        "primary-gray": "var(--color-text-gray)",
 
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

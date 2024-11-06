@@ -9,7 +9,6 @@ const Sidebar = () => {
   const user = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
-  console.log("user:---", user);
   return (
     <div className="flex flex-col justify-between w-20 bg-primary-violet p-4 rounded-xl">
       {/* Top Icons */}

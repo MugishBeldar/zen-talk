@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { AuthRoot, ChatArea, ChatContainer, Login, Signup } from "@/app";
 import Cookies from "js-cookie";
+// import { io } from "socket.io-client";
 
 const checkAuth = () => {
   const tokens = Cookies.get("TOKEN");
@@ -14,6 +15,8 @@ const checkAuth = () => {
   }
   return null;
 };
+
+// const socket = io("http://localhost:5000");
 
 export const MainRouting = () => {
   const router = createBrowserRouter([
@@ -51,9 +54,9 @@ export const MainRouting = () => {
         {
           path: ":chatId",
           element: (
-            <div style={{ display: "flex" }}>
+            <div className="h-full">
               {/* <ChatList /> Sidebar with chat list */}
-              <ChatArea />
+              <ChatArea  />
             </div>
           ),
         },

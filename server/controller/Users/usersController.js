@@ -82,9 +82,9 @@ const registerUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const { name, email } = req.query;
-    const { user } = req;
-    const query = buildQuery(name, email, user._id);
+    const { name, email, userId } = req.query;
+    // const { user } = req;
+    const query = buildQuery(name, email, userId);
     const users = await User.find(query).select("-password");
     return sendResponse(res, 200, users);
   } catch (error) {
@@ -104,7 +104,7 @@ const buildQuery = (name, email, userId) => {
     }
   }
   if (userId) {
-    query._id = { $ne: userId };
+    query._id = { $eq: userId };
   }
   return query;
 };

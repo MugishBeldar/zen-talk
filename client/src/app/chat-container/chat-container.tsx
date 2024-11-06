@@ -27,8 +27,7 @@ const ChatContainer = () => {
         <ChatList chats={chats} />
 
         {/* Chat Area (Messages) */}
-        <div className="flex-1 bg-secondary-white rounded-xl">
-          <h2>Welcome to Chat</h2>
+        <div className="flex-1 h-full bg-secondary-white rounded-xl">
           <Outlet /> {/* This renders the child routes for chat area */}
         </div>
       </div>

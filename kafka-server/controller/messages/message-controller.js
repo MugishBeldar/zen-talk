@@ -30,8 +30,6 @@ const sendMessageToKafkaStream = async (req, chatId, content) => {
     sender: req.user._id,
     content: content,
     chat: chatId,
-    createdAt: moment.tz("Asia/Calcutta").format("dddd DD-MM-YYYY hh:mm:ss A "),
-    updatedAt: moment.tz("Asia/Calcutta").format("dddd DD-MM-YYYY hh:mm:ss A "),
   };
   await producer.send({
     topic: "add-chat-lable",

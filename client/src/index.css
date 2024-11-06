@@ -87,11 +87,21 @@
 /* Base scrollbar styles */
 .custom-scrollbar::-webkit-scrollbar {
   width: 3px; /* Width of the scrollbar */
-  background-color: rgba(255, 255, 255, 0); /* Background color of the scrollbar track */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0
+  ); /* Background color of the scrollbar track */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0); /* White color for scrollbar when not hovered */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0
+  ); /* White color for scrollbar when not hovered */
   border-radius: 10px; /* Rounded corners for the thumb */
 }
 
@@ -109,3 +119,13 @@
 .custom-scrollbar:hover::-webkit-scrollbar {
   display: block; /* Show scrollbar on hover */
 }
+
+/* .custom-shadow-top-right-left {
+  box-shadow: -4px -4px 3px rgba(0, 0, 0, 0.1), 4px -4px 3px rgba(0, 0, 0, 0.1),
+    -4px 4px 3px rgba(0, 0, 0, 0.1);
+}
+
+.custom-shadow-right-left-bottom {
+  box-shadow: -4px 4px 3px rgba(0, 0, 0, 0.1), 4px 4px 3px rgba(0, 0, 0, 0.1),
+    0 4px 3px rgba(0, 0, 0, 0.1);
+} */
