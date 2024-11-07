@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useChatAreaController from "./chat-area.controller";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { capitalizeNames, extractTime } from "@/utils";
@@ -16,21 +16,22 @@ interface ChateAreaProps {
   socket: Socket;
 }
 
-const ChatArea = () => {
+const ChatArea = ({ socket }: ChateAreaProps) => {
   const {
     conversation,
     reciverUser,
     handleSendMessage,
     setNewMessage,
     newMessage,
-  } = useChatAreaController();
+    lastMessageRef,
+  } = useChatAreaController({ socket });
   const user = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
 
-  // State for the input field
 
-  // Handler for sending a message
+  // Scroll to the bottom when a new message is added
+  // This effect runs every time the conversation updates
 
   return (
     <div className="h-full flex flex-col rounded-xl pl-2 pr-1 shadow-md py-2">
@@ -78,6 +79,7 @@ const ChatArea = () => {
                 </div>
               </div>
             ))}
+          <div ref={lastMessageRef} />
           </div>
           {/* Message input and send button */}
           <div className="flex border-t mt-2 pt-2">

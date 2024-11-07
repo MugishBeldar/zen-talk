@@ -8,6 +8,7 @@ const userRouter = require("./routes/Users/userRoutes");
 const chatRouter = require("./routes/Chats/chatRoutes");
 const messageRouter = require("./routes/Messages/messageRoutes");
 const refreshTokenRouter = require("./routes/Refreshtoken/refreshTokenRoutes");
+const apiWrapper = require("./external-api-call/api-wrapper");
 
 const app = express();
 
@@ -54,15 +55,66 @@ const ioInstance = io(createdServer, {
 ioInstance.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 
-  // Listen for messages from clients
-  socket.on("message", (data) => {
-    console.log(data);
+  socket.on("setup", (userData) => {
+    console.log("[+] User data received:", userData);
+    socket.join(userData.id);
+    socket.emit("connected"); // Emit connected to acknowledge setup completion
+  });
 
-    // Broadcast the message to all other clients except the sender
-    socket.emit("messageResponse", data); // This broadcasts to all other connected clients
+  socket.on("join room", (chatId) => {
+    console.log("[+] Chat ID received for joining room:", chatId);
+    socket.join(chatId);
+  });
+
+  // socket.on("new message", (newMessageReceive) => {
+  //   console.log("[+] newMessageReceive:", newMessageReceive);
+  //   const chatUsers = newMessageReceive.users;
+
+  //   if (!chatUsers) {
+  //     console.log("chat or chat.users is not defined");
+  //     return;
+  //   }
+
+  //   chatUsers.forEach((user) => {
+  //     if (user._id === newMessageReceive.sender._id) return;
+  //     console.log(`Emitting to user: ${user._id}`);
+  //     socket.to(user._id).emit("message received", newMessageReceive);
+  //   });
+  // });
+
+  socket.on("new message", (msg, { reciverId, senderId }, ACCESSTOKEN) => {
+    console.log("[+] ACCESSTOKEN", ACCESSTOKEN);
+    console.log("[+] newMessageReceive:", msg);
+    console.log("[+] Receiver ID:", reciverId, ", Sender ID:", senderId);
+
+    // Emit the message to the receiver (except the sender)
+    if (reciverId && senderId && ACCESSTOKEN) {
+      console.log(`Emitting message to receiver: ${reciverId}`);
+      socket.to(reciverId).emit("message received", msg);
+      (async () => {
+        const msgBody = {
+          content: msg.content,
+          chatId: msg.chat,
+        };
+        try {
+          apiWrapper(
+            "http://localhost:7000/api/v1/messages",
+            "POST",
+            { Authorization: `Bearer ${ACCESSTOKEN}` }, // Custom headers
+            {}, // Query parameters
+            msgBody, // Body params (empty for GET)
+            true // Condition to include custom headers
+          );
+        } catch (error) {
+          console.error("Error:", error.message);
+        }
+      })();
+    } else {
+      console.log("Invalid receiver or sender ID.");
+    }
   });
 
   socket.on("disconnect", () => {
-    console.log("🔥: A user disconnected");
+    console.log("[+] A user disconnected");
   });
 });

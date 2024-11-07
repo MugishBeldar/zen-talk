@@ -10,7 +10,7 @@ const { sendError } = require("../util/api-handler");
  * @param {function} next - Express next() function.
  */
 async function protect(req, res, next) {
-  console.log("File:-- jwtAuth.js, Line:-- 13 , req.path===> ", req.path);
+  // console.log("File:-- jwtAuth.js, Line:-- 13 , req.path===> ", req.path);
   if (
     req.path !== "/api/v1/users/login" &&
     req.path !== "/api/v1/users/register" &&
