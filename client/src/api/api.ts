@@ -1,7 +1,7 @@
 import { API_ROUTES } from "@/utils/enum";
 import AXIOS from "./http";
 import Cookies from "js-cookie";
-import { LoginType, SignupType } from "@/types/user";
+import { CreateChatBodyType, LoginType, SignupType } from "@/types/user";
 
 export const handleRefreshTokenAPI = async (REFRESH_TOKEN: string) => {
   console.log(REFRESH_TOKEN);
@@ -44,3 +44,8 @@ export const getUserById = async (userId: string) => {
 export const getConversation = async (chatId: string) => {
   return await AXIOS.get(`${API_ROUTES.GET_CONVERSATION}/${chatId}`);
 };
+
+export const createChat = async (createChatBody: CreateChatBodyType) => {
+	console.log(': createChat -> createChatBody', createChatBody);
+  return await AXIOS.post(`${API_ROUTES.POST_CHAT}`, createChatBody);
+}

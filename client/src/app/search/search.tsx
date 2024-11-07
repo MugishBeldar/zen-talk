@@ -11,6 +11,7 @@ const Search = () => {
     setShowResults,
     showResults,
     selectedIndex,
+    handleClick,
   } = useSearchController();
 
   return (
@@ -33,6 +34,9 @@ const Search = () => {
           <ul className="divide-y divide-gray-200 my-1">
             {searchUsers.map((user, index) => (
               <li
+                onClick={() => {
+                  handleClick(user);
+                }}
                 key={index}
                 className={`flex items-center justify-between p-2 cursor-pointer ${
                   index === selectedIndex
@@ -46,7 +50,7 @@ const Search = () => {
                       src={
                         user?.profilePic
                           ? user.profilePic
-                          : `https://ui-avatars.com/api/?name=${user?.name}&background=random`
+                          : `https://ui-avatars.com/api/?name=${user?.name}&background=7c3aed&color=eff6fc`
                       }
                       alt="@shadcn"
                       className="rounded-full w-11 h-11"

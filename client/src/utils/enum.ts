@@ -10,6 +10,7 @@ const STATISTICS_API = {
   GET_USERS: `${API_ENDPOINT}/users`,
   GET_CHATLIST: `${API_ENDPOINT}/chats`,
   GET_CONVERSATION: `${API_ENDPOINT}/messages`,
+  POST_CHAT: `${API_ENDPOINT}/chats`
 };
 export const TOAST_OBJ = {
   className: "toast-bg-color",

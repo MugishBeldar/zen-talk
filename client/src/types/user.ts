@@ -63,3 +63,7 @@ export type ChatType = {
   _id: string;
   users: string[];
 };
+
+export type CreateChatBodyType = {
+  userId: string;
+}

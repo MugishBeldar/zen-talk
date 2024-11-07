@@ -44,6 +44,9 @@ export function capitalizeNames(name: string) {
 // }
 
 export function extractTime(timeStamp: string) {
+  if (!timeStamp) {
+    return "";
+  }
   const currentTimestamp = new Date();
   const time = new Date(timeStamp);
 
