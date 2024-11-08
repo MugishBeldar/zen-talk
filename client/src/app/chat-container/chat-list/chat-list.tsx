@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { stateType } from "@/types/store";
 import { ChatListType } from "@/types/user";
 import { cn } from "@/lib/utils";
-import { extractTime } from "@/utils";
+import { bufferToBase64, extractTime } from "@/utils";
 
 interface ChatListProps {
   chats: any;
@@ -20,7 +20,6 @@ const ChatList = ({ chats }: ChatListProps) => {
   const chatList = useSelector((state: stateType) => {
     return state.chatListState.chatList;
   });
-  console.log(": chatList -> chatList", chatList);
   const loggedUser = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
@@ -68,8 +67,8 @@ const ChatList = ({ chats }: ChatListProps) => {
                                   <AvatarImage
                                     key={`avatar-${chat._id}-${user._id}`}
                                     src={
-                                      chats[0].profilePic
-                                        ? chats[0].profilePic
+                                      user.profilePic?.type === "Buffer"
+                                        ? bufferToBase64(user.profilePic)
                                         : `https://ui-avatars.com/api/?name=${user.name}&background=7c3aed&color=eff6fc`
                                     }
                                     alt={`@${chats[0].name}`}

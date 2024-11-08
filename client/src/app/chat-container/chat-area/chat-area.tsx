@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import useChatAreaController from "./chat-area.controller";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { capitalizeNames, extractTime } from "@/utils";
+import { bufferToBase64, capitalizeNames, extractTime } from "@/utils";
 import { EllipsisVertical } from "lucide-react";
 import { MessageType } from "@/types/user";
 import { stateType } from "@/types/store";
@@ -42,8 +42,8 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
               <Avatar>
                 <AvatarImage
                   src={
-                    reciverUser?.profilePic
-                      ? reciverUser?.profilePic
+                    reciverUser?.profilePic?.type === "Buffer"
+                      ? bufferToBase64(reciverUser?.profilePic)
                       : `https://ui-avatars.com/api/?name=${reciverUser?.name}&background=7c3aed&color=eff6fc`
                   }
                   alt={`@${reciverUser?.name}`}

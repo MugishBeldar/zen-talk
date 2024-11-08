@@ -27,4 +27,7 @@ const loginSchema = z.object({
   password: z.string().min(1, { message: "Password is required" }),
 });
 
-export { signUpSchema, loginSchema };
+const updateProfileSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+});
+export { signUpSchema, loginSchema, updateProfileSchema };

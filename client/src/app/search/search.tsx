@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Search as SearchIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import useSearchController from "./search.contrller";
+import { bufferToBase64 } from "@/utils";
 
 const Search = () => {
   const {
@@ -48,8 +49,8 @@ const Search = () => {
                   <Avatar className="pr-4">
                     <AvatarImage
                       src={
-                        user?.profilePic
-                          ? user.profilePic
+                        user?.profilePic?.type === "Buffer"
+                          ? bufferToBase64(user.profilePic)
                           : `https://ui-avatars.com/api/?name=${user?.name}&background=7c3aed&color=eff6fc`
                       }
                       alt="@shadcn"

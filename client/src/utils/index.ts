@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DAYS } from "./enum";
+import { Buffer } from "buffer";
 
 export function capitalizeNames(name: string) {
   const names = name.split(" "); // Split the name into an array
@@ -6,42 +8,6 @@ export function capitalizeNames(name: string) {
     .map((n) => n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()) // Capitalize the first letter of each part
     .join(" ");
 }
-
-// export function formatDate(dateString: string) {
-//   const now = new Date();
-
-//   // Extract the components of the date string
-//   const [dayName, date, time, timeWithAMPM] = dateString.split(" ");
-//   console.log(
-//     ": formatDate -> [dayName, date, time, timeWithAMPM]",
-//     dayName,
-//     date,
-//     time,
-//     timeWithAMPM
-//   );
-//   const [hour, minute] = time.split(":");
-//   console.log(": formatDate -> hour, minute", hour, minute);
-
-//   // Get the day of the week (0-6)
-//   const currentDay = now.getDay();
-
-//   let formattedDate = "";
-
-//   // Check if today
-//   if (DAYS[currentDay].toLowerCase() === dayName.toLowerCase()) {
-//     formattedDate = `Today at ${hour}:${minute} ${timeWithAMPM.toLowerCase()}`;
-//   }
-//   // Check if yesterday
-//   else if (DAYS[currentDay - 1 < 0 ? 6 : currentDay - 1] === dayName) {
-//     formattedDate = `Yesterday at ${hour}:${minute} ${timeWithAMPM.toLowerCase()}`;
-//   } else {
-//     // Otherwise format as Day of week month-day at hour:minute AM/PM
-//     formattedDate = `${date} at ${hour}:${minute} ${timeWithAMPM.toLowerCase()}`;
-//   }
-
-//   console.log(": formatDate -> formattedDate", formattedDate);
-//   return formattedDate;
-// }
 
 export function extractTime(timeStamp: string) {
   if (!timeStamp) {
@@ -75,3 +41,14 @@ export function extractTime(timeStamp: string) {
     return `${DAYS[day]}, ${formattedHours}:${formattedMinutes} ${period}`;
   }
 }
+
+export const bufferToBase64 = (bufferObj: any) => {
+  if (
+    bufferObj &&
+    bufferObj.type === "Buffer" &&
+    Array.isArray(bufferObj.data)
+  ) {
+    const base64String = Buffer.from(bufferObj.data).toString("base64");
+    return `data:image/jpeg;base64,${base64String}`;
+  }
+};

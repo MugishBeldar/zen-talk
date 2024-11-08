@@ -12,23 +12,18 @@ AXIOS.interceptors.request.use(
     const tokens = Cookies.get("TOKEN");
     let ACCESSTOKEN;
     let REFRESH_TOKEN;
-
     if (tokens) {
       ({ ACCESSTOKEN, REFRESH_TOKEN } = JSON.parse(tokens));
     }
-
     if (config.url === "users/login") {
       config.headers["Content-Type"] = "application/json";
     }
-
     if (config.url === "/refresh_token") {
       config.headers["Authorization"] = `Bearer ${REFRESH_TOKEN}`;
       config.headers["Content-Type"] = "application/json";
     } else if (ACCESSTOKEN) {
       config.headers["Authorization"] = `Bearer ${ACCESSTOKEN}`;
-      config.headers["Content-Type"] = "application/json";
     }
-
     return config;
   },
   (error) => Promise.reject(error)
@@ -39,7 +34,13 @@ AXIOS.interceptors.response.use(
     // Handle /refresh_token response if needed
     if (response.config.url === "/refresh_token" && response.data) {
       const { accessToken, refreshToken } = response.data;
-      Cookies.set("TOKEN", JSON.stringify({ ACCESSTOKEN: accessToken, REFRESH_TOKEN: refreshToken }));
+      Cookies.set(
+        "TOKEN",
+        JSON.stringify({
+          ACCESSTOKEN: accessToken,
+          REFRESH_TOKEN: refreshToken,
+        })
+      );
     }
     return response.data;
   },
@@ -59,8 +60,14 @@ AXIOS.interceptors.response.use(
 
         if (newTokens) {
           const { accessToken, refreshToken } = newTokens;
-          Cookies.set("TOKEN", JSON.stringify({ ACCESSTOKEN: accessToken, REFRESH_TOKEN: refreshToken }));
-          
+          Cookies.set(
+            "TOKEN",
+            JSON.stringify({
+              ACCESSTOKEN: accessToken,
+              REFRESH_TOKEN: refreshToken,
+            })
+          );
+
           // Retry the failed request with the new access token
           error.config.headers["Authorization"] = `Bearer ${accessToken}`;
           return AXIOS.request(error.config);
@@ -70,7 +77,10 @@ AXIOS.interceptors.response.use(
         Cookies.remove("TOKEN");
         window.location.reload(); // Redirect to login or handle logout
       }
-    } else if (error.response && (error.response.status === 500 || error.response.status === 503)) {
+    } else if (
+      error.response &&
+      (error.response.status === 500 || error.response.status === 503)
+    ) {
       alert("Server under maintenance");
     } else {
       throw error;

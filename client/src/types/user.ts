@@ -18,7 +18,10 @@ export type LoggedUserType = {
   id: string;
   name: string;
   email: string;
-  profilePic: string | undefined;
+  profilePic: null | {
+    type: string;
+    data: Buffer;
+  };
 };
 
 export type userType = LoggedUserType & {
@@ -66,4 +69,4 @@ export type ChatType = {
 
 export type CreateChatBodyType = {
   userId: string;
-}
+};

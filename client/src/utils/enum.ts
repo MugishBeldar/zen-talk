@@ -3,14 +3,15 @@ import { Slide } from "react-toastify";
 const API_ENDPOINT_V1 = "http://localhost:5000/api/v1";
 export const API_ENDPOINT = API_ENDPOINT_V1;
 const STATISTICS_API = {
-  GET_DETAILS: `${API_ENDPOINT}/get-details`,
-  POST_REFRESHTOKEN: `${API_ENDPOINT}/token/refreshtoken`,
-  POST_SIGNUP: `${API_ENDPOINT}/users/register`,
-  POST_LOGIN: `${API_ENDPOINT}/users/login`,
-  GET_USERS: `${API_ENDPOINT}/users`,
-  GET_CHATLIST: `${API_ENDPOINT}/chats`,
-  GET_CONVERSATION: `${API_ENDPOINT}/messages`,
-  POST_CHAT: `${API_ENDPOINT}/chats`
+  GET_DETAILS: `/get-details`,
+  POST_REFRESHTOKEN: `/token/refreshtoken`,
+  POST_SIGNUP: `/users/register`,
+  POST_LOGIN: `/users/login`,
+  GET_USERS: `/users`,
+  GET_CHATLIST: `/chats`,
+  GET_CONVERSATION: `/messages`,
+  POST_CHAT: `/chats`,
+  UPDATE_USER: `/users/editprofile`,
 };
 export const TOAST_OBJ = {
   className: "toast-bg-color",

@@ -2,6 +2,7 @@ import { Login, Signup, Footer, Header, AuthRoot } from "./auth";
 import { ChatContainer } from "./chat-container";
 import ChatArea from "./chat-container/chat-area/chat-area";
 import Search from "./search/search";
+import Setting from "./setting/setting";
 import Sidebar from "./sidebar/sidebar";
 
 export {
@@ -17,4 +18,5 @@ export {
   ChatArea,
   Sidebar,
   Search,
+  Setting,
 };

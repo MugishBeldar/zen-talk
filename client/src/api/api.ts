@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_ROUTES } from "@/utils/enum";
 import AXIOS from "./http";
 import Cookies from "js-cookie";
@@ -46,6 +47,13 @@ export const getConversation = async (chatId: string) => {
 };
 
 export const createChat = async (createChatBody: CreateChatBodyType) => {
-	console.log(': createChat -> createChatBody', createChatBody);
   return await AXIOS.post(`${API_ROUTES.POST_CHAT}`, createChatBody);
-}
+};
+
+export const updateProfile = async (updateProfileBody: any, userId: string) => {
+  return await AXIOS.put(
+    `${API_ROUTES.UPDATE_USER}/${userId}`,
+    updateProfileBody,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+};

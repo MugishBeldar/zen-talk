@@ -1,39 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createStore, combineReducers } from "redux";
+import LZString from "lz-string";
 import loggedUserReducer from "./logged-user/logged-user.reducer";
 import isSetChatListReducer from "./chat-list/chat-list.reducer";
-
+import openSettingReducer from "./setting-model/setting-model.reducer";
 let localStoreVar: any = null;
 
-// Helper function to load state from localStorage
+// Helper function to load compressed state from localStorage
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem("reduxState");
-    return serializedState ? JSON.parse(serializedState) : undefined;
+    const compressedState = localStorage.getItem("reduxState");
+    if (!compressedState) return undefined;
+
+    // Decompress state from LZ-string format
+    const decompressedState = LZString.decompress(compressedState);
+    return decompressedState ? JSON.parse(decompressedState) : undefined;
   } catch (error) {
     console.error("Could not load state from localStorage", error);
     return undefined;
   }
 };
 
+// Helper function to save compressed state to localStorage
 const saveState = (state: any) => {
   try {
-    // Create a copy of the state without chatListState
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { chatListState, ...stateToPersist } = state;
-    const serializedState = JSON.stringify(stateToPersist);
-    localStorage.setItem("reduxState", serializedState);
+    const serializedState = JSON.stringify(state);
+
+    // Compress state with LZ-string before saving
+    const compressedState = LZString.compress(serializedState);
+    localStorage.setItem("reduxState", compressedState);
   } catch (error) {
     console.error("Could not save state to localStorage", error);
   }
 };
-// make function get all static reducer
+
+// Get all static reducers
 export const getStaticReducer = () => ({
   loggedUserState: loggedUserReducer,
-  chatListState: isSetChatListReducer, // here i dont have to persist this
+  chatListState: isSetChatListReducer,
+  settingState: openSettingReducer,
 });
 
-// combine all static reducers
+// Combine reducers and configure the store
 export const configureLocalStore = () => {
   // Load initial state from localStorage
   const preloadedState = loadState();
