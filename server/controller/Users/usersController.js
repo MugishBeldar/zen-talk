@@ -1,9 +1,8 @@
 const bcrypt = require("bcryptjs");
 const { gererateToken } = require("../../util/generateToken");
 const User = require("../../model/User/User");
-const ApiError = require("../../hepler/ApiError");
-const ApiResponse = require("../../hepler/ApiResponse");
 const { sendError, sendResponse } = require("../../util/api-handler");
+const { ObjectId } = require("mongodb");
 /**
  * Authenticates user for login.
  * @param {object} req - Express request object.
@@ -111,24 +110,29 @@ const buildQuery = (name, email, userId) => {
 
 const updateUserInfo = async (req, res) => {
   try {
-    const { name, email, profilePic } = req.body;
-    if (!name || !email) {
-      return sendError(res, 400, "Name and Email is required");
-    }
-    const user = await User.findOne({ email });
+    const { userId } = req.params;
+    const profilePic = req.file ? req.file.buffer : null;
+    const { name } = req.body;
+    const user = await User.findOne({
+      _id: new ObjectId(userId),
+    });
     if (!user) {
       return sendError(res, 404, "User not found");
     }
-    const updateObj = { name };
+
+    const updateObj = {};
     if (profilePic) {
       updateObj.profilePic = profilePic;
     }
-    const updateUser = await User.findByIdAndUpdate(user._id, updateObj, {
+    if (name) {
+      updateObj.name = name.trim();
+    }
+    const updatedUser = await User.findByIdAndUpdate(userId, updateObj, {
       new: true,
     }).select("-password");
-    return sendResponse(res, 200, updateUser);
+    return sendResponse(res, 200, updatedUser);
   } catch (error) {
-    return sendError(res, 500, "Internal server error", err);
+    return sendError(res, 500, "Internal server error", error);
   }
 };
 module.exports = {

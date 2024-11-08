@@ -3,8 +3,9 @@ const {
   userAuthenticate,
   registerUser,
   getUsers,
-  updateUserInfo
+  updateUserInfo,
 } = require("../../controller/Users/usersController");
+const upload = require("../../middleware/multer");
 
 const userRouter = express.Router();
 
@@ -18,6 +19,6 @@ userRouter.post("/login", userAuthenticate);
 userRouter.get("/", getUsers);
 
 // Put/api/v1/users/editprofile
-userRouter.put('/editprofile', updateUserInfo)
+userRouter.put("/editprofile/:userId", upload.single('profilePic'), updateUserInfo);
 
 module.exports = userRouter;

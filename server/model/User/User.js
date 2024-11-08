@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const moment = require("moment-timezone");
 
 // Create schema
 const UserSchema = new mongoose.Schema(
@@ -7,7 +6,7 @@ const UserSchema = new mongoose.Schema(
     name: { type: String },
     email: { type: String },
     password: { type: String },
-    profilePic: { type: String },
+    profilePic: { type: Buffer },
   },
   { timestamps: true }
 );
