@@ -1,0 +1,87 @@
+import {
+  createBrowserRouter,
+  Navigate,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
+import {
+  AuthRoot,
+  ChatArea,
+  ChatContainer,
+  Login,
+  Setting,
+  // Setting,
+  Signup,
+} from "@/app";
+import Cookies from "js-cookie";
+import { io } from "socket.io-client";
+
+const checkAuth = () => {
+  const tokens = Cookies.get("TOKEN");
+  if (!tokens) {
+    throw redirect("/login");
+  }
+  return null;
+};
+
+const socket = io("http://localhost:5000");
+
+export const MainRouting = () => {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <AuthRoot />,
+      children: [
+        {
+          path: "/",
+          element: <Navigate to="/login" replace />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "signup",
+          element: <Signup />,
+        },
+      ],
+    },
+    {
+      path: "/:userId",
+      element: <ChatContainer />,
+      loader: checkAuth,
+      children: [
+        {
+          path: "chat",
+          element: (
+            <div style={{ display: "flex" }}>
+              <div>No chat selected</div>
+            </div>
+          ),
+        },
+        {
+          path: "chat/:chatId",
+          element: (
+            <div className="h-full">
+              <ChatArea socket={socket} />
+            </div>
+          ),
+        },
+        {
+          path: "setting",
+          element: (
+            <div className="h-full">
+              <Setting />
+            </div>
+          ),
+        },
+      ],
+    },
+  ]);
+
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
+};
