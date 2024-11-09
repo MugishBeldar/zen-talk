@@ -28,8 +28,8 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   useEffect(() => {
     if (conversation.length > 0 && lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
-        behavior: "smooth",
         block: "end",
+        behavior: "auto",
       });
     }
   }, [conversation]);
