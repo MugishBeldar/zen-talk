@@ -5,6 +5,7 @@ import NoChatSelected from "./no-chat-selected/no-chat-selected";
 import Search from "./search/search";
 import Setting from "./setting/setting";
 import Sidebar from "./sidebar/sidebar";
+import Spinner from "./spinner/spinner";
 
 export {
   // auth components
@@ -21,4 +22,5 @@ export {
   Search,
   Setting,
   NoChatSelected,
+  Spinner
 };

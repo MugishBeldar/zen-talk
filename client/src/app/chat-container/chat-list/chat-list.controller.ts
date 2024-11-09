@@ -3,11 +3,12 @@ import { getChatList } from "@/api/api";
 import { chatList } from "@/store/chat-list/chat-list.action";
 import { ChatListType, LoggedUserType } from "@/types/user";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const useChatListController = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,6 +17,7 @@ const useChatListController = () => {
     (async () => {
       const response = await getChatList();
       dispatch(chatList(response.data));
+      setIsLoading(false);
     })();
   }, [dispatch]);
 
@@ -46,7 +48,7 @@ const useChatListController = () => {
     navigate(`/${reciverUserId}/chat/${chat._id}`);
   };
 
-  return { getReciverUserId, handleClick };
+  return { getReciverUserId, handleClick, isLoading };
 };
 
 export default useChatListController;

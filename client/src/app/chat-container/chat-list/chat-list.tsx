@@ -8,12 +8,13 @@ import { stateType } from "@/types/store";
 import { ChatListType } from "@/types/user";
 import { cn } from "@/lib/utils";
 import { bufferToBase64, capitalizeNames, extractTime } from "@/utils";
+import Spinner from "@/app/spinner/spinner";
 interface ChatListProps {
   chats: any;
 }
 
 const ChatList = ({ chats }: ChatListProps) => {
-  const { handleClick } = useChatListController();
+  const { handleClick, isLoading } = useChatListController();
   const { chatId } = useParams();
 
   const chatList = useSelector((state: stateType) => {
@@ -110,6 +111,10 @@ const ChatList = ({ chats }: ChatListProps) => {
                 </div>
               );
             })
+          ) : isLoading ? (
+            <div className="flex justify-center items-center h-full">
+              <Spinner />
+            </div>
           ) : (
             <div className="flex  justify-center items-center h-full">
               <p className="text-xl mb-4 font-bold bg-gradient-to-r from-primary-violet to-primary-indigo bg-clip-text text-transparent">

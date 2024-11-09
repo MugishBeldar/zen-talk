@@ -24,8 +24,6 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
     newMessage,
     lastMessageRef,
   } = useChatAreaController({ socket });
-  console.log(": reciverUser", reciverUser);
-  console.log(": conversation", conversation);
   const user = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
