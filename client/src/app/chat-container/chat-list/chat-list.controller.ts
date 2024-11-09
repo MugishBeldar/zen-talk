@@ -11,6 +11,14 @@ const useChatListController = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  
+  useEffect(() => {
+    (async () => {
+      const response = await getChatList();
+      dispatch(chatList(response.data));
+    })();
+  }, [dispatch]);
+
   useEffect(() => {
     const lastChat = Cookies.get("LAST_CHAT");
     if (lastChat) {
@@ -18,13 +26,6 @@ const useChatListController = () => {
       navigate(`/${reciverUserId}/chat/${chatId}`);
     }
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getChatList();
-      dispatch(chatList(response.data));
-    })();
-  }, [dispatch]);
 
   function getReciverUserId(chat: ChatListType, loggedUser: LoggedUserType) {
     const reciverUserId = chat.users?.find(

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef, useState } from "react";
 import useChatAreaController from "./chat-area.controller";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { bufferToBase64, capitalizeNames, extractTime } from "@/utils";
@@ -11,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Socket } from "socket.io-client";
+import noMsgGif from "../../../assets/no-message.gif";
 
 interface ChateAreaProps {
   socket: Socket;
@@ -25,10 +24,11 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
     newMessage,
     lastMessageRef,
   } = useChatAreaController({ socket });
+  console.log(": reciverUser", reciverUser);
+  console.log(": conversation", conversation);
   const user = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
-
 
   // Scroll to the bottom when a new message is added
   // This effect runs every time the conversation updates
@@ -55,31 +55,40 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
             <EllipsisVertical className="text-primary-indigo" />
           </div>
           <div className="flex-1 flex flex-col gap-y-4 overflow-y-auto custom-scrollbar">
-            {conversation.map((msg: MessageType) => (
-              <div key={msg._id} className="flex flex-col my-2">
-                <div
-                  className={cn(
-                    msg.sender._id === user?.id
-                      ? "bg-violet-400 self-end text-secondary-white"
-                      : "bg-gray-200 self-start",
-                    "p-2 mr-1 rounded-3xl max-w-[75%]"
-                  )}
-                >
-                  <p>{msg.content}</p>
+            {conversation.length ? (
+              conversation.map((msg: MessageType) => (
+                <div key={msg._id} className="flex flex-col my-2">
+                  <div
+                    className={cn(
+                      msg.sender._id === user?.id
+                        ? "bg-violet-400 self-end text-secondary-white"
+                        : "bg-gray-200 self-start",
+                      "p-2 mr-1 rounded-3xl max-w-[75%]"
+                    )}
+                  >
+                    <p>{msg.content}</p>
+                  </div>
+                  <div
+                    className={cn(
+                      msg.sender._id === user?.id
+                        ? "self-end mt-1"
+                        : "self-start mt-1",
+                      "text-[11px] text-gray-500"
+                    )}
+                  >
+                    {extractTime(msg.updatedAt)}
+                  </div>
                 </div>
-                <div
-                  className={cn(
-                    msg.sender._id === user?.id
-                      ? "self-end mt-1"
-                      : "self-start mt-1",
-                    "text-[11px] text-gray-500"
-                  )}
-                >
-                  {extractTime(msg.updatedAt)}
-                </div>
+              ))
+            ) : (
+              <div className="flex justify-center items-center flex-1 flex-col">
+                <p className="text-2xl mb-4 font-bold bg-gradient-to-r from-primary-violet to-primary-indigo bg-clip-text text-transparent">
+                  No message yet.
+                </p>
+                <img src={noMsgGif} alt="No messages" className="" />
               </div>
-            ))}
-          <div ref={lastMessageRef} />
+            )}
+            <div ref={lastMessageRef} />
           </div>
           {/* Message input and send button */}
           <div className="flex border-t mt-2 pt-2">

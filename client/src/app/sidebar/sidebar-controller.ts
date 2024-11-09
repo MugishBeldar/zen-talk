@@ -5,6 +5,7 @@ const useSidebarController = () => {
   const navigate = useNavigate();
   const handleLogOut = () => {
     Cookies.remove("TOKEN");
+    Cookies.remove("LAST_CHAT");
     navigate("/login");
   };
   return { handleLogOut };

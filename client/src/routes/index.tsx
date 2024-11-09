@@ -9,6 +9,7 @@ import {
   ChatArea,
   ChatContainer,
   Login,
+  NoChatSelected,
   Setting,
   // Setting,
   Signup,
@@ -53,11 +54,7 @@ export const MainRouting = () => {
       children: [
         {
           path: "chat",
-          element: (
-            <div style={{ display: "flex" }}>
-              <div>No chat selected</div>
-            </div>
-          ),
+          element: <NoChatSelected />,
         },
         {
           path: "chat/:chatId",

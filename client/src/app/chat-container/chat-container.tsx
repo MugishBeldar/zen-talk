@@ -30,7 +30,7 @@ const ChatContainer = () => {
         )}
 
         {/* Chat Area (Messages) */}
-        <div className="flex-1 h-full bg-secondary-white rounded-xl">
+        <div className="flex-1 h-full bg-secondary-white shadow-md rounded-xl">
           <Outlet /> {/* This renders the child routes for chat area */}
         </div>
       </div>

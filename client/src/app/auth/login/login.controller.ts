@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { login } from "@/api/api";
 import { loginSchema } from "@/schemas";
 import { loggedUser } from "@/store/logged-user/logged-user.action";
-import { ErrorType } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { useState } from "react";
@@ -59,8 +59,8 @@ const useLoginController = ({
       navigate(`/${loginResponse.data.id}/chat`);
     } catch (error: unknown) {
       if (error && typeof error === "object" && "message" in error) {
-        const err = error as ErrorType;
-        setError(err.message);
+        const err = error as any;
+        setError(err.response.data.message);
       } else {
         setError("An unexpected error occurred.");
       }

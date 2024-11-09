@@ -1,3 +1,4 @@
 import useAuth from "./useAuth";
 import useDebounce from "./useDebounce";
-export { useAuth, useDebounce };
+import useTypingEffect from "./useTypingEffect";
+export { useAuth, useDebounce, useTypingEffect };

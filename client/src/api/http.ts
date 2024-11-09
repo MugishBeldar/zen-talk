@@ -45,7 +45,11 @@ AXIOS.interceptors.response.use(
     return response.data;
   },
   async (error) => {
-    if (error.response && error.response.status === 401) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      error.response.message !== "Invalid credentials"
+    ) {
       console.log("401 Unauthorized - Attempting token refresh");
 
       const tokens = Cookies.get("TOKEN");
