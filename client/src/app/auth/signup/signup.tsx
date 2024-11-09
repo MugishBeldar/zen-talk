@@ -13,6 +13,7 @@ import { Input } from "../../../components/ui/input";
 import { useState } from "react";
 import { FormError, FormSuccess } from "../../../components/form-response";
 import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [error, setError] = useState<string | undefined>();
@@ -27,12 +28,13 @@ export default function Signup() {
     setError,
     setSuccess,
   });
+  const navigate = useNavigate();
   const isLoading = form.formState.isSubmitting;
 
   return (
     <div className="flex flex-1 h-full items-center justify-center">
       <div className="bg-secondary-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-primary-indigo">Sign Up</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4">
@@ -156,6 +158,17 @@ export default function Signup() {
             </Button>
           </form>
         </Form>
+        <p className="flex justify-center items-center text-sm mt-1 gap-1">
+          Already have account?
+          <span
+            className="hover:text-primary-indigo hover:underline cursor-pointer"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            Login
+          </span>
+        </p>
       </div>
     </div>
   );

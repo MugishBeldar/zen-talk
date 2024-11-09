@@ -12,11 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { FormError, FormSuccess } from "@/components/form-response";
 import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-
+  const navigate = useNavigate();
   const { form, onSubmit, inputType, showPassword } = useLoginController({
     setError,
     setSuccess,
@@ -26,7 +27,9 @@ export default function Login() {
   return (
     <div className="flex flex-1 h-full items-center justify-center ">
       <div className="bg-secondary-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-primary-indigo">
+          Login
+        </h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4">
@@ -100,6 +103,17 @@ export default function Login() {
             </Button>
           </form>
         </Form>
+        <p className="flex justify-center items-center text-sm mt-1 gap-1">
+          Don't have account?
+          <span
+            className="hover:text-primary-indigo hover:underline cursor-pointer"
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            Singup
+          </span>
+        </p>
       </div>
     </div>
   );

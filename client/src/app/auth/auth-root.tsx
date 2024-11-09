@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import Header from "./header/header";
-import Footer from "./footer/footer";
+// import Header from "./header/header";
+// import Footer from "./footer/footer";
 import { useAuth } from "@/hooks";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -26,11 +26,11 @@ function AuthRoot() {
 
   return (
     <div className="flex flex-col h-screen bg-primary-white">
-      <Header />
+      {/* <Header /> */}
       <main className="flex-grow container mx-auto p-4">
         <Outlet />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
