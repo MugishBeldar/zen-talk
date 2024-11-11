@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { getConversation, getUserById } from "@/api/api";
 import { stateType } from "@/types/store";
-import { MessageType, userType } from "@/types/user";
+import { MessageType, SenderType, userType } from "@/types/user";
 import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-
+import { useDispatch } from "react-redux";
+import { chatList as chatListAction } from "@/store/chat-list/chat-list.action";
 interface UseChatAreaControllerProps {
   socket: Socket;
 }
@@ -20,6 +21,12 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const [newMessage, setNewMessage] = useState("");
   const [_socketConnected, setSocketConnected] = useState(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useDispatch();
+
+  const chatList = useSelector((state: stateType) => {
+    return state.chatListState.chatList;
+  });
+  console.log(": chatList -> chatList", chatList);
 
   const user = useSelector(
     (state: stateType) => state.loggedUserState.loggedUser
@@ -66,6 +73,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
 
   useEffect(() => {
     socket.on("message received", (data) => {
+      console.log(": useChatAreaController -> data", data);
       setConversation((prevConversation) => [...prevConversation, data]);
     });
 
@@ -91,6 +99,33 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
       updatedAt: new Date().toISOString(),
     };
 
+    const selectedChat = chatList.find((chat) => chat._id === chatId);
+    if (selectedChat && chatId) {
+      // Update the selected chat with the new latestMessage
+      selectedChat.latestMessage = msg;
+
+      // Replace the selected chat in the newChatList and sort by updatedAt
+      const newChatList = chatList
+        .map((chat) => (chat._id === chatId ? selectedChat : chat))
+        .sort((a, b) => {
+          if (a.latestMessage && b.latestMessage) {
+            // Convert updatedAt to dates only if both latestMessages exist
+            const dateA = new Date(a.latestMessage.updatedAt).getTime();
+            const dateB = new Date(b.latestMessage.updatedAt).getTime();
+            return dateB - dateA;
+          }
+          if (a.latestMessage) return -1; // Place chats with latestMessage above those without
+          if (b.latestMessage) return 1; // Place chats without latestMessage below those with
+          return 0; // Keep the original order for chats without latestMessage
+        });
+
+      console.log(": handleSendMessage -> newChatList", newChatList);
+      dispatch(chatListAction(newChatList));
+    }
+
+    console.log(": handleSendMessage -> selectedChat", selectedChat);
+
+    // Add the new message to the conversation
     setConversation((prevConversation) => [...prevConversation, msg]);
     const tokens = Cookies.get("TOKEN");
     if (tokens) {

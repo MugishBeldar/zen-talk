@@ -41,18 +41,22 @@ const fetchAllChats = async (req, res) => {
     let chats = await Chat.find({
       users: { $elemMatch: { $eq: user._id } },
     })
-      .populate("users", "-password")
+      .populate("users", "-password -profilePic")  // Exclude password and profilePic correctly
       .populate("latestMessage")
       .sort({ updatedAt: -1 });
+
     chats = await User.populate(chats, {
       path: "latestMessage.sender",
-      select: "name email profilePic",
+      select: "name email",  // Select only name and email for the sender
     });
+
+    console.log(": fetchAllChats -> chats", chats);
     return sendResponse(res, 200, chats);
   } catch (error) {
     return sendError(res, 500, "Internal server error", error);
   }
 };
+
 module.exports = {
   accessChat,
   fetchAllChats,
