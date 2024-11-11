@@ -18,7 +18,7 @@ AXIOS.interceptors.request.use(
     if (config.url === "users/login") {
       config.headers["Content-Type"] = "application/json";
     }
-    if (config.url === "/refresh_token") {
+    if (config.url === "/refreshtoken") {
       config.headers["Authorization"] = `Bearer ${REFRESH_TOKEN}`;
       config.headers["Content-Type"] = "application/json";
     } else if (ACCESSTOKEN) {
@@ -61,7 +61,6 @@ AXIOS.interceptors.response.use(
 
       try {
         const newTokens = await handleRefreshTokenAPI(REFRESH_TOKEN);
-
         if (newTokens) {
           const { accessToken, refreshToken } = newTokens;
           Cookies.set(
@@ -71,15 +70,14 @@ AXIOS.interceptors.response.use(
               REFRESH_TOKEN: refreshToken,
             })
           );
-
-          // Retry the failed request with the new access token
+          //   // Retry the failed request with the new access token
           error.config.headers["Authorization"] = `Bearer ${accessToken}`;
           return AXIOS.request(error.config);
         }
       } catch (refreshError) {
         console.error("Token refresh failed:", refreshError);
         Cookies.remove("TOKEN");
-        window.location.reload(); // Redirect to login or handle logout
+        window.location.reload();
       }
     } else if (
       error.response &&

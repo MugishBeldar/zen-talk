@@ -5,22 +5,20 @@ import Cookies from "js-cookie";
 import { CreateChatBodyType, LoginType, SignupType } from "@/types/user";
 
 export const handleRefreshTokenAPI = async (REFRESH_TOKEN: string) => {
-  console.log(REFRESH_TOKEN);
-  const response = await AXIOS.post(
-    API_ROUTES.POST_REFRESHTOKEN,
-    REFRESH_TOKEN
-  );
-  if (response.data.data) {
+  const response = await AXIOS.post(API_ROUTES.POST_REFRESHTOKEN, {
+    refreshToken: REFRESH_TOKEN,
+  });
+  if (response.data) {
     Cookies.set(
       "TOKEN",
       JSON.stringify({
-        ACCESSTOKEN: response?.data?.data?.accessToken,
-        REFRESH_TOKEN: response?.data?.data?.refreshToken,
-        EXPIRES_IN: response?.data?.data?.expiresIn,
+        ACCESSTOKEN: response?.data?.accessToken,
+        REFRESH_TOKEN: response?.data?.refreshToken,
+        EXPIRES_IN: response?.data?.expiresIn,
       })
     );
   }
-  return response.data.data;
+  return response.data;
 };
 
 export const signup = async (userData: SignupType) => {

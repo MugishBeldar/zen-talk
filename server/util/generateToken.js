@@ -17,7 +17,7 @@ async function gererateToken({ id }) {
     config.JWTConfig.secretKey,
     { expiresIn: config.JWTConfig.refreshTokenLife }
   );
-  return { accessToken, refreshToken, expiresIn: 3600 };
+  return { accessToken, refreshToken, expiresIn: config.JWTConfig.accessTokenLife };
 }
 
 module.exports = {
