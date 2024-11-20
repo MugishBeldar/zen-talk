@@ -22,7 +22,8 @@ const apiWrapper = async (url, method, headers = {}, queryParams = {}, bodyParam
     };
 
     // Making the API call
-    await axios(config);
+    const response = await axios(config);
+    console.log('\n\n[+]: apiWrapper -> response', response.data);
     // Sending the response back to the client
     return  // You can add additional processing if necessary
   } catch (error) {

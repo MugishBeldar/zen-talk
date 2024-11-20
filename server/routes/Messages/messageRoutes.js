@@ -9,4 +9,7 @@ const messageRouter = express.Router();
 // Get/api/v1/messages/:chatId
 messageRouter.get("/:chatId", allMessages);
 
+// Post/api/v1/messages 
+messageRouter.post("/", createMessage);
+
 module.exports = messageRouter;
