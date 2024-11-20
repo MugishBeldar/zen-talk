@@ -10,8 +10,6 @@ module.exports = function createMessageStreamConsumer({ kafka, ObjectId }) {
           // Parse the incoming message
           const newMessage = JSON.parse(message.value.toString());
 
-          console.log("[+] msg : ", newMessage);
-
           // Use insertOne to create the message
           const insertedMsg = await global.dbConnection
             .collection("messages")
@@ -35,8 +33,6 @@ module.exports = function createMessageStreamConsumer({ kafka, ObjectId }) {
               { _id: new ObjectId(newMessage.chat) },
               { $set: { latestMessage: newLyInsertedMessage._id } }
             );
-
-          console.log("[+] msg inserted in db: ", newLyInsertedMessage);
         } catch (error) {
           console.error("[-] Error processing message: ", error);
           // Additional error handling (e.g., logging, retry logic) can be added here.
