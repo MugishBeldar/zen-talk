@@ -15,7 +15,6 @@ async function verifyRefreshToken({ refreshToken }) {
   //   return { accessToken, refreshToken, expiresIn: 3600 };
   try {
     const isVerified = jwt.verify(refreshToken, config.JWTConfig.secretKey);
-    // console.log(isVerified, "verified...");
     return isVerified;
   } catch (error) {
     console.log(error.message); // jwt malformed

@@ -42,7 +42,6 @@ const { sendError, sendResponse } = require("../../util/api-handler");
 const allMessages = async (req, res) => {
   try {
     const { chatId } = req.params;
-    // console.log(": allMessages -> chatId", chatId);
     if (!chatId) {
       return sendError(res, 400, "chatId is required");
     }

@@ -53,43 +53,27 @@ const ioInstance = io(createdServer, {
 });
 
 ioInstance.on("connection", (socket) => {
-  console.log(`⚡: ${socket.id} user just connected!`);
+  // console.log(`⚡: ${socket.id} user just connected!`);
 
   socket.on("setup", (userData) => {
-    console.log("[+] User data received:", userData);
+    // console.log("[+] User data received:", userData);
     socket.join(userData.id);
     socket.emit("connected"); // Emit connected to acknowledge setup completion
   });
 
   socket.on("join room", (chatId) => {
-    console.log("[+] Chat ID received for joining room:", chatId);
+    // console.log("[+] Chat ID received for joining room:", chatId);
     socket.join(chatId);
   });
 
-  // socket.on("new message", (newMessageReceive) => {
-  //   console.log("[+] newMessageReceive:", newMessageReceive);
-  //   const chatUsers = newMessageReceive.users;
-
-  //   if (!chatUsers) {
-  //     console.log("chat or chat.users is not defined");
-  //     return;
-  //   }
-
-  //   chatUsers.forEach((user) => {
-  //     if (user._id === newMessageReceive.sender._id) return;
-  //     console.log(`Emitting to user: ${user._id}`);
-  //     socket.to(user._id).emit("message received", newMessageReceive);
-  //   });
-  // });
-
   socket.on("new message", (msg, { reciverId, senderId }, ACCESSTOKEN) => {
-    console.log("[+] ACCESSTOKEN", ACCESSTOKEN);
-    console.log("[+] newMessageReceive:", msg);
-    console.log("[+] Receiver ID:", reciverId, ", Sender ID:", senderId);
+    // console.log("[+] ACCESSTOKEN", ACCESSTOKEN);
+    // console.log("[+] newMessageReceive:", msg);
+    // console.log("[+] Receiver ID:", reciverId, ", Sender ID:", senderId);
 
     // Emit the message to the receiver (except the sender)
     if (reciverId && senderId && ACCESSTOKEN) {
-      console.log(`Emitting message to receiver: ${reciverId}`);
+      // console.log(`Emitting message to receiver: ${reciverId}`);
       socket.to(reciverId).emit("message received", msg);
       (async () => {
         const msgBody = {

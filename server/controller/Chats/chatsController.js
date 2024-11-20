@@ -50,7 +50,6 @@ const fetchAllChats = async (req, res) => {
       select: "name email",  // Select only name and email for the sender
     });
 
-    console.log(": fetchAllChats -> chats", chats);
     return sendResponse(res, 200, chats);
   } catch (error) {
     return sendError(res, 500, "Internal server error", error);
