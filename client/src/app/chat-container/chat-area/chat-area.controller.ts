@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { getConversation, getUserById } from "@/api/api";
 import { stateType } from "@/types/store";
-import { MessageType, SenderType, userType } from "@/types/user";
+import { MessageType, userType } from "@/types/user";
 import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -124,7 +124,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
     setConversation((prevConversation) => [...prevConversation, msg]);
     const tokens = Cookies.get("TOKEN");
     if (tokens) {
-      const { _, REFRESH_TOKEN } = JSON.parse(tokens);
+      const { REFRESH_TOKEN } = JSON.parse(tokens);
       socket.emit(
         "new message",
         msg,
