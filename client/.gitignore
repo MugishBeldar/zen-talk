@@ -26,5 +26,4 @@ dist-ssr
 /src/store/auth
 /src/store/drawer
 /src/store/edit 
-/src/store/setting-model
 
