@@ -26,7 +26,6 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const chatList = useSelector((state: stateType) => {
     return state.chatListState.chatList;
   });
-  console.log(": chatList -> chatList", chatList);
 
   const user = useSelector(
     (state: stateType) => state.loggedUserState.loggedUser
@@ -44,10 +43,9 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   useEffect(() => {
     if (!socket || !user) return;
 
-    socket.emit("setup", user);
+    socket.emit("setup", { id: user.id });
 
     socket.on("connected", () => {
-      console.log("Socket connection established with server");
       setSocketConnected(true);
     });
 
@@ -73,14 +71,13 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
 
   useEffect(() => {
     socket.on("message received", (data) => {
-      console.log(": useChatAreaController -> data", data);
       setConversation((prevConversation) => [...prevConversation, data]);
     });
 
     return () => {
       socket.off("message received");
     };
-  }, [socket]);
+  });
 
   // Send message to the server
   const handleSendMessage = () => {
@@ -119,11 +116,8 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
           return 0; // Keep the original order for chats without latestMessage
         });
 
-      console.log(": handleSendMessage -> newChatList", newChatList);
       dispatch(chatListAction(newChatList));
     }
-
-    console.log(": handleSendMessage -> selectedChat", selectedChat);
 
     // Add the new message to the conversation
     setConversation((prevConversation) => [...prevConversation, msg]);

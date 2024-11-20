@@ -2,7 +2,6 @@ import Cookies from "js-cookie";
 
 function useAuth() {
   const tokens = Cookies.get("TOKEN");
-  console.log("Tokens", tokens);
   if (tokens) {
     return true;
   } else {

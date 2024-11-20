@@ -73,7 +73,7 @@ const useSettingController = () => {
         );
       }
     } catch (error) {
-      console.log(": onSubmit -> error", error);
+      console.log("Error:---", error);
     }
   };
 
