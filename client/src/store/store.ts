@@ -3,7 +3,7 @@ import { createStore, combineReducers } from "redux";
 import LZString from "lz-string";
 import loggedUserReducer from "./logged-user/logged-user.reducer";
 import isSetChatListReducer from "./chat-list/chat-list.reducer";
-import openSettingReducer from "./setting-model/setting-model.reducer";
+import { openSettingReducer } from "./setting-model/setting-model.reducer";
 let localStoreVar: any = null;
 
 // Helper function to load compressed state from localStorage
