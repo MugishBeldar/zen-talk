@@ -10,6 +10,7 @@ const messageRouter = require("./routes/Messages/messageRoutes");
 const refreshTokenRouter = require("./routes/Refreshtoken/refreshTokenRoutes");
 const apiWrapper = require("./external-api-call/api-wrapper");
 const { pub, sub } = require('./services/redis');
+const testRouter = require("./routes/Test/testRoutes");
 
 // Move the Redis subscription outside the connection logic to avoid adding multiple listeners
 sub.subscribe("MESSAGES");
@@ -36,6 +37,8 @@ app.use("/api/v1/chats/", chatRouter);
 
 // Message route
 app.use("/api/v1/messages/", messageRouter);
+
+app.use('/api/v1/test/', testRouter);
 
 // Listener to server
 const PORT = process.env.PORT || 5000;
