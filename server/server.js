@@ -26,6 +26,11 @@ app.use(protect);
 // Routes
 //---------
 
+// Endpoint for vercel
+app.get("/", (req, res) => {
+  res.send("Hello from Vercel!");
+});
+
 // Refreshtoken route
 app.use("/api/v1/token/", refreshTokenRouter);
 

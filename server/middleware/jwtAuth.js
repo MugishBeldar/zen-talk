@@ -10,7 +10,9 @@ const { sendError } = require("../util/api-handler");
  * @param {function} next - Express next() function.
  */
 async function protect(req, res, next) {
+  console.log(req.path);
   if (
+    req.path !== "/" &&
     req.path !== "/api/v1/users/login" &&
     req.path !== "/api/v1/users/register" &&
     req.path !== "/api/v1/token/refreshtoken"
