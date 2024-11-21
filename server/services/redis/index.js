@@ -1,17 +1,17 @@
 const { Redis } = require('ioredis')
 
 const pub = new Redis({
-  host: "redis-13561.c212.ap-south-1-1.ec2.redns.redis-cloud.com",
-  port: 13561,
-  username: "default",
-  password: "root",
+  host: `${process.env.REDIS_HOST}`,
+  port: process.env.REDIS_PORT,
+  username: process.env.REDIS_USERNAME,
+  password: process.env.REDIS_PASSWORD,
 });
 
 const sub = new Redis({
-  host: "redis-13561.c212.ap-south-1-1.ec2.redns.redis-cloud.com",
-  port: 13561,
-  username: "default",
-  password: "root",
+  host: `${process.env.REDIS_HOST}`,
+  port: process.env.REDIS_PORT,
+  username: process.env.REDIS_USERNAME,
+  password: process.env.REDIS_PASSWORD,
 });
 
 module.exports = Object.freeze({
