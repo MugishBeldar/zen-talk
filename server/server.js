@@ -124,8 +124,9 @@ sub.on("message", async (channel, message) => {
         console.log('\n\n[+]: msgBody', msgBody);
 
         console.info("[+] Sending message to API...");
+          // "http://localhost:5000/api/v1/messages",
         await apiWrapper(
-          "http://localhost:5000/api/v1/messages",
+            "https://zen-talk-server.vercel.app/api/v1/messages",
           "POST",
           { Authorization: `Bearer ${msg.token}` }, // Include token from the published message
           {}, // Query parameters
