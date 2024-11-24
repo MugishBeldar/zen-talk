@@ -54,13 +54,17 @@ const createdServer = app.listen(
 
   // origin: "https://zen-talk.vercel.app",
 const corsOptions = {
-  origin: "http://localhost:5173", // Allow requests from this origin
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Allow all methods
+  origin: "*", // Allow all origins
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
 };
 
 const ioInstance = io(createdServer, {
+  transports: ["polling"], // Use polling transport
   pingTimeout: 60000,
   cors: corsOptions, // Set CORS options for Socket.IO server
+  polling: {
+    interval: 5000, // Set the polling interval to 5 seconds
+  },
 });
 
 ioInstance.on("connection", (socket) => {
