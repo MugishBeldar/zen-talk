@@ -4,6 +4,7 @@ import LZString from "lz-string";
 import loggedUserReducer from "./logged-user/logged-user.reducer";
 import isSetChatListReducer from "./chat-list/chat-list.reducer";
 import { openSettingReducer } from "./setting-model/setting-model.reducer";
+import {initiateSpinnerReducer} from "@/store/spinner/spinner.reducer.ts";
 let localStoreVar: any = null;
 
 // Helper function to load compressed state from localStorage
@@ -39,6 +40,7 @@ export const getStaticReducer = () => ({
   loggedUserState: loggedUserReducer,
   chatListState: isSetChatListReducer,
   settingState: openSettingReducer,
+  spinnerState: initiateSpinnerReducer,
 });
 
 // Combine reducers and configure the store

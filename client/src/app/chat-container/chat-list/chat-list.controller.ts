@@ -6,13 +6,13 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { spinner } from "@/store/spinner/spinner.action.ts";
 
 const useChatListController = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     (async () => {
       const response = await getChatList();
@@ -37,6 +37,7 @@ const useChatListController = () => {
   }
 
   const handleClick = (chat: ChatListType, loggedUser: LoggedUserType) => {
+    dispatch(spinner(true));
     const reciverUserId = getReciverUserId(chat, loggedUser);
     Cookies.set(
       "LAST_CHAT",

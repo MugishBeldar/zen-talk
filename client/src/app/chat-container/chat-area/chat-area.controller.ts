@@ -10,6 +10,7 @@ import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { chatList as chatListAction } from "@/store/chat-list/chat-list.action";
+import { spinner } from "@/store/spinner/spinner.action";
 interface UseChatAreaControllerProps {
   socket: Socket;
 }
@@ -21,6 +22,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const [newMessage, setNewMessage] = useState("");
   const [_socketConnected, setSocketConnected] = useState(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
+
   const dispatch = useDispatch();
 
   const chatList = useSelector((state: stateType) => {
@@ -63,6 +65,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
         if (response.data && reciver.data) {
           setReciverUser(reciver.data[0]);
           setConversation(response.data);
+          dispatch(spinner(false));
         }
       }
       socket.emit("join room", chatId);

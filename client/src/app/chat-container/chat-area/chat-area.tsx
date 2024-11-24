@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Socket } from "socket.io-client";
 import noMsgGif from "../../../assets/no-message.gif";
+import Spinner from "@/app/spinner/spinner";
 
 interface ChateAreaProps {
   socket: Socket;
@@ -27,13 +28,14 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
   const user = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
-
-  // Scroll to the bottom when a new message is added
-  // This effect runs every time the conversation updates
+  const isSpinner = useSelector((state: stateType) => {
+    return state.spinnerState.loading;
+  });
+  console.log("\n\n[+]: isSpinner -> isSpinner", isSpinner);
 
   return (
     <div className="h-full flex flex-col rounded-xl pl-2 pr-1 shadow-md py-2">
-      {reciverUser && conversation && (
+      {!isSpinner && reciverUser && conversation && (
         <>
           <div className="border-b flex pb-2 justify-center items-center">
             <div className="flex gap-4 items-center flex-1">
@@ -110,6 +112,11 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
             </div>
           </div>
         </>
+      )}
+      {isSpinner && (
+        <div className="flex justify-center items-center h-full">
+          <Spinner />
+        </div>
       )}
     </div>
   );
