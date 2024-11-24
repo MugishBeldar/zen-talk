@@ -16,6 +16,7 @@ import {
 } from "@/app";
 import Cookies from "js-cookie";
 import { io } from "socket.io-client";
+import {SOCKET_API_ENDPOINT} from "@/utils/enum.ts";
 
 const checkAuth = () => {
   const tokens = Cookies.get("TOKEN");
@@ -25,7 +26,8 @@ const checkAuth = () => {
   return null;
 };
 
-const socket = io("http://localhost:5000");
+// const socket = io("http://localhost:5000");
+const socket = io(SOCKET_API_ENDPOINT);
 
 export const MainRouting = () => {
   const router = createBrowserRouter([
