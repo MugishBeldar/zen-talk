@@ -1,6 +1,8 @@
 import { Slide } from "react-toastify";
-export const SOCKET_API_ENDPOINT = 'https://zen-talk-server.vercel.app';
-const API_ENDPOINT_V1 = "https://zen-talk-server.vercel.app/api/v1";
+// export const SOCKET_API_ENDPOINT = 'https://zen-talk-server.vercel.app';
+export const SOCKET_API_ENDPOINT = 'https://zen-talk-server.onrender.com';
+// const API_ENDPOINT_V1 = "https://zen-talk-server.vercel.app/api/v1";
+const API_ENDPOINT_V1 = "https://zen-talk-server.onrender.com/api/v1";
 // const API_ENDPOINT_V1 = "http://localhost:5000/api/v1";
 export const API_ENDPOINT = API_ENDPOINT_V1;
 const STATISTICS_API = {
