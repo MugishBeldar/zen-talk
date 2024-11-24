@@ -52,8 +52,9 @@ const createdServer = app.listen(
   console.log(`Server is up and running on ${PORT}`)
 );
 
+  // origin: "http://localhost:5173", // Allow requests from this origin
 const corsOptions = {
-  origin: "http://localhost:5173", // Allow requests from this origin
+  origin: "https://zen-talk.vercel.app",
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Allow all methods
 };
 
