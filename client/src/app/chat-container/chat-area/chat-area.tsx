@@ -31,7 +31,6 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
   const isSpinner = useSelector((state: stateType) => {
     return state.spinnerState.loading;
   });
-  console.log("\n\n[+]: isSpinner -> isSpinner", isSpinner);
 
   return (
     <div className="h-full flex flex-col rounded-xl pl-2 pr-1 shadow-md py-2">

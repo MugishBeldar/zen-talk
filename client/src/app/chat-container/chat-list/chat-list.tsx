@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Search from "@/app/search/search";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { useParams } from "react-router-dom";
@@ -9,11 +8,8 @@ import { ChatListType } from "@/types/user";
 import { cn } from "@/lib/utils";
 import { bufferToBase64, capitalizeNames, extractTime } from "@/utils";
 import Spinner from "@/app/spinner/spinner";
-interface ChatListProps {
-  chats: any;
-}
 
-const ChatList = ({ chats }: ChatListProps) => {
+const ChatList = () => {
   const { handleClick, isLoading } = useChatListController();
   const { chatId } = useParams();
 
@@ -23,8 +19,12 @@ const ChatList = ({ chats }: ChatListProps) => {
   const loggedUser = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
+  const screenSizes = useSelector((state: stateType) => {
+    return state.screenSizeState;
+  });
+
   return (
-    <div className="w-[400px] h-full rounded-xl px-4 flex flex-col">
+    <div className="w-full md:w-[400px] h-full rounded-xl px-4 flex flex-col">
       {/* Search Component */}
       <div className="pb-4">
         <Search />
@@ -51,7 +51,9 @@ const ChatList = ({ chats }: ChatListProps) => {
                   onClick={() => handleClick(chat, loggedUser)}
                   className={cn(
                     "border-b flex hover:bg-primary-white",
-                    chatId === chat._id ? "bg-primary-white" : null
+                    chatId === chat._id && screenSizes.largeScreen
+                      ? "bg-primary-white"
+                      : null
                   )}
                 >
                   <div className="flex flex-1">
@@ -73,7 +75,7 @@ const ChatList = ({ chats }: ChatListProps) => {
                                       ? bufferToBase64(user.profilePic)
                                       : `https://ui-avatars.com/api/?name=${user.name}&background=7c3aed&color=eff6fc`
                                   }
-                                  alt={`@${chats[0].name}`}
+                                  alt={`@${user.name}`}
                                   className="rounded-full border-2 border-primary-white cursor-pointer w-12 h-12"
                                 />
                               </Avatar>
