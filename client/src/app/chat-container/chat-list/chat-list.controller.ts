@@ -33,6 +33,7 @@ const useChatListController = () => {
       const { reciverUserId, chatId } = JSON.parse(lastChat);
       dispatch(spinner(true));
       navigate(`/${reciverUserId}/chat/${chatId}`);
+      dispatch(spinner(false));
     } else {
       navigate(`/${loggedUser?.id}/chat`);
     }

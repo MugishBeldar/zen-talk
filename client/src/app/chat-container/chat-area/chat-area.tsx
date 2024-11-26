@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Socket } from "socket.io-client";
 import noMsgGif from "../../../assets/no-message.gif";
 import Spinner from "@/app/spinner/spinner";
-
+import { ChevronLeft } from "lucide-react";
 interface ChateAreaProps {
   socket: Socket;
 }
@@ -24,6 +24,7 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
     setNewMessage,
     newMessage,
     lastMessageRef,
+    handleBack
   } = useChatAreaController({ socket });
   const user = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
@@ -31,12 +32,27 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
   const isSpinner = useSelector((state: stateType) => {
     return state.spinnerState.loading;
   });
+  const screenSizes = useSelector((state: stateType) => {
+    return state.screenSizeState;
+  });
 
   return (
-    <div className="h-full flex flex-col rounded-xl pl-2 pr-1 shadow-md py-2">
+    <div
+      className={cn("h-full flex flex-col rounded-xl pl-2 pr-1 shadow-md py-2")}
+    >
       {!isSpinner && reciverUser && conversation && (
         <>
-          <div className="border-b flex pb-2 justify-center items-center">
+          <div className="border-b gap-1 flex pb-2 justify-center items-center">
+            <div
+              onClick={handleBack}
+              className={
+                screenSizes.smallScreen
+                  ? cn("text-primary-violet cursor-pointer")
+                  : cn("hidden")
+              }
+            >
+              <ChevronLeft size={30} />
+            </div>
             <div className="flex gap-4 items-center flex-1">
               <Avatar>
                 <AvatarImage

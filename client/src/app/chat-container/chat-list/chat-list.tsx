@@ -1,6 +1,6 @@
 import Search from "@/app/search/search";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useChatListController from "./chat-list.controller";
 import { useSelector } from "react-redux";
 import { stateType } from "@/types/store";
@@ -12,7 +12,7 @@ import Spinner from "@/app/spinner/spinner";
 const ChatList = () => {
   const { handleClick, isLoading } = useChatListController();
   const { chatId } = useParams();
-
+  const path = useLocation();
   const chatList = useSelector((state: stateType) => {
     return state.chatListState.chatList;
   });
@@ -24,7 +24,13 @@ const ChatList = () => {
   });
 
   return (
-    <div className="w-full md:w-[400px] h-full rounded-xl px-4 flex flex-col">
+    <div
+      className={cn(
+        screenSizes.smallScreen && path.pathname.split("/").length === 4
+          ? "hidden"
+          : "w-full md:w-[400px] h-full rounded-xl px-4 flex flex-col"
+      )}
+    >
       {/* Search Component */}
       <div className="pb-4">
         <Search />

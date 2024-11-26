@@ -5,7 +5,7 @@ import { MessageType, userType } from "@/types/user";
 import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
@@ -24,7 +24,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const chatList = useSelector((state: stateType) => {
     return state.chatListState.chatList;
   });
@@ -32,6 +32,10 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const user = useSelector(
     (state: stateType) => state.loggedUserState.loggedUser
   );
+
+  const handleBack = () => {
+    navigate(`/${user?.id}/chat`);
+  };
 
   useEffect(() => {
     if (conversation.length > 0 && lastMessageRef.current) {
@@ -148,6 +152,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
     setNewMessage,
     newMessage,
     lastMessageRef,
+    handleBack,
   };
 };
 

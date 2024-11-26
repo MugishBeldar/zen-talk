@@ -51,6 +51,7 @@ const ChatContainer = () => {
             // screenSizes.smallScreen && path.pathname.split("/").length === 3
             //   ? "h-[calc(100vh-97px)]"
             //   : null,
+           
             "h-[calc(100vh-97px)] flex lg:gap-6 lg:h-[calc(100vh-40px)]"
           )}
         >
@@ -60,10 +61,10 @@ const ChatContainer = () => {
           {/* Chat Area (Messages) */}
           <div
             className={cn(
-              // screenSizes.smallScreen && path.pathname.split("/").length === 4
-              //   ? ""
-              //   : "",
-              "mr-3 lg:mr-0 flex-1 lg:h-full bg-secondary-white shadow-md rounded-xl"
+              screenSizes.smallScreen && path.pathname.split("/").length === 4
+                ? "ml-3"
+                : "hidden",
+              "md:block mr-3 lg:mr-0 flex-1 lg:h-full bg-secondary-white shadow-md rounded-xl"
             )}
           >
             <Outlet /> {/* This renders the child routes for chat area */}
