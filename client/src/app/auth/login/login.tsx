@@ -111,7 +111,7 @@ export default function Login() {
               navigate("/signup");
             }}
           >
-            Singup
+            Signup
           </span>
         </p>
       </div>
