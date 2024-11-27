@@ -11,7 +11,6 @@ import {
   Login,
   NoChatSelected,
   Setting,
-  // Setting,
   Signup,
 } from "@/app";
 import Cookies from "js-cookie";
@@ -29,8 +28,8 @@ const checkAuth = () => {
 // const socket = io("http://localhost:5000", {
 //   transports: ["polling"], // Use polling transport
 // });
-const socket = io('https://zen-talk-server.onrender.com',{
-transports: ["polling"], // Use polling transport
+const socket = io("https://zen-talk-server.onrender.com", {
+  transports: ["polling"], // Use polling transport
 });
 
 export const MainRouting = () => {

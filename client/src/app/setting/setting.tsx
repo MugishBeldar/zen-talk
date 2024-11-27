@@ -14,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 
 const Setting = () => {
   const { form, onSubmit, profilePic, handleProfilePicChange, handleCancel } =
@@ -22,13 +23,23 @@ const Setting = () => {
   const user = useSelector(
     (state: stateType) => state.loggedUserState.loggedUser
   );
+  const screenSizes = useSelector((state: stateType) => {
+    return state.screenSizeState;
+  });
   const isLoading = form.formState.isSubmitting;
 
   return (
-    <div className="p-6">
+    <div className="p-6 w-full">
       <p className="text-xl font-medium">Setting</p>
       {user?.id === userId && (
-        <div className="max-w-md w-full p-6 rounded-lg ">
+        <div
+          className={cn(
+            screenSizes.largeScreen
+              ? "max-w-md p-6"
+              : "w-full flex-col items-center",
+            "rounded-lg"
+          )}
+        >
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col items-center mb-6">
