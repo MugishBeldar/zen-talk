@@ -52,7 +52,7 @@ const createdServer = app.listen(
   console.log(`Server is up and running on ${PORT}`)
 );
 
-  // origin: "https://zen-talk.vercel.app",
+// origin: "https://zen-talk.vercel.app",
 const corsOptions = {
   origin: "*", // Allow all origins
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
@@ -108,20 +108,13 @@ ioInstance.on("connection", (socket) => {
 
 // Listen for messages from Redis on a global level (outside the socket connection event)
 sub.on("message", async (channel, message) => {
-  console.log('\n\n[+]: message', message);
-  console.log('\n\n[+]: channel', channel);
   if (channel === "MESSAGES") {
     try {
       const msg = JSON.parse(message);
-      console.log("[+] Received message on channel 'MESSAGES':", msg);
-
       const { reciverId, token } = msg; // Ensure reciverId is part of the published message
-      console.log('\n\n[+]: reciverId', msg.reciverId);
       if (reciverId && token) {
-        console.log(`Emitting message to receiver: ${reciverId}`);
         ioInstance.to(reciverId).emit("message received", msg);
 
-        // Send message to the API
         const msgBody = {
           content: msg.content,
           chatId: msg.chat,
@@ -129,9 +122,8 @@ sub.on("message", async (channel, message) => {
         console.log('\n\n[+]: msgBody', msgBody);
 
         console.info("[+] Sending message to API...");
-          // "http://localhost:5000/api/v1/messages",
-        await apiWrapper(
-            "https://zen-talk-server.vercel.app/api/v1/messages",
+        apiWrapper(
+          "http://localhost:5000/api/v1/messages",
           "POST",
           { Authorization: `Bearer ${msg.token}` }, // Include token from the published message
           {}, // Query parameters
