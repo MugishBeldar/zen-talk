@@ -1,5 +1,5 @@
 const express = require("express");
-const { accessChat, fetchAllChats } = require("../../controller/Chats/chatsController");
+const { accessChat, fetchAllChats, deleteChat } = require("../../controller/Chats/chatsController");
 
 const chatRouter = express.Router();
 
@@ -8,5 +8,8 @@ chatRouter.post("/", accessChat);
 
 // Get/api/v1/chats
 chatRouter.get("/", fetchAllChats);
+
+// Delete/api/v1/chats/:chatId
+chatRouter.delete("/:chatId", deleteChat);
 
 module.exports = chatRouter;

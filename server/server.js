@@ -59,6 +59,8 @@ const corsOptions = {
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
 };
 
+const onlineUsers = new Map();
+
 const ioInstance = io(createdServer, {
   transports: ["polling"], // Use polling transport
   pingTimeout: 60000,
@@ -71,9 +73,13 @@ const ioInstance = io(createdServer, {
 ioInstance.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 
+  // use this setup for showing online users.
   socket.on("setup", (userData) => {
     console.log("[+] User data received:", userData);
+    console.log(`[+] User ${userData.id} is online with socket ID ${socket.id}`);
     socket.join(userData.id);
+    onlineUsers.set(userData.id, socket.id); // Store user ID and socket ID
+    ioInstance.emit("onlineUsers", Array.from(onlineUsers.keys()));
     socket.emit("connected"); // Emit connected to acknowledge setup completion
   });
 
@@ -102,6 +108,14 @@ ioInstance.on("connection", (socket) => {
     }
   });
 
+  socket.on("new chat user", async (chatCreater, chatUser) => {
+    console.log('\n\n[+]: chatCreater', chatCreater);
+    console.log('\n\n[+]: chatUser', chatUser);
+
+    // Emit the event to all connected clients (or a specific room)
+    ioInstance.emit("get new chat user", chatCreater, chatUser);
+  });
+
   socket.on("disconnect", () => {
     console.log("[+] A user disconnected");
   });
@@ -125,7 +139,7 @@ sub.on("message", async (channel, message) => {
         console.info("[+] Sending message to API...");
         // "http://localhost:5000/api/v1/messages",
         apiWrapper(
-          `${config.renderServer}/api/v1/messages`,
+          `${"http://localhost:5000"}/api/v1/messages`,
           "POST",
           { Authorization: `Bearer ${msg.token}` }, // Include token from the published message
           {}, // Query parameters

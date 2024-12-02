@@ -56,7 +56,30 @@ const fetchAllChats = async (req, res) => {
   }
 };
 
+const deleteChat = async (req, res) => {
+  try {
+    const { chatId } = req.params;
+    console.log('\n\n[+]: deleteChat -> chatId', chatId);
+    if (!chatId) {
+      return sendError(res, 400, "chatId is not provided");
+    }
+    const chat = await Chat.findOne({
+      _id: chatId
+    })
+    if (!chat) {
+      return sendError(res, 404, 'Chat not found');
+    }
+    await Chat.deleteOne({
+      _id: chatId
+    })
+    return sendResponse(res, 200, 'deleted');
+  } catch (error) {
+    return sendError(res, 500, "Internal server error", error);
+  }
+}
+
 module.exports = {
   accessChat,
   fetchAllChats,
+  deleteChat
 };

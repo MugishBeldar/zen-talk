@@ -27,6 +27,7 @@ const apiWrapper = async (url, method, headers = {}, queryParams = {}, bodyParam
     // Sending the response back to the client
     return  // You can add additional processing if necessary
   } catch (error) {
+		console.log('\n\n[+]: apiWrapper -> error', error);
     console.error('API call failed:', error.response ? error.response.data : error.message);
     throw new Error('API call failed');
   }
