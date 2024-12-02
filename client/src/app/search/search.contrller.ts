@@ -2,21 +2,31 @@
 import { createChat, getChatList, searchUser } from "@/api/api";
 import { useDebounce } from "@/hooks";
 import { chatList } from "@/store/chat-list/chat-list.action";
+import { stateType } from "@/types/store";
 import { userType } from "@/types/user";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Socket } from "socket.io-client";
 
-const useSearchController = () => {
+interface UseSearchControllerProps {
+  socket: Socket;
+}
+
+const useSearchController = ({ socket }: UseSearchControllerProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUsers, setSearchUsers] = useState<userType[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [showResults, setShowResults] = useState(true); 
+  const [showResults, setShowResults] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const debouncedQuery = useDebounce(searchQuery, 500);
+  const user = useSelector((state: stateType) => {
+    return state.loggedUserState.loggedUser;
+  });
 
+  
   useEffect(() => {
     if (debouncedQuery && debouncedQuery.trim()) {
       (async () => {
@@ -57,13 +67,13 @@ const useSearchController = () => {
         setShowResults(false);
         setSearchQuery("");
         await creatUserChat(selectedUser);
-
       }
     }
   };
 
   const handleClick = async (clickedUser: userType) => {
     await creatUserChat(clickedUser);
+    socket.emit("new chat user", user, clickedUser); // this event not gitting to all client why
     setShowResults(false);
     setSearchQuery("");
   };

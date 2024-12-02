@@ -3,8 +3,12 @@ import { Search as SearchIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import useSearchController from "./search.contrller";
 import { bufferToBase64 } from "@/utils";
+import { Socket } from "socket.io-client";
 
-const Search = () => {
+interface SearchProps {
+  socket: Socket;
+}
+const Search = ({ socket }: SearchProps) => {
   const {
     setSearchQuery,
     searchUsers,
@@ -13,7 +17,7 @@ const Search = () => {
     showResults,
     selectedIndex,
     handleClick,
-  } = useSearchController();
+  } = useSearchController({socket});
 
   return (
     <div className="relative">

@@ -78,6 +78,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
 
   useEffect(() => {
     socket.on("message received", (data) => {
+      console.log("\n\n[+]: useChatAreaController -> data message received", data);
       setConversation((prevConversation) => [...prevConversation, data]);
     });
 

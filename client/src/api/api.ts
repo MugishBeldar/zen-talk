@@ -55,3 +55,7 @@ export const updateProfile = async (updateProfileBody: any, userId: string) => {
     { headers: { "Content-Type": "multipart/form-data" } }
   );
 };
+
+export const deleteUserChat = async (chatId: string) => {
+  return await AXIOS.delete(`${API_ROUTES.DELETE_CHAT}/${chatId}`);
+};

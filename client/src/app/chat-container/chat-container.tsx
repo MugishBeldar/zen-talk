@@ -8,14 +8,18 @@ import { useEffect } from "react";
 import { screenSize } from "@/store/screen-sizes/screen-sizes.action";
 import { stateType } from "@/types/store";
 import { cn } from "@/lib/utils";
+import { Socket } from "socket.io-client";
 
-const ChatContainer = () => {
+interface ChatContainerProps {
+  socket: Socket;
+}
+
+const ChatContainer = ({ socket }: ChatContainerProps) => {
   const dispatch = useDispatch();
   const screenSizes = useSelector((state: stateType) => {
     return state.screenSizeState;
   });
   const path = useLocation();
-  console.log("\n\n[+]: ChatContainer -> path", path.pathname.split("/"));
 
   useEffect(() => {
     const smallScreenQuery = window.matchMedia("(max-width: 768px)");
@@ -56,7 +60,9 @@ const ChatContainer = () => {
           )}
         >
           <Sidebar />
-          {path.pathname.split("/").includes("chat") && <ChatList />}
+          {path.pathname.split("/").includes("chat") && (
+            <ChatList socket={socket} />
+          )}
 
           {/* Chat Area (Messages) */}
           <div

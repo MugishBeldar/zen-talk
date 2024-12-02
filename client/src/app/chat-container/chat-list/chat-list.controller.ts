@@ -1,24 +1,57 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { getChatList } from "@/api/api";
+import { deleteUserChat, getChatList } from "@/api/api";
 import { chatList } from "@/store/chat-list/chat-list.action";
 import { ChatListType, LoggedUserType } from "@/types/user";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { spinner } from "@/store/spinner/spinner.action.ts";
 import { stateType } from "@/types/store";
+import { Socket } from "socket.io-client";
 
-const useChatListController = () => {
+interface UseChatListControllerProps {
+  socket: Socket;
+}
+const useChatListController = ({ socket }: UseChatListControllerProps) => {
+  const [idForDeleteChat, setIdForDeleteChat] = useState<string | undefined>();
+  const [deleteModel, setDeleteModel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { chatId } = useParams();
+  const path = useLocation();
+
   const screenSizes = useSelector((state: stateType) => {
     return state.screenSizeState;
   });
+
   const loggedUser = useSelector((state: stateType) => {
     return state.loggedUserState.loggedUser;
   });
+
+  const userChatList = useSelector((state: stateType) => {
+    return state.chatListState.chatList;
+  });
+
+  useEffect(() => {
+    socket.on("get new chat user", (chatCreater, me) => {
+      console.log("Chat Creator:", chatCreater);
+      console.log("Me:", me);
+      if (loggedUser?.id === me._id) {
+        console.log("This event for me", me);
+        (async function () {
+          const fetchChatListResponse = await getChatList();
+          dispatch(chatList(fetchChatListResponse.data));
+        })();
+      }
+    });
+
+    return () => {
+      socket.off("get new chat user");
+    };
+  }, [socket]);
+
   useEffect(() => {
     (async () => {
       const response = await getChatList();
@@ -39,6 +72,14 @@ const useChatListController = () => {
     }
   }, [screenSizes]);
 
+  async function deleteChat(chatId: string) {
+    const response = await deleteUserChat(chatId);
+    if (response.data.toLowerCase() === "deleted") {
+      const fetchChatListResponse = await getChatList();
+      dispatch(chatList(fetchChatListResponse.data));
+    }
+  }
+
   function getReciverUserId(chat: ChatListType, loggedUser: LoggedUserType) {
     const reciverUserId = chat.users?.find(
       (user) => loggedUser.id.trim() !== user._id
@@ -58,7 +99,22 @@ const useChatListController = () => {
     );
     navigate(`/${reciverUserId}/chat/${chat._id}`);
   };
-  return { getReciverUserId, handleClick, isLoading };
+
+  return {
+    getReciverUserId,
+    handleClick,
+    isLoading,
+    setDeleteModel,
+    deleteModel,
+    chatId,
+    path,
+    userChatList,
+    loggedUser,
+    screenSizes,
+    setIdForDeleteChat,
+    deleteChat,
+    idForDeleteChat,
+  };
 };
 
 export default useChatListController;

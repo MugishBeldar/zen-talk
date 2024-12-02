@@ -1,27 +1,33 @@
 import Search from "@/app/search/search";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { useLocation, useParams } from "react-router-dom";
 import useChatListController from "./chat-list.controller";
-import { useSelector } from "react-redux";
-import { stateType } from "@/types/store";
 import { ChatListType } from "@/types/user";
 import { cn } from "@/lib/utils";
 import { bufferToBase64, capitalizeNames, extractTime } from "@/utils";
 import Spinner from "@/app/spinner/spinner";
+import { Socket } from "socket.io-client";
+import { Trash2 } from "lucide-react";
+import { DeleteModal } from "@/app/modals";
 
-const ChatList = () => {
-  const { handleClick, isLoading } = useChatListController();
-  const { chatId } = useParams();
-  const path = useLocation();
-  const chatList = useSelector((state: stateType) => {
-    return state.chatListState.chatList;
-  });
-  const loggedUser = useSelector((state: stateType) => {
-    return state.loggedUserState.loggedUser;
-  });
-  const screenSizes = useSelector((state: stateType) => {
-    return state.screenSizeState;
-  });
+interface ChatListProps {
+  socket: Socket;
+}
+
+const ChatList = ({ socket }: ChatListProps) => {
+  const {
+    handleClick,
+    isLoading,
+    setDeleteModel,
+    deleteModel,
+    chatId,
+    path,
+    userChatList,
+    loggedUser,
+    screenSizes,
+    setIdForDeleteChat,
+    deleteChat,
+    idForDeleteChat,
+  } = useChatListController({ socket });
 
   return (
     <div
@@ -33,14 +39,14 @@ const ChatList = () => {
     >
       {/* Search Component */}
       <div className="pb-4">
-        <Search />
+        <Search socket={socket} />
       </div>
 
       {/* Chats Heading */}
       <div className="bg-secondary-white shadow-md rounded-t-xl p-2">
         {" "}
         {/* Added padding for spacing */}
-        {chatList.length > 0 && (
+        {userChatList.length > 0 && (
           <p className="text-xl font-medium p-4">People</p>
         )}
         {/* Enhanced heading styles */}
@@ -49,14 +55,14 @@ const ChatList = () => {
       {/* Scrollable Chat List Area */}
       <div className="flex-1 rounded-b-xl px-3 bg-secondary-white shadow-md overflow-y-auto custom-scrollbar">
         <ul className="h-full cursor-pointer">
-          {loggedUser && chatList.length ? (
-            chatList.map((chat: ChatListType) => {
+          {loggedUser && userChatList.length ? (
+            userChatList.map((chat: ChatListType) => {
               return (
                 <div
                   key={chat._id}
                   onClick={() => handleClick(chat, loggedUser)}
                   className={cn(
-                    "border-b flex hover:bg-primary-white",
+                    "group border-b flex hover:bg-primary-white",
                     chatId === chat._id && screenSizes.largeScreen
                       ? "bg-primary-white"
                       : null
@@ -65,7 +71,6 @@ const ChatList = () => {
                   <div className="flex flex-1">
                     <li
                       key={`chat-item-${chat._id}`}
-                      // className=""
                       className={cn("flex items-center justify-between p-2")}
                     >
                       <div className="flex items-center">
@@ -113,8 +118,25 @@ const ChatList = () => {
                       </div>
                     </li>
                   </div>
-                  <div className="text-gray-500 text-[13px] pt-2 pr-2 whitespace-nowrap">
-                    <p>{extractTime(chat?.latestMessage?.updatedAt) || ""}</p>
+                  <div className="flex flex-col justify-center gap-2 text-gray-500 text-[13px] pr-2 whitespace-nowrap group-hover:visible">
+                    <p>{extractTime(chat?.latestMessage?.updatedAt)}</p>
+                    <p
+                      className={cn(
+                        screenSizes.smallScreen
+                          ? "hidden"
+                          : "invisible group-hover:visible text-primary-red flex justify-end"
+                      )}
+                    >
+                      <Trash2
+                        onClick={(e) => {
+                          // Prevent event bubbling
+                          e.stopPropagation();
+                          setDeleteModel(true);
+                          setIdForDeleteChat(chat._id);
+                        }}
+                        size={18}
+                      />
+                    </p>
                   </div>
                 </div>
               );
@@ -132,6 +154,12 @@ const ChatList = () => {
           )}
         </ul>
       </div>
+      <DeleteModal
+        deleteFunction={deleteChat}
+        isOpenModal={deleteModel}
+        setIsOpenModal={setDeleteModel}
+        id={idForDeleteChat}
+      />
     </div>
   );
 };

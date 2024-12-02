@@ -23,6 +23,8 @@ export default {
 
         "primary-gray": "var(--color-text-gray)",
 
+        "primary-red": "var(--color-red-primary)",
+        
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

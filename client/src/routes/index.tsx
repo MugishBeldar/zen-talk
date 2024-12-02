@@ -15,6 +15,7 @@ import {
 } from "@/app";
 import Cookies from "js-cookie";
 import { io } from "socket.io-client";
+import { SOCKET_API_ENDPOINT } from "@/utils/enum";
 // import {SOCKET_API_ENDPOINT} from "@/utils/enum.ts";
 
 const checkAuth = () => {
@@ -28,7 +29,7 @@ const checkAuth = () => {
 // const socket = io("http://localhost:5000", {
 //   transports: ["polling"], // Use polling transport
 // });
-const socket = io("https://zen-talk-server.onrender.com", {
+const socket = io(SOCKET_API_ENDPOINT, {
   transports: ["polling"], // Use polling transport
 });
 
@@ -54,7 +55,7 @@ export const MainRouting = () => {
     },
     {
       path: "/:userId",
-      element: <ChatContainer />,
+      element: <ChatContainer socket={socket} />,
       loader: checkAuth,
       children: [
         {
