@@ -27,6 +27,7 @@ const ChatList = ({ socket }: ChatListProps) => {
     setIdForDeleteChat,
     deleteChat,
     idForDeleteChat,
+    onlineUsersState,
   } = useChatListController({ socket });
 
   return (
@@ -78,7 +79,7 @@ const ChatList = ({ socket }: ChatListProps) => {
                           (user) =>
                             loggedUser &&
                             loggedUser.id !== user._id && (
-                              <Avatar className="pr-4 flex-shrink-0">
+                              <Avatar className="relative pr-4 flex-shrink-0">
                                 <AvatarImage
                                   key={`avatar-${chat._id}-${user._id}`}
                                   src={
@@ -89,6 +90,10 @@ const ChatList = ({ socket }: ChatListProps) => {
                                   alt={`@${user.name}`}
                                   className="rounded-full border-2 border-primary-white cursor-pointer w-12 h-12"
                                 />
+                                {onlineUsersState &&
+                                  onlineUsersState.includes(user._id) && (
+                                    <span className="absolute bottom-0 right-4 w-3 h-3 bg-green-500 border-2 border-primary-white rounded-full"></span>
+                                  )}
                               </Avatar>
                             )
                         )}
@@ -98,7 +103,6 @@ const ChatList = ({ socket }: ChatListProps) => {
                             loggedUser &&
                             loggedUser.id !== user._id && (
                               <div
-                                // to={`/${user._id}/chat/${chat._id}`}
                                 key={`user-${chat._id}-${user._id}`}
                                 className="text-gray-800"
                               >

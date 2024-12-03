@@ -6,6 +6,7 @@ import isSetChatListReducer from "./chat-list/chat-list.reducer";
 import { openSettingReducer } from "./setting-model/setting-model.reducer";
 import { initiateSpinnerReducer } from "@/store/spinner/spinner.reducer.ts";
 import { initiateScreenSizeReducer } from "./screen-sizes/screen-size.reducer";
+import { initiateOnlineUsersReducer } from "./online-users/online-users.reducer";
 
 let localStoreVar: any = null;
 
@@ -44,6 +45,7 @@ export const getStaticReducer = () => ({
   settingState: openSettingReducer,
   spinnerState: initiateSpinnerReducer,
   screenSizeState: initiateScreenSizeReducer,
+  onlineUsersState: initiateOnlineUsersReducer,
 });
 
 // Combine reducers and configure the store

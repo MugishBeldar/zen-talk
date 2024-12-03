@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { deleteUserChat, getChatList } from "@/api/api";
 import { chatList } from "@/store/chat-list/chat-list.action";
@@ -9,6 +10,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { spinner } from "@/store/spinner/spinner.action.ts";
 import { stateType } from "@/types/store";
 import { Socket } from "socket.io-client";
+import { onlineUsers } from "@/store/online-users/online-users.actions";
 
 interface UseChatListControllerProps {
   socket: Socket;
@@ -17,10 +19,15 @@ const useChatListController = ({ socket }: UseChatListControllerProps) => {
   const [idForDeleteChat, setIdForDeleteChat] = useState<string | undefined>();
   const [deleteModel, setDeleteModel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [_socketConnected, setSocketConnected] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { chatId } = useParams();
   const path = useLocation();
+
+  const onlineUsersState = useSelector((state: stateType) => {
+    return state.onlineUsersState.onlineUsers;
+  });
 
   const screenSizes = useSelector((state: stateType) => {
     return state.screenSizeState;
@@ -35,11 +42,22 @@ const useChatListController = ({ socket }: UseChatListControllerProps) => {
   });
 
   useEffect(() => {
-    socket.on("get new chat user", (chatCreater, me) => {
-      console.log("Chat Creator:", chatCreater);
-      console.log("Me:", me);
+    if (!socket || !loggedUser) return;
+
+    socket.emit("setup", { id: loggedUser.id });
+
+    socket.on("connected", () => {
+      setSocketConnected(true);
+    });
+
+    return () => {
+      socket.off("connected");
+    };
+  }, [socket, loggedUser]);
+
+  useEffect(() => {
+    socket.on("get new chat user", (_chatCreater, me) => {
       if (loggedUser?.id === me._id) {
-        console.log("This event for me", me);
         (async function () {
           const fetchChatListResponse = await getChatList();
           dispatch(chatList(fetchChatListResponse.data));
@@ -51,6 +69,16 @@ const useChatListController = ({ socket }: UseChatListControllerProps) => {
       socket.off("get new chat user");
     };
   }, [socket]);
+
+  useEffect(() => {
+    socket.on("onlineUsers", (users) => {
+      dispatch(onlineUsers(users));
+    });
+
+    return () => {
+      socket.off("onlineUsers");
+    };
+  });
 
   useEffect(() => {
     (async () => {
@@ -114,6 +142,7 @@ const useChatListController = ({ socket }: UseChatListControllerProps) => {
     setIdForDeleteChat,
     deleteChat,
     idForDeleteChat,
+    onlineUsersState,
   };
 };
 

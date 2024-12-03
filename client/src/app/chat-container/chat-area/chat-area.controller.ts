@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getConversation, getUserById } from "@/api/api";
 import { stateType } from "@/types/store";
 import { MessageType, userType } from "@/types/user";
@@ -20,11 +19,23 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const [conversation, setConversation] = useState<MessageType[]>([]);
   const [reciverUser, setReciverUser] = useState<userType>();
   const [newMessage, setNewMessage] = useState("");
-  const [_socketConnected, setSocketConnected] = useState(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isSpinner = useSelector((state: stateType) => {
+    return state.spinnerState.loading;
+  });
+
+  const screenSizes = useSelector((state: stateType) => {
+    return state.screenSizeState;
+  });
+
+  const onlineUsersState = useSelector((state: stateType) => {
+    return state.onlineUsersState.onlineUsers;
+  });
+
   const chatList = useSelector((state: stateType) => {
     return state.chatListState.chatList;
   });
@@ -47,20 +58,6 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   }, [conversation]);
 
   useEffect(() => {
-    if (!socket || !user) return;
-
-    socket.emit("setup", { id: user.id });
-
-    socket.on("connected", () => {
-      setSocketConnected(true);
-    });
-
-    return () => {
-      socket.off("connected");
-    };
-  }, [socket, user]);
-
-  useEffect(() => {
     (async () => {
       if (chatId && userId && socket) {
         const response = await getConversation(chatId);
@@ -78,7 +75,6 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
 
   useEffect(() => {
     socket.on("message received", (data) => {
-      console.log("\n\n[+]: useChatAreaController -> data message received", data);
       setConversation((prevConversation) => [...prevConversation, data]);
     });
 
@@ -154,6 +150,10 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
     newMessage,
     lastMessageRef,
     handleBack,
+    onlineUsersState,
+    user,
+    isSpinner,
+    screenSizes,
   };
 };
 

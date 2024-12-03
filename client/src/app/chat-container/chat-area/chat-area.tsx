@@ -3,8 +3,6 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { bufferToBase64, capitalizeNames, extractTime } from "@/utils";
 import { EllipsisVertical } from "lucide-react";
 import { MessageType } from "@/types/user";
-import { stateType } from "@/types/store";
-import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,17 +22,12 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
     setNewMessage,
     newMessage,
     lastMessageRef,
-    handleBack
+    handleBack,
+    onlineUsersState,
+    user,
+    isSpinner,
+    screenSizes,
   } = useChatAreaController({ socket });
-  const user = useSelector((state: stateType) => {
-    return state.loggedUserState.loggedUser;
-  });
-  const isSpinner = useSelector((state: stateType) => {
-    return state.spinnerState.loading;
-  });
-  const screenSizes = useSelector((state: stateType) => {
-    return state.screenSizeState;
-  });
 
   return (
     <div
@@ -54,7 +47,7 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
               <ChevronLeft size={30} />
             </div>
             <div className="flex gap-4 items-center flex-1">
-              <Avatar>
+              <Avatar className="relative">
                 <AvatarImage
                   src={
                     reciverUser?.profilePic?.type === "Buffer"
@@ -64,8 +57,20 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
                   alt={`@${reciverUser?.name}`}
                   className="rounded-full cursor-pointer w-12 h-12"
                 />
+                {onlineUsersState &&
+                  onlineUsersState.includes(reciverUser._id) && (
+                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-primary-white rounded-full"></span>
+                  )}
               </Avatar>
-              <p>{reciverUser && capitalizeNames(reciverUser?.name)}</p>
+              <div className="flex flex-col justify-center">
+                <p>{reciverUser && capitalizeNames(reciverUser?.name)}</p>
+                <p className="text-xs text-primary-gray">
+                  {onlineUsersState &&
+                  onlineUsersState.includes(reciverUser._id)
+                    ? "Online"
+                    : "Offline"}
+                </p>
+              </div>
             </div>
             <EllipsisVertical className="text-primary-indigo" />
           </div>
