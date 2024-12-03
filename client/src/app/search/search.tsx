@@ -35,7 +35,7 @@ const Search = ({ socket }: SearchProps) => {
         />
       </div>
       {showResults && searchUsers.length && searchQuery.length > 2 ? (
-        <div className="absolute px-3 mt-2 w-full max-h-60 overflow-y-auto bg-secondary-white shadow-md rounded-lg custom-scrollbar">
+        <div className="absolute  z-20 px-3 mt-2 w-full max-h-60 overflow-y-auto bg-secondary-white shadow-md rounded-lg custom-scrollbar">
           <ul className="divide-y divide-gray-200 my-1">
             {searchUsers.map((user, index) => (
               <li

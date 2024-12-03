@@ -18,7 +18,7 @@
     --color-ring-indigo: #818cf8;
     --color-text-gray: #6b7280;
 
-    --color-red-primary: #EE4B2B;
+    --color-red-primary: #ee4b2b;
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
     --card: 0 0% 100%;
@@ -159,4 +159,22 @@
 
 .animation-delay {
   animation-delay: 1s;
+}
+
+.input-field {
+  --input-height: 5px; /* Default height for input */
+  height: var(--input-height);
+}
+
+.text-area {
+  height: 40px; /* Matches the input field height */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar in WebKit browsers */
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none; /* Hide the scrollbar in IE and Edge */
+  scrollbar-width: none; /* Hide the scrollbar in Firefox */
 }

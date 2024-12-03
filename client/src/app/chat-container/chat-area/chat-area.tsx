@@ -5,7 +5,6 @@ import { EllipsisVertical } from "lucide-react";
 import { MessageType } from "@/types/user";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Socket } from "socket.io-client";
 import noMsgGif from "../../../assets/no-message.gif";
 import Spinner from "@/app/spinner/spinner";
@@ -76,30 +75,34 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
           </div>
           <div className="flex-1 flex flex-col gap-y-4 overflow-y-auto custom-scrollbar">
             {conversation.length ? (
-              conversation.map((msg: MessageType) => (
-                <div key={msg._id} className="flex flex-col my-2">
-                  <div
-                    className={cn(
-                      msg.sender._id === user?.id
-                        ? "bg-violet-400 self-end text-secondary-white"
-                        : "bg-gray-200 self-start",
-                      "p-2 mr-1 rounded-3xl max-w-[75%]"
-                    )}
-                  >
-                    <p>{msg.content}</p>
+              conversation.map((msg: MessageType) => {
+                return (
+                  <div key={msg._id} className="flex flex-col my-2">
+                    <div
+                      className={cn(
+                        msg.sender._id === user?.id
+                          ? "bg-violet-400 self-end text-secondary-white"
+                          : "bg-gray-200 self-start",
+                        "p-2 mr-1 rounded-xl max-w-[75%]"
+                      )}
+                    >
+                      <pre className="whitespace-pre-wrap break-words">
+                        {msg.content}
+                      </pre>
+                    </div>
+                    <div
+                      className={cn(
+                        msg.sender._id === user?.id
+                          ? "self-end mt-1"
+                          : "self-start mt-1",
+                        "text-[11px] text-gray-500"
+                      )}
+                    >
+                      {extractTime(msg.updatedAt)}
+                    </div>
                   </div>
-                  <div
-                    className={cn(
-                      msg.sender._id === user?.id
-                        ? "self-end mt-1"
-                        : "self-start mt-1",
-                      "text-[11px] text-gray-500"
-                    )}
-                  >
-                    {extractTime(msg.updatedAt)}
-                  </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="flex justify-center items-center flex-1 flex-col">
                 <p className="text-2xl mb-4 font-bold bg-gradient-to-r from-primary-violet to-primary-indigo bg-clip-text text-transparent">
@@ -110,17 +113,28 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
             )}
             <div ref={lastMessageRef} />
           </div>
-          {/* Message input and send button */}
+          {/* Message textarea and send button */}
           <div className="flex border-t mt-2 pt-2">
             <div className="flex-1">
-              <Input
-                type="text"
-                className=" p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-secondary-indigo focus-visible:ring-none focus-visible:ring-offset-0"
-                placeholder="Type your message..."
-                value={newMessage}
+              <textarea
                 onChange={(e) => setNewMessage(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              />
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                value={newMessage}
+                placeholder="Type your message..."
+                id="myTextarea"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  paddingTop: "10px",
+                  boxSizing: "border-box",
+                }}
+                className="flex items-center scrollbar-none text-area w-full border overflow-y-auto rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-secondary-indigo"
+              ></textarea>
             </div>
             <div>
               <Button

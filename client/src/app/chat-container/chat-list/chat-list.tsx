@@ -79,7 +79,7 @@ const ChatList = ({ socket }: ChatListProps) => {
                           (user) =>
                             loggedUser &&
                             loggedUser.id !== user._id && (
-                              <Avatar className="relative pr-4 flex-shrink-0">
+                              <Avatar className="relative z-10 pr-4 flex-shrink-0">
                                 <AvatarImage
                                   key={`avatar-${chat._id}-${user._id}`}
                                   src={
