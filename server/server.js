@@ -63,13 +63,13 @@ const onlineUsers = new Map();
 
 const ioInstance = io(createdServer, {
   // Use polling transport
-  transports: ["polling"], 
+  transports: ["polling"],
   pingTimeout: 60000,
   // Set CORS options for Socket.IO server
-  cors: corsOptions, 
+  cors: corsOptions,
   polling: {
     // Set the polling interval to 5 seconds
-    interval: 5000, 
+    interval: 5000,
   },
 });
 
@@ -81,10 +81,10 @@ ioInstance.on("connection", (socket) => {
     console.log(`[+] User ${userData.id} is online with socket ID ${socket.id}`);
     socket.join(userData.id);
     // Store user ID and socket ID
-    onlineUsers.set(userData.id, socket.id); 
+    onlineUsers.set(userData.id, socket.id);
     ioInstance.emit("onlineUsers", Array.from(onlineUsers.keys()));
     // Emit connected to acknowledge setup completion
-    socket.emit("connected"); 
+    socket.emit("connected");
   });
 
   socket.on("join room", (chatId) => {
@@ -113,6 +113,14 @@ ioInstance.on("connection", (socket) => {
     ioInstance.emit("get new chat user", chatCreater, chatUser);
   });
 
+  socket.on('typing', (senderUser, reciverUser) => {
+    ioInstance.emit('userTyping', senderUser, reciverUser);
+  })
+
+  socket.on('stopTyping', (senderUser, reciverUser) => {
+    ioInstance.emit('stopUserTyping', senderUser, reciverUser);
+  })
+
   socket.on("disconnect", () => {
     for (let [userId, socketId] of onlineUsers.entries()) {
       if (socketId === socket.id) {
@@ -131,7 +139,7 @@ sub.on("message", async (channel, message) => {
     try {
       const msg = JSON.parse(message);
       // Ensure reciverId is part of the published message
-      const { reciverId, token } = msg; 
+      const { reciverId, token } = msg;
       if (reciverId && token) {
         ioInstance.to(reciverId).emit("message received", msg);
 
@@ -144,13 +152,13 @@ sub.on("message", async (channel, message) => {
           `${"http://localhost:5000"}/api/v1/messages`,
           "POST",
           // Include token from the published message
-          { Authorization: `Bearer ${msg.token}` }, 
+          { Authorization: `Bearer ${msg.token}` },
           // Query parameters
-          {}, 
+          {},
           // Body params
-          msgBody, 
+          msgBody,
           // Condition to include custom headers
-          true 
+          true
         );
       } else {
         console.error("Receiver ID or token is missing.");
