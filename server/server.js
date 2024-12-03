@@ -62,11 +62,14 @@ const corsOptions = {
 const onlineUsers = new Map();
 
 const ioInstance = io(createdServer, {
-  transports: ["polling"], // Use polling transport
+  // Use polling transport
+  transports: ["polling"], 
   pingTimeout: 60000,
-  cors: corsOptions, // Set CORS options for Socket.IO server
+  // Set CORS options for Socket.IO server
+  cors: corsOptions, 
   polling: {
-    interval: 5000, // Set the polling interval to 5 seconds
+    // Set the polling interval to 5 seconds
+    interval: 5000, 
   },
 });
 
@@ -75,12 +78,13 @@ ioInstance.on("connection", (socket) => {
 
   // use this setup for showing online users.
   socket.on("setup", (userData) => {
-    console.log("[+] User data received:", userData);
     console.log(`[+] User ${userData.id} is online with socket ID ${socket.id}`);
     socket.join(userData.id);
-    onlineUsers.set(userData.id, socket.id); // Store user ID and socket ID
+    // Store user ID and socket ID
+    onlineUsers.set(userData.id, socket.id); 
     ioInstance.emit("onlineUsers", Array.from(onlineUsers.keys()));
-    socket.emit("connected"); // Emit connected to acknowledge setup completion
+    // Emit connected to acknowledge setup completion
+    socket.emit("connected"); 
   });
 
   socket.on("join room", (chatId) => {
@@ -89,12 +93,8 @@ ioInstance.on("connection", (socket) => {
   });
 
   socket.on("new message", async (msg, { reciverId, senderId }, ACCESSTOKEN) => {
-    console.log("[+] ACCESSTOKEN", ACCESSTOKEN);
-    console.log("[+] newMessageReceive:", msg);
-    console.log("[+] Receiver ID:", reciverId, ", Sender ID:", senderId);
     if (reciverId && senderId && ACCESSTOKEN) {
       console.log(`Emitting message to receiver: ${reciverId}`);
-      console.info(`\n\n[+] File:-- server.js, Line:-- 93, publishing message to the redis`);
       msg.reciverId = reciverId;
       msg.senderId = senderId;
       msg.token = ACCESSTOKEN;
@@ -109,15 +109,19 @@ ioInstance.on("connection", (socket) => {
   });
 
   socket.on("new chat user", async (chatCreater, chatUser) => {
-    console.log('\n\n[+]: chatCreater', chatCreater);
-    console.log('\n\n[+]: chatUser', chatUser);
-
     // Emit the event to all connected clients (or a specific room)
     ioInstance.emit("get new chat user", chatCreater, chatUser);
   });
 
   socket.on("disconnect", () => {
-    console.log("[+] A user disconnected");
+    for (let [userId, socketId] of onlineUsers.entries()) {
+      if (socketId === socket.id) {
+        onlineUsers.delete(userId);
+        console.log(`[+] User ${userId} disconnected.`);
+        break;
+      }
+    }
+    ioInstance.emit("onlineUsers", Array.from(onlineUsers.keys()));
   });
 });
 
@@ -126,7 +130,8 @@ sub.on("message", async (channel, message) => {
   if (channel === "MESSAGES") {
     try {
       const msg = JSON.parse(message);
-      const { reciverId, token } = msg; // Ensure reciverId is part of the published message
+      // Ensure reciverId is part of the published message
+      const { reciverId, token } = msg; 
       if (reciverId && token) {
         ioInstance.to(reciverId).emit("message received", msg);
 
@@ -134,17 +139,18 @@ sub.on("message", async (channel, message) => {
           content: msg.content,
           chatId: msg.chat,
         };
-        console.log('\n\n[+]: msgBody', msgBody);
-
-        console.info("[+] Sending message to API...");
         // "http://localhost:5000/api/v1/messages",
         apiWrapper(
           `${"http://localhost:5000"}/api/v1/messages`,
           "POST",
-          { Authorization: `Bearer ${msg.token}` }, // Include token from the published message
-          {}, // Query parameters
-          msgBody, // Body params
-          true // Condition to include custom headers
+          // Include token from the published message
+          { Authorization: `Bearer ${msg.token}` }, 
+          // Query parameters
+          {}, 
+          // Body params
+          msgBody, 
+          // Condition to include custom headers
+          true 
         );
       } else {
         console.error("Receiver ID or token is missing.");
