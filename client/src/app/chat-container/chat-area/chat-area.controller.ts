@@ -21,7 +21,6 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const [newMessage, setNewMessage] = useState("");
   const [typing, setTyping] = useState<boolean>(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
-  console.log("\n\n[+]: useChatAreaController -> typing", typing);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
