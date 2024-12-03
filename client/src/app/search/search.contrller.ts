@@ -26,7 +26,6 @@ const useSearchController = ({ socket }: UseSearchControllerProps) => {
     return state.loggedUserState.loggedUser;
   });
 
-  
   useEffect(() => {
     if (debouncedQuery && debouncedQuery.trim()) {
       (async () => {
@@ -88,6 +87,8 @@ const useSearchController = ({ socket }: UseSearchControllerProps) => {
       dispatch(chatList(fetchChatListResponse.data));
       if (createdChatResponse.data._id)
         navigate(`/${clickedUser._id}/chat/${createdChatResponse.data._id}`);
+      if (createdChatResponse.data[0]._id)
+        navigate(`/${clickedUser._id}/chat/${createdChatResponse.data[0]._id}`);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
