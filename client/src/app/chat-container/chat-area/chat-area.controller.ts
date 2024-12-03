@@ -19,7 +19,9 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const [conversation, setConversation] = useState<MessageType[]>([]);
   const [reciverUser, setReciverUser] = useState<userType>();
   const [newMessage, setNewMessage] = useState("");
+  const [typing, setTyping] = useState<boolean>(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
+  console.log("\n\n[+]: useChatAreaController -> typing", typing);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -74,6 +76,20 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   }, [chatId, socket, userId]);
 
   useEffect(() => {
+    socket.on("userTyping", (senderSocketUser, reciverSocketUser) => {
+      if (
+        senderSocketUser.id === reciverUser?._id &&
+        reciverSocketUser._id === user?.id
+      ) {
+        setTyping(true);
+      }
+    });
+    return () => {
+      socket.off("userTyping");
+    };
+  });
+
+  useEffect(() => {
     socket.on("message received", (data) => {
       setConversation((prevConversation) => [...prevConversation, data]);
     });
@@ -83,10 +99,25 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
     };
   });
 
+  useEffect(() => {
+    socket.on("stopUserTyping", (senderSocketUser, reciverSocketUser) => {
+      if (
+        senderSocketUser.id === reciverUser?._id &&
+        reciverSocketUser._id === user?.id
+      ) {
+        setTyping(false);
+      }
+    });
+    return () => {
+      socket.off("stopUserTyping");
+    };
+  });
+
   // Send message to the server
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return; // Prevent sending empty messages
 
+    socket.emit("stopTyping", user, reciverUser);
     const msg: MessageType = {
       _id: uuidv4(),
       sender: {
@@ -154,6 +185,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
     user,
     isSpinner,
     screenSizes,
+    typing,
   };
 };
 

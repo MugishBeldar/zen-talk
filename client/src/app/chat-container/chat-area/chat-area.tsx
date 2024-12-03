@@ -26,6 +26,7 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
     user,
     isSpinner,
     screenSizes,
+    typing,
   } = useChatAreaController({ socket });
 
   return (
@@ -64,8 +65,10 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
               <div className="flex flex-col justify-center">
                 <p>{reciverUser && capitalizeNames(reciverUser?.name)}</p>
                 <p className="text-xs text-primary-gray">
-                  {onlineUsersState &&
-                  onlineUsersState.includes(reciverUser._id)
+                  {typing
+                    ? "Typing..."
+                    : onlineUsersState &&
+                      onlineUsersState.includes(reciverUser._id)
                     ? "Online"
                     : "Offline"}
                 </p>
@@ -117,7 +120,10 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
           <div className="flex border-t mt-2 pt-2">
             <div className="flex-1">
               <textarea
-                onChange={(e) => setNewMessage(e.target.value)}
+                onChange={(e) => {
+                  setNewMessage(e.target.value);
+                  socket.emit("typing", user, reciverUser);
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();

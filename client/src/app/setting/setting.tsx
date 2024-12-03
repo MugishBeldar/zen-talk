@@ -1,7 +1,7 @@
 import { stateType } from "@/types/store";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { CameraIcon, LoaderCircle } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { CameraIcon, ChevronLeft, LoaderCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
 
 const Setting = () => {
   const { form, onSubmit, profilePic, handleProfilePicChange, handleCancel } =
@@ -27,10 +28,23 @@ const Setting = () => {
     return state.screenSizeState;
   });
   const isLoading = form.formState.isSubmitting;
-
+  const navigate = useNavigate();
   return (
     <div className="p-6 w-full">
-      <p className="text-xl font-medium">Setting</p>
+      <div className="flex items-center gap-2">
+        <p
+          onClick={() => navigate(-1)}
+          className={
+            screenSizes.smallScreen
+              ? cn("text-primary-violet cursor-pointer")
+              : cn("hidden")
+          }
+        >
+          <ChevronLeft size={30} />
+        </p>
+        <p className="text-xl font-medium">Setting</p>
+      </div>
+
       {user?.id === userId && (
         <div
           className={cn(
@@ -94,6 +108,14 @@ const Setting = () => {
                 />
 
                 {/* Action Buttons */}
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label>Email</Label>
+                <Input
+                  value={user?.email}
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-indigo focus-visible:ring-none focus-visible:ring-offset-0"
+                  disabled
+                />
               </div>
               <div className="flex gap-4 mt-6">
                 <Button
