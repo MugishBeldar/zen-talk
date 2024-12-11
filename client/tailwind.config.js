@@ -1,9 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./index.html", "./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        gradient: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '100%': { backgroundPosition: '100% 50%' },
+        },
+      },
+      animation: {
+        gradient: 'gradient 3s linear infinite',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -24,7 +33,7 @@ export default {
         "primary-gray": "var(--color-text-gray)",
 
         "primary-red": "var(--color-red-primary)",
-        
+
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

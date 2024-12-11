@@ -9,6 +9,7 @@ import { Socket } from "socket.io-client";
 import noMsgGif from "../../../assets/no-message.gif";
 import Spinner from "@/app/spinner/spinner";
 import { ChevronLeft } from "lucide-react";
+import AudioCall from "@/app/audio-call/audio-call";
 interface ChateAreaProps {
   socket: Socket;
 }
@@ -69,10 +70,13 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
                     ? "Typing..."
                     : onlineUsersState &&
                       onlineUsersState.includes(reciverUser._id)
-                    ? "Online"
-                    : "Offline"}
+                      ? "Online"
+                      : "Offline"}
                 </p>
               </div>
+            </div>
+            <div>
+              <AudioCall socket={socket} receiverId={reciverUser._id} />
             </div>
             <EllipsisVertical className="text-primary-indigo" />
           </div>

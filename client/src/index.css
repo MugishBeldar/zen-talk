@@ -178,3 +178,45 @@
   -ms-overflow-style: none; /* Hide the scrollbar in IE and Edge */
   scrollbar-width: none; /* Hide the scrollbar in Firefox */
 }
+
+.shine-text {
+  color: transparent;
+  background-clip: text !important;
+  animation: shine 2s linear infinite;
+}
+
+.dark .shine-text {
+  background: radial-gradient(
+        circle at center,
+        rgb(24 24 27 / 85%),
+        transparent
+      ) -200% 50% / 200% 100% no-repeat,
+    #f4f4f5;
+}
+
+/* .light .shine-text {
+  background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.85),
+        #f000
+      ) -200% 50% / 200% 100% no-repeat,
+    #000;
+} */
+
+.light .shine-text {
+  background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.85),
+        #4f46e5
+      ) -200% 50% / 200% 100% no-repeat,
+    #4f46e5;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200% 0%;
+  }
+  100% {
+    background-position: -200% 0%;
+  }
+}

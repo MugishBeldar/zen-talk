@@ -55,20 +55,18 @@ const createdServer = app.listen(
 
 // origin: "https://zen-talk.vercel.app",
 const corsOptions = {
-  origin: "*", // Allow all origins
+  // Allow all origins
+  origin: "*",
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
 };
 
 const onlineUsers = new Map();
 
 const ioInstance = io(createdServer, {
-  // Use polling transport
   transports: ["polling"],
   pingTimeout: 60000,
-  // Set CORS options for Socket.IO server
   cors: corsOptions,
   polling: {
-    // Set the polling interval to 5 seconds
     interval: 5000,
   },
 });
@@ -76,6 +74,7 @@ const ioInstance = io(createdServer, {
 ioInstance.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 
+  //################################# Initial socket setup #########################################
   // use this setup for showing online users.
   socket.on("setup", (userData) => {
     console.log(`[+] User ${userData.id} is online with socket ID ${socket.id}`);
@@ -92,6 +91,7 @@ ioInstance.on("connection", (socket) => {
     socket.join(chatId);
   });
 
+  //################################## Socket events for messaging ###############################
   socket.on("new message", async (msg, { reciverId, senderId }, ACCESSTOKEN) => {
     if (reciverId && senderId && ACCESSTOKEN) {
       console.log(`Emitting message to receiver: ${reciverId}`);
@@ -113,13 +113,64 @@ ioInstance.on("connection", (socket) => {
     ioInstance.emit("get new chat user", chatCreater, chatUser);
   });
 
+  //########################## Socket events for typing ###############################
+  // When user start typing
   socket.on('typing', (senderUser, reciverUser) => {
     ioInstance.emit('userTyping', senderUser, reciverUser);
   })
 
+  // When user stop typing
   socket.on('stopTyping', (senderUser, reciverUser) => {
     ioInstance.emit('stopUserTyping', senderUser, reciverUser);
   })
+
+  //############################# Socket events for audio calling ######################
+  // Handle call offer
+  socket.on("call-offer", ({ offer, to }) => {
+    console.log('\n\n[+]: to', to);
+    console.log('\n\n[+]: offer', offer);
+    console.log('online users:---', onlineUsers);
+    const receiverSocketId = onlineUsers.get(to);
+    if (receiverSocketId) {
+      socket.to(receiverSocketId).emit("call-offer", { offer, from: socket.id });
+    } else {
+      console.error(`User ${to} not found.`);
+    }
+  });
+
+  // Handle call answer
+  socket.on("call-answer", ({ answer, to }) => {
+    socket.to(to).emit("call-answer", { answer });
+  });
+
+  // Handle ICE candidates
+  socket.on("ice-candidate", ({ candidate, to }) => {
+    socket.to(to).emit("ice-candidate", { candidate });
+  });
+
+  socket.on("end-call", (to) => {
+    const receiverSocketId = onlineUsers.get(to);
+    if (receiverSocketId) {
+      socket.to(receiverSocketId).emit("end-call");
+    }
+  });
+
+  // Handle outgoing call
+  socket.on("outGoingCall", (receiverId) => {
+    const receiverSocketId = onlineUsers.get(receiverId);
+    if (receiverSocketId) {
+      socket.to(receiverSocketId).emit("outGoingCall", { from: socket.id });
+      console.log(`Outgoing call from ${socket.id} to ${receiverId}`);
+    } else {
+      console.log(`Receiver ${receiverId} not found`);
+    }
+  });
+
+  // Handle call acceptance
+  socket.on("outGoingCallAccepted", ({ to }) => {
+    socket.to(to).emit("outGoingCallAccepted", { from: socket.id });
+    console.log(`Call accepted by ${socket.id}`);
+  });
 
   socket.on("disconnect", () => {
     for (let [userId, socketId] of onlineUsers.entries()) {
