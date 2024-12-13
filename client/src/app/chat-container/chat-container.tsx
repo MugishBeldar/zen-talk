@@ -9,6 +9,7 @@ import { screenSize } from "@/store/screen-sizes/screen-sizes.action";
 import { stateType } from "@/types/store";
 import { cn } from "@/lib/utils";
 import { Socket } from "socket.io-client";
+import Call from "../modals/call/call";
 
 interface ChatContainerProps {
   socket: Socket;
@@ -48,6 +49,7 @@ const ChatContainer = ({ socket }: ChatContainerProps) => {
   return (
     <div className="lg:p-[20px] h-screen bg-primary-white box-border">
       {/* Chat List (Sidebar) */}
+      <Call socket={socket} />
       <div className="py-3 lg:py-0">
         <MobileSideBar />
         <div

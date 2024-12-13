@@ -1,3 +1,4 @@
+import { callModalStateType } from "@/store/call-model/call-model.action.types";
 import { chatListStateType } from "@/store/chat-list/chat-list.action.types";
 import { LoggedUserStateType } from "@/store/logged-user/logged-user.action.types";
 import { onlineUsersStateType } from "@/store/online-users/online-users.action.types";
@@ -10,4 +11,5 @@ export interface stateType {
   spinnerState: spinnerStateType;
   screenSizeState: screenSizeStateType;
   onlineUsersState: onlineUsersStateType;
+  callModalState: callModalStateType;
 }

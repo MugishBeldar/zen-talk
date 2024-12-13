@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
-import { CallModel } from "../modals";
+// import { CallModel } from "../modals";
+import { useDispatch } from "react-redux";
+import { setOpenCallModal } from "@/store/call-model/call-model.action";
 
 interface AudioCallProps {
   socket: Socket;
@@ -10,6 +12,7 @@ interface AudioCallProps {
 }
 
 const AudioCall = ({ socket, receiverId }: AudioCallProps) => {
+  const dispatch = useDispatch();
   const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
@@ -56,6 +59,7 @@ const AudioCall = ({ socket, receiverId }: AudioCallProps) => {
 
   const initiateCall = () => {
     socket.emit("outGoingCall", receiverId);
+    dispatch(setOpenCallModal(true));
     setIsOutGoingCall(true);
     setIsOpenModal(true);
   };
@@ -160,7 +164,7 @@ const AudioCall = ({ socket, receiverId }: AudioCallProps) => {
   return (
     <div>
       <audio ref={remoteAudioRef} className="hidden" />
-      <CallModel receiverId={receiverId} isOpenModel={isOpenModal} setIsOpenModal={setIsOpenModal} isOutGoingCall={isOutGoingCall} isIncomingCall={isIncomingCall} isCallAccepted={isCallAccepted} />
+      {/* <CallModel receiverId={receiverId} isOpenModel={isOpenModal} setIsOpenModal={setIsOpenModal} isOutGoingCall={isOutGoingCall} isIncomingCall={isIncomingCall} isCallAccepted={isCallAccepted} /> */}
       {!isOutGoingCall && !isIncomingCall && (
         <div className="text-primary-violet hover:bg-primary-violet hover:text-primary-white px-2 py-1 rounded-md">
           <Phone className="cursor-pointer" onClick={initiateCall} size={20} />
