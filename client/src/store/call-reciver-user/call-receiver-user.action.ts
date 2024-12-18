@@ -1,9 +1,9 @@
-import { LoggedUserType, userType } from "@/types/user";
-import { LOGGED_USER_ACTION } from "./logged-user.action.types";
+import { userType } from "@/types/user";
+import { CALL_RECEIVER_USER } from "./call-receiver-user.action.types";
 
 export const callReceiverUser = (value: userType) => {
   return {
-    type: LOGGED_USER_ACTION.LOGGED_USER,
+    type: CALL_RECEIVER_USER.callReceiverUser,
     payload: value,
   };
 };

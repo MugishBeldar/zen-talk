@@ -4,6 +4,6 @@ export const CALL_RECEIVER_USER = {
   callReceiverUser: 'callReceiverUser',
 };
 
-export interface LoggedUserStateType {
+export interface CallReceiverStateType {
   callReceiverUser: userType;
 }

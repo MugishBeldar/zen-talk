@@ -1,6 +1,6 @@
 import { getConversation, getUserById } from "@/api/api";
 import { stateType } from "@/types/store";
-import { MessageType, userType } from "@/types/user";
+import { MessageType} from "@/types/user";
 import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { chatList as chatListAction } from "@/store/chat-list/chat-list.action";
 import { spinner } from "@/store/spinner/spinner.action";
+import { callReceiverUser } from "@/store/call-reciver-user/call-receiver-user.action";
 interface UseChatAreaControllerProps {
   socket: Socket;
 }
@@ -17,7 +18,7 @@ interface UseChatAreaControllerProps {
 const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const { chatId, userId } = useParams();
   const [conversation, setConversation] = useState<MessageType[]>([]);
-  const [reciverUser, setReciverUser] = useState<userType>();
+  // const [reciverUser, setReciverUser] = useState<userType>();
   const [newMessage, setNewMessage] = useState("");
   const [typing, setTyping] = useState<boolean>(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
@@ -45,6 +46,8 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
     (state: stateType) => state.loggedUserState.loggedUser
   );
 
+  const callReceiverUserData = useSelector((state: stateType) => state.callReceiverState.callReceiverUser);
+
   const handleBack = () => {
     navigate(`/${user?.id}/chat`);
   };
@@ -65,7 +68,8 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
         const reciver = await getUserById(userId);
 
         if (response.data && reciver.data) {
-          setReciverUser(reciver.data[0]);
+          dispatch(callReceiverUser(reciver.data[0]))
+          // setReciverUser(reciver.data[0]);
           setConversation(response.data);
           dispatch(spinner(false));
         }
@@ -77,7 +81,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   useEffect(() => {
     socket.on("userTyping", (senderSocketUser, reciverSocketUser) => {
       if (
-        senderSocketUser.id === reciverUser?._id &&
+        senderSocketUser.id === callReceiverUserData?._id &&
         reciverSocketUser._id === user?.id
       ) {
         setTyping(true);
@@ -101,7 +105,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   useEffect(() => {
     socket.on("stopUserTyping", (senderSocketUser, reciverSocketUser) => {
       if (
-        senderSocketUser.id === reciverUser?._id &&
+        senderSocketUser.id === callReceiverUserData?._id &&
         reciverSocketUser._id === user?.id
       ) {
         setTyping(false);
@@ -116,7 +120,7 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return; // Prevent sending empty messages
 
-    socket.emit("stopTyping", user, reciverUser);
+    socket.emit("stopTyping", user, callReceiverUserData);
     const msg: MessageType = {
       _id: uuidv4(),
       sender: {
@@ -174,7 +178,6 @@ const useChatAreaController = ({ socket }: UseChatAreaControllerProps) => {
 
   return {
     conversation,
-    reciverUser,
     handleSendMessage,
     setNewMessage,
     newMessage,

@@ -10,6 +10,8 @@ import noMsgGif from "../../../assets/no-message.gif";
 import Spinner from "@/app/spinner/spinner";
 import { ChevronLeft } from "lucide-react";
 import AudioCall from "@/app/audio-call/audio-call";
+import { useSelector } from "react-redux";
+import { stateType } from "@/types/store";
 interface ChateAreaProps {
   socket: Socket;
 }
@@ -17,7 +19,6 @@ interface ChateAreaProps {
 const ChatArea = ({ socket }: ChateAreaProps) => {
   const {
     conversation,
-    reciverUser,
     handleSendMessage,
     setNewMessage,
     newMessage,
@@ -30,11 +31,12 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
     typing,
   } = useChatAreaController({ socket });
 
+  const callReceiverData = useSelector((state: stateType) => state.callReceiverState.callReceiverUser);
   return (
     <div
       className={cn("h-full flex flex-col rounded-xl pl-2 pr-1 shadow-md py-2")}
     >
-      {!isSpinner && reciverUser && conversation && (
+      {!isSpinner && callReceiverData && conversation && (
         <>
           <div className="border-b gap-1 flex pb-2 justify-center items-center">
             <div
@@ -51,32 +53,32 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
               <Avatar className="relative">
                 <AvatarImage
                   src={
-                    reciverUser?.profilePic?.type === "Buffer"
-                      ? bufferToBase64(reciverUser?.profilePic)
-                      : `https://ui-avatars.com/api/?name=${reciverUser?.name}&background=7c3aed&color=eff6fc`
+                    callReceiverData?.profilePic?.type === "Buffer"
+                      ? bufferToBase64(callReceiverData?.profilePic)
+                      : `https://ui-avatars.com/api/?name=${callReceiverData?.name}&background=7c3aed&color=eff6fc`
                   }
-                  alt={`@${reciverUser?.name}`}
+                  alt={`@${callReceiverData?.name}`}
                   className="rounded-full cursor-pointer w-12 h-12"
                 />
                 {onlineUsersState &&
-                  onlineUsersState.includes(reciverUser._id) && (
+                  onlineUsersState.includes(callReceiverData._id) && (
                     <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-primary-white rounded-full"></span>
                   )}
               </Avatar>
               <div className="flex flex-col justify-center">
-                <p>{reciverUser && capitalizeNames(reciverUser?.name)}</p>
+                <p>{callReceiverData && capitalizeNames(callReceiverData?.name)}</p>
                 <p className="text-xs text-primary-gray">
                   {typing
                     ? "Typing..."
                     : onlineUsersState &&
-                      onlineUsersState.includes(reciverUser._id)
+                      onlineUsersState.includes(callReceiverData._id)
                       ? "Online"
                       : "Offline"}
                 </p>
               </div>
             </div>
             <div>
-              <AudioCall socket={socket} receiverId={reciverUser._id} />
+              <AudioCall socket={socket} receiverId={callReceiverData._id} />
             </div>
             <EllipsisVertical className="text-primary-indigo" />
           </div>
@@ -126,7 +128,7 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
               <textarea
                 onChange={(e) => {
                   setNewMessage(e.target.value);
-                  socket.emit("typing", user, reciverUser);
+                  socket.emit("typing", user, callReceiverData);
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
