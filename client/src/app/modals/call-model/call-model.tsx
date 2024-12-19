@@ -25,18 +25,10 @@ interface CallModelProps {
 const CallModel = ({
   receiverId,
   isOpenModel,
-  // isCallAccepted,
-  // isIncomingCall,
   isOutGoingCall,
   setIsOpenModal,
 }: CallModelProps) => {
   const { reciverUser } = useCallModelController({ receiverId });
-  console.log('\n\n[+]: CallModel -> reciverUser', reciverUser);
-
-
-  // const user = useSelector((state: stateType) => {
-  //   return state.loggedUserState.loggedUser;
-  // })
 
   return (
     

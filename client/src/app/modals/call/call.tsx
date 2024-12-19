@@ -22,16 +22,13 @@ const Call = ({ socket }: CallProps) => {
   const timerRef = useRef<NodeJS.Timer | null>(null);
   const isOpenModal = useSelector((state: stateType) => state.callModalState.open);
   const [isMicOn, setIsMicOn] = useState<boolean>(true);
-  console.log('\n\n[+]: Call -> isOpenModal', isOpenModal);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
   const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const iceCandidateQueue = useRef<RTCIceCandidate[]>([]);
   const ringtoneRef = useRef<HTMLAudioElement>(new Audio("/assets/old-phone.mp3"));
   const callStates = useSelector((state: any) => state.callstate);
-  console.log('\n\n[+]: Call -> callStates', callStates);
   const callReceiverUserData = useSelector((state: stateType) => state.callReceiverState.callReceiverUser);
-  console.log('\n\n[+]: Call -> callReceiverUserData', callReceiverUserData);
 
   const startTimer = useCallback(() => {
     timerRef.current = setInterval(() => {
@@ -85,7 +82,7 @@ const Call = ({ socket }: CallProps) => {
 
     setPeerConnection(pc);
     return pc;
-  }, [localStream, callReceiverUserData._id, socket]);
+  }, [localStream, callReceiverUserData, socket]);
 
 
   const acceptCall = async () => {
@@ -119,7 +116,7 @@ const Call = ({ socket }: CallProps) => {
     dispatch(setCallState({ isOutGoingCall: false, isIncomingCall: false, isCallAccepted: false }));
     socket.emit("end-call", callReceiverUserData._id);
     stopTimer();
-  }, [peerConnection, localStream, socket, callReceiverUserData._id]);
+  }, [peerConnection, localStream, socket, callReceiverUserData]);
 
 
   useEffect(() => {
@@ -145,7 +142,6 @@ const Call = ({ socket }: CallProps) => {
   // handling all socket events.
   useEffect(() => {
     socket.on("outGoingCall", () => {
-      console.log('catch outgoing call in socket outgoing event...');
       dispatch(setOpenCallModal(true));
       dispatch(setCallState({ isIncomingCall: true }));
       ringtoneRef.current.play();
@@ -201,9 +197,10 @@ const Call = ({ socket }: CallProps) => {
       socket.off("ice-candidate");
       socket.off("end-call");
     };
-  }, [socket, peerConnection, localStream, createPeerConnection, callReceiverUserData._id, endCall]);
+  }, [socket, peerConnection, localStream, createPeerConnection, callReceiverUserData, endCall]);
 
   const hangUpCall = async () => {
+    console.log('hangUp call states:--', callStates, callDuration);
     dispatch(setCallState({ isOutGoingCall: false, isIncomingCall: false, isCallAccepted: false }));
     endCall();
   }

@@ -71,7 +71,6 @@ const ChatList = ({ socket }: ChatListProps) => {
                 >
                   <div className="flex flex-1">
                     <li
-                      key={`chat-item-${chat._id}`}
                       className={cn("flex items-center justify-between p-2")}
                     >
                       <div className="flex items-center">
@@ -79,9 +78,9 @@ const ChatList = ({ socket }: ChatListProps) => {
                           (user) =>
                             loggedUser &&
                             loggedUser.id !== user._id && (
-                              <Avatar className="relative z-10 pr-4 flex-shrink-0">
+                              <Avatar key={`avatar-${chat._id}-${user._id}`} className="relative z-10 pr-4 flex-shrink-0">
                                 <AvatarImage
-                                  key={`avatar-${chat._id}-${user._id}`}
+
                                   src={
                                     user.profilePic?.type === "Buffer"
                                       ? bufferToBase64(user.profilePic)

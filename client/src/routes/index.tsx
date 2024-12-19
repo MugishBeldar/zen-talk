@@ -1,3 +1,6 @@
+import { lazy, Suspense } from "react";
+const ChatContainer = lazy(() => import("@/app/chat-container/chat-container"));
+const ChatArea = lazy(() => import("@/app/chat-container/chat-area/chat-area"));
 import {
   createBrowserRouter,
   Navigate,
@@ -6,13 +9,12 @@ import {
 } from "react-router-dom";
 import {
   AuthRoot,
-  ChatArea,
-  ChatContainer,
   Login,
   NoChatSelected,
   Setting,
   Signup,
 } from "@/app";
+// Lazy load components
 import Cookies from "js-cookie";
 import { io } from "socket.io-client";
 import { SOCKET_API_ENDPOINT } from "@/utils/enum";
@@ -55,7 +57,11 @@ export const MainRouting = () => {
     },
     {
       path: "/:userId",
-      element: <ChatContainer socket={socket} />,
+      element: (
+        <Suspense>
+          <ChatContainer socket={socket} />
+        </Suspense>
+      ),
       loader: checkAuth,
       children: [
         {
@@ -65,9 +71,11 @@ export const MainRouting = () => {
         {
           path: "chat/:chatId",
           element: (
-            <div className="h-full">
-              <ChatArea socket={socket} />
-            </div>
+            <Suspense>
+              <div className="h-full">
+                <ChatArea socket={socket} />
+              </div>
+            </Suspense>
           ),
         },
         {
