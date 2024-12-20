@@ -5,20 +5,19 @@ const { ObjectId } = require('mongodb')
 
 const createCall = async (req, res) => {
   try {
-    const { receiver, callDuration, callStates, chatId } = req.body;
-    if (!receiver || !callDuration || !callStates || !chatId) {
+    const { caller, receiver, callDuration, callStates, chatId } = req.body;
+    if (!caller, !receiver || !callDuration || !callStates || !chatId) {
       return sendError(res, 400, "caller, receiver, callDuration, callStates and chatId is required");
     }
     const callObj = {
-      caller: req.user._id,
+      caller,
       receiver,
       callDuration,
       callStates,
     };
     var call = await Call.create(callObj);
-    console.log('\n\n[+]: createCall -> call', call);
     const msgObj = {
-      sender: new ObjectId(req.user._id),
+      sender: caller,
       content: 'call',
       chat: new ObjectId(chatId),
       isCall: true,
@@ -27,7 +26,6 @@ const createCall = async (req, res) => {
       updatedAt: Date.now(),
     };
     var message = await Message.create(msgObj);
-    console.log('\n\n[+]: createCall -> message', message);
     // Update the call document with the reference to the message
     call.callMessage = message._id;
     await call.save(); // Save the updated call

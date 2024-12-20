@@ -7,7 +7,7 @@ const CallSchema = mongoose.Schema({
   callMessage: { type: mongoose.Schema.Types.ObjectId, ref: "Message" },
   callDuration: { type: Number, default: 0 },  // seconds or milliseconds.
   callStates: {
-    isOutgoingCall: { type: Boolean, default: false },
+    isOutGoingCall: { type: Boolean, default: false },
     isIncomingCall: { type: Boolean, default: false },
     isCallAccepted: { type: Boolean, default: false },
   },

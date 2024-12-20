@@ -11,13 +11,16 @@ import { Socket } from 'socket.io-client'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { stateType } from '@/types/store'
 import { setCallState } from '@/store/call-state/call-state-action'
+import { useLocation } from 'react-router-dom'
+import { createCall } from '@/api/api'
 
 interface CallProps {
   socket: Socket;
 }
 const Call = ({ socket }: CallProps) => {
   const dispatch = useDispatch();
-
+  const path = useLocation();
+  const chatId = path.pathname.split('/').reverse()[0];
   const [callDuration, setCallDuration] = useState<number>(0);
   const timerRef = useRef<NodeJS.Timer | null>(null);
   const isOpenModal = useSelector((state: stateType) => state.callModalState.open);
@@ -29,7 +32,7 @@ const Call = ({ socket }: CallProps) => {
   const ringtoneRef = useRef<HTMLAudioElement>(new Audio("/assets/old-phone.mp3"));
   const callStates = useSelector((state: any) => state.callstate);
   const callReceiverUserData = useSelector((state: stateType) => state.callReceiverState.callReceiverUser);
-
+  const loggedUser = useSelector((state: stateType) => state.loggedUserState.loggedUser)
   const startTimer = useCallback(() => {
     timerRef.current = setInterval(() => {
       setCallDuration((prevDuration) => prevDuration + 1);
@@ -95,14 +98,13 @@ const Call = ({ socket }: CallProps) => {
   };
 
   const declineCall = () => {
-    dispatch(setCallState({ isIncomingCall: false }));
     dispatch(setOpenCallModal(false))
     ringtoneRef.current.pause();
     endCall();
   };
 
 
-  const endCall = useCallback(() => {
+  const endCall = async () => {
     if (peerConnection) {
       peerConnection.close();
       setPeerConnection(null);
@@ -113,11 +115,19 @@ const Call = ({ socket }: CallProps) => {
       }
     }
     dispatch(setOpenCallModal(false));
+    const callBody: Record<string, string | number> = {};
+    if (callStates.isOutGoingCall && loggedUser?.id) {
+      callBody["caller"] = loggedUser.id;
+      callBody["receiver"] = callReceiverUserData?._id;
+      callBody["callDuration"] = callDuration;
+      callBody["callStates"] = JSON.parse(JSON.stringify(callStates));
+      callBody['chatId'] = chatId;
+    }
     dispatch(setCallState({ isOutGoingCall: false, isIncomingCall: false, isCallAccepted: false }));
-    socket.emit("end-call", callReceiverUserData._id);
+    socket.emit("end-call", callReceiverUserData?._id);
+    await createCall(callBody);
     stopTimer();
-  }, [peerConnection, localStream, socket, callReceiverUserData]);
-
+  };
 
   useEffect(() => {
     // Ensure timer stops if the component unmounts
@@ -200,8 +210,6 @@ const Call = ({ socket }: CallProps) => {
   }, [socket, peerConnection, localStream, createPeerConnection, callReceiverUserData, endCall]);
 
   const hangUpCall = async () => {
-    console.log('hangUp call states:--', callStates, callDuration);
-    dispatch(setCallState({ isOutGoingCall: false, isIncomingCall: false, isCallAccepted: false }));
     endCall();
   }
 

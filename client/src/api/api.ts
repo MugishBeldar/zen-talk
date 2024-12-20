@@ -56,6 +56,14 @@ export const updateProfile = async (updateProfileBody: any, userId: string) => {
   );
 };
 
+export const createCall = async (body: any) => {
+  return await AXIOS.post(
+    `${API_ROUTES.POST_CALL}`,
+    body,
+    { headers: { "Content-Type": "application/json" } }
+  )
+}
+
 export const deleteUserChat = async (chatId: string) => {
   return await AXIOS.delete(`${API_ROUTES.DELETE_CHAT}/${chatId}`);
 };
