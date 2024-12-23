@@ -52,15 +52,7 @@ const ChatContainer = ({ socket }: ChatContainerProps) => {
       <Call socket={socket} />
       <div className="py-3 lg:py-0">
         <MobileSideBar />
-        <div
-          className={cn(
-            // screenSizes.smallScreen && path.pathname.split("/").length === 3
-            //   ? "h-[calc(100vh-97px)]"
-            //   : null,
-
-            "h-[calc(100vh-97px)] flex lg:gap-6 lg:h-[calc(100vh-40px)]"
-          )}
-        >
+        <div className={cn("h-[calc(100vh-97px)] flex lg:gap-6 lg:h-[calc(100vh-40px)]")}>
           <Sidebar />
           {path.pathname.split("/").includes("chat") && (
             <ChatList socket={socket} />
@@ -72,10 +64,10 @@ const ChatContainer = ({ socket }: ChatContainerProps) => {
               (screenSizes.smallScreen &&
                 path.pathname.split("/").length === 4) ||
                 (screenSizes.smallScreen &&
-                  path.pathname.split("/").includes("setting"))
+                  path.pathname.split("/").includes("setting") || path.pathname.split("/").includes("callLogs"))
                 ? "ml-3"
                 : "hidden",
-              "md:block mr-3 lg:mr-0 flex-1 lg:h-full bg-secondary-white shadow-md rounded-xl"
+              "md:block mr-3 ml-3 lg:mr-0 flex-1 lg:h-full bg-secondary-white shadow-md rounded-xl"
             )}
           >
             <Outlet /> {/* This renders the child routes for chat area */}

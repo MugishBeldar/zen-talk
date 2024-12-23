@@ -12,6 +12,7 @@ import { ChevronLeft } from "lucide-react";
 import AudioCall from "@/app/audio-call/audio-call";
 import { useSelector } from "react-redux";
 import { stateType } from "@/types/store";
+import { useLocation } from "react-router-dom";
 interface ChateAreaProps {
   socket: Socket;
 }
@@ -32,6 +33,8 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
   } = useChatAreaController({ socket });
 
   const callReceiverData = useSelector((state: stateType) => state.callReceiverState.callReceiverUser);
+  const path = useLocation();
+  const chatId = path.pathname.split('/').reverse()[0];
   return (
     <div
       className={cn("h-full flex flex-col rounded-xl pl-2 pr-1 shadow-md py-2")}
@@ -78,7 +81,7 @@ const ChatArea = ({ socket }: ChateAreaProps) => {
               </div>
             </div>
             <div>
-              <AudioCall socket={socket} receiverId={callReceiverData._id} />
+              <AudioCall socket={socket} receiverId={callReceiverData._id} chatId={chatId} />
             </div>
             <EllipsisVertical className="text-primary-indigo" />
           </div>

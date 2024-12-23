@@ -1,21 +1,21 @@
-// import { useCallback, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-// import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
-// import { CallModel } from "../modals";
 import { useDispatch } from "react-redux";
 import { setOpenCallModal } from "@/store/call-model/call-model.action";
 import { setCallState } from "@/store/call-state/call-state-action";
+import { setCallChatId } from "@/store/call-chatId/call-chatId.action";
 
 interface AudioCallProps {
   socket: Socket;
   receiverId: string;
+  chatId: string;
 }
 
-const AudioCall = ({ socket, receiverId }: AudioCallProps) => {
+const AudioCall = ({ socket, receiverId, chatId }: AudioCallProps) => {
   const dispatch = useDispatch();
   const initiateCall = () => {
     socket.emit("outGoingCall", receiverId);
+    dispatch(setCallChatId(chatId));
     dispatch(setOpenCallModal(true));
     dispatch(setCallState({ isOutGoingCall: true }))
   };

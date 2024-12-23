@@ -1,6 +1,9 @@
 import { lazy, Suspense } from "react";
+
 const ChatContainer = lazy(() => import("@/app/chat-container/chat-container"));
 const ChatArea = lazy(() => import("@/app/chat-container/chat-area/chat-area"));
+const CallLogs = lazy(() => import("@/app/call-logs/call-logs"));
+
 import {
   createBrowserRouter,
   Navigate,
@@ -86,8 +89,19 @@ export const MainRouting = () => {
             </div>
           ),
         },
+        {
+          path: "/:userId/callLogs",
+          element: (
+            <Suspense>
+              <div className="h-full">
+                <CallLogs socket={socket} />
+              </div>
+            </Suspense>
+          )
+        }
       ],
     },
+
   ]);
 
   return (

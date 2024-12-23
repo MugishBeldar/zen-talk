@@ -70,3 +70,30 @@ export type ChatType = {
 export type CreateChatBodyType = {
   userId: string;
 };
+
+
+export interface CallLogsTypes {
+  callStates: CallStatesTypes;
+  _id: string;
+  caller: CallerOrReceiverTypes;
+  receiver: CallerOrReceiverTypes;
+  callDuration: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  callMessage: MessageType;
+}
+export interface CallStatesTypes {
+  isOutGoingCall: boolean;
+  isIncomingCall: boolean;
+  isCallAccepted: boolean;
+}
+export interface CallerOrReceiverTypes {
+  _id: string;
+  name: string;
+  email: string;
+  profilePic: null | {
+    type: string;
+    data: Buffer;
+  };
+}

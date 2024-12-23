@@ -11,7 +11,7 @@ import { Socket } from 'socket.io-client'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { stateType } from '@/types/store'
 import { setCallState } from '@/store/call-state/call-state-action'
-import { useLocation } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
 import { createCall } from '@/api/api'
 
 interface CallProps {
@@ -19,8 +19,6 @@ interface CallProps {
 }
 const Call = ({ socket }: CallProps) => {
   const dispatch = useDispatch();
-  const path = useLocation();
-  const chatId = path.pathname.split('/').reverse()[0];
   const [callDuration, setCallDuration] = useState<number>(0);
   const timerRef = useRef<NodeJS.Timer | null>(null);
   const isOpenModal = useSelector((state: stateType) => state.callModalState.open);
@@ -32,7 +30,8 @@ const Call = ({ socket }: CallProps) => {
   const ringtoneRef = useRef<HTMLAudioElement>(new Audio("/assets/old-phone.mp3"));
   const callStates = useSelector((state: any) => state.callstate);
   const callReceiverUserData = useSelector((state: stateType) => state.callReceiverState.callReceiverUser);
-  const loggedUser = useSelector((state: stateType) => state.loggedUserState.loggedUser)
+  const loggedUser = useSelector((state: stateType) => state.loggedUserState.loggedUser);
+  const chatId = useSelector((state: stateType) => state.callChatIdState.chatId);
   const startTimer = useCallback(() => {
     timerRef.current = setInterval(() => {
       setCallDuration((prevDuration) => prevDuration + 1);
@@ -116,7 +115,7 @@ const Call = ({ socket }: CallProps) => {
     }
     dispatch(setOpenCallModal(false));
     const callBody: Record<string, string | number> = {};
-    if (callStates.isOutGoingCall && loggedUser?.id) {
+    if (callStates.isOutGoingCall && loggedUser?.id && chatId) {
       callBody["caller"] = loggedUser.id;
       callBody["receiver"] = callReceiverUserData?._id;
       callBody["callDuration"] = callDuration;
@@ -127,6 +126,7 @@ const Call = ({ socket }: CallProps) => {
     socket.emit("end-call", callReceiverUserData?._id);
     await createCall(callBody);
     stopTimer();
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -196,7 +196,6 @@ const Call = ({ socket }: CallProps) => {
 
     socket.on("end-call", () => {
       endCall();
-      window.location.reload();
     });
 
     return () => {

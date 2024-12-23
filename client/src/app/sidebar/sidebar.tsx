@@ -1,5 +1,5 @@
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { MessageSquare, Settings, LogOut } from "lucide-react";
+import { MessageSquare, Settings, LogOut, Phone } from "lucide-react";
 import useSidebarController from "./sidebar-controller";
 import { useSelector } from "react-redux";
 import { stateType } from "@/types/store";
@@ -69,6 +69,20 @@ const Sidebar = () => {
           }}
         >
           <Settings
+            className="text-primary-white cursor-pointer hover:text-secondary-white"
+            size={26}
+          />
+        </div>
+        <div
+          className={cn(
+            path.pathname.split("/").includes("callLogs") ? "bg-black/10" : "",
+            "py-4 w-full flex justify-center items-center hover:bg-black/10"
+          )}
+          onClick={() => {
+            navigate(`/${user?.id}/callLogs`);
+          }}
+        >
+          <Phone
             className="text-primary-white cursor-pointer hover:text-secondary-white"
             size={26}
           />

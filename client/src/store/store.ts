@@ -9,6 +9,7 @@ import { initiateScreenSizeReducer } from "./screen-sizes/screen-size.reducer";
 import { initiateOnlineUsersReducer } from "./online-users/online-users.reducer";
 import initiateCallReceiverReducer from "./call-reciver-user/call-receiver-user.reducer";
 import { initiateCallState } from "./call-state/call-state-reducer";
+import { initiateCallChatIdReducer } from "./call-chatId/call-chatId.reducer";
 
 let localStoreVar: any = null;
 
@@ -50,6 +51,7 @@ export const getStaticReducer = () => ({
   onlineUsersState: initiateOnlineUsersReducer,
   callReceiverState: initiateCallReceiverReducer,
   callstate: initiateCallState,
+  callChatIdState: initiateCallChatIdReducer
 });
 
 // Combine reducers and configure the store

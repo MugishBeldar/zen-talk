@@ -15,7 +15,8 @@ const STATISTICS_API = {
   POST_CHAT: `/chats`,
   UPDATE_USER: `/users/editprofile`,
   DELETE_CHAT: `/chats`,
-  POST_CALL: '/call'
+  POST_CALL: '/call',
+  GET_CALL_LOGS: '/call/logs'
 };
 export const TOAST_OBJ = {
   className: "toast-bg-color",

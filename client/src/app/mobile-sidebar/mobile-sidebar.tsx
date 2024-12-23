@@ -1,4 +1,4 @@
-import { EllipsisVertical, MessageSquare, Settings } from "lucide-react";
+import { EllipsisVertical, MessageSquare, Phone, Settings } from "lucide-react";
 import { LogOut } from "lucide-react";
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import useMobileSidebarController from "./mobile-sidebar.controller";
 
 const MobileSideBar = () => {
   const path = useLocation();
-  const { handleMessages, handleSetting, handleLogOut } =
+  const { handleMessages, handleSetting, handleLogOut, handleCallLogs } =
     useMobileSidebarController();
   return (
     <div className="shadow-md lg:hidden flex justify-between items-center py-4 bg-primary-violet rounded-xl mx-3 mb-3">
@@ -51,6 +51,18 @@ const MobileSideBar = () => {
           >
             <Settings />
             <span>Setting</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className={cn(
+              path.pathname.split("/").includes("callLogs")
+                ? "bg-primary-violet text-primary-white"
+                : null,
+              "focus:bg-primary-violet focus:text-primary-white my-1"
+            )}
+            onClick={handleCallLogs}
+          >
+            <Phone />
+            <span>Call Logs</span>
           </DropdownMenuItem>
           {/* <DropdownMenuItem className="focus:bg-primary-violet focus:text-primary-white">
             <Settings />

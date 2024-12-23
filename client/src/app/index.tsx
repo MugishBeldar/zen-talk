@@ -1,4 +1,5 @@
 import { Login, Signup, Footer, Header, AuthRoot } from "./auth";
+import CallLogs from "./call-logs/call-logs";
 import { ChatContainer } from "./chat-container";
 import ChatArea from "./chat-container/chat-area/chat-area";
 import NoChatSelected from "./no-chat-selected/no-chat-selected";
@@ -22,5 +23,8 @@ export {
   Search,
   Setting,
   NoChatSelected,
-  Spinner
+  Spinner,
+
+  // call logs
+  CallLogs
 };

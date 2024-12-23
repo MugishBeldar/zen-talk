@@ -1,3 +1,4 @@
+import { callChatIdType } from "@/store/call-chatId/call-chatId.action.types";
 import { callModalStateType } from "@/store/call-model/call-model.action.types";
 import { CallReceiverStateType } from "@/store/call-reciver-user/call-receiver-user.action.types";
 import { callStateType } from "@/store/call-state/call-state-action.type";
@@ -16,4 +17,5 @@ export interface stateType {
   callModalState: callModalStateType;
   callReceiverState: CallReceiverStateType
   callState: callStateType
+  callChatIdState: callChatIdType
 }

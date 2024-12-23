@@ -26,15 +26,21 @@ const useMobileSidebarController = () => {
     navigate(`/${user?.id}/setting`);
   };
 
+  const handleCallLogs = () => {
+    navigate(`/${user?.id}/callLogs`)
+  }
+
   const handleLogOut = () => {
     Cookies.remove("TOKEN");
     Cookies.remove("LAST_CHAT");
     navigate("/login");
   };
+
   return {
     handleMessages,
     handleSetting,
     handleLogOut,
+    handleCallLogs
   };
 };
 

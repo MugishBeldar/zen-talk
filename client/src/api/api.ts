@@ -64,6 +64,12 @@ export const createCall = async (body: any) => {
   )
 }
 
+export const getCallLogs = async (userId: string, endRecord: number, startRecord: number) => {
+  return await AXIOS.get(
+    `${API_ROUTES.GET_CALL_LOGS}?userId=${userId}&endRecord=${endRecord}&startRecord=${startRecord}`,
+    { headers: { "Content-Type": "application/json" } });
+}
+
 export const deleteUserChat = async (chatId: string) => {
   return await AXIOS.delete(`${API_ROUTES.DELETE_CHAT}/${chatId}`);
 };
