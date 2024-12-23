@@ -6,7 +6,7 @@ const { ObjectId } = require('mongodb')
 const createCall = async (req, res) => {
   try {
     const { caller, receiver, callDuration, callStates, chatId } = req.body;
-    if (!caller, !receiver || !callDuration || !callStates || !chatId) {
+    if (!caller, !receiver || callDuration < 0 || !callStates || !chatId) {
       return sendError(res, 400, "caller, receiver, callDuration, callStates and chatId is required");
     }
     const callObj = {
@@ -43,11 +43,11 @@ const getCallLogs = async (req, res) => {
       sortBy = "createdAt",
       sortOrder = "DESC",
       startRecord = 0,
-      endRecord = 10,
+      endRecord = 20,
     } = req.query;
 
     // Convert string inputs to numbers and validate
-    const rows = parseInt(endRecord) || 10;
+    const rows = parseInt(endRecord) || 20;
     const offset = parseInt(startRecord) || 0;
     const sortDirection = sortOrder.toUpperCase() === "DESC" ? -1 : 1;
 
@@ -57,8 +57,9 @@ const getCallLogs = async (req, res) => {
       : {};
 
     const logs = await Call.find(filter)
-      .populate("caller", "name profilePic")
+      .populate("caller", "name profilePic email")
       .populate("receiver", "name profilePic")
+      .populate('callMessage')
       .sort({ [sortBy]: sortDirection })
       .skip(offset)
       .limit(rows);
