@@ -1,72 +1,53 @@
-export type LoginType = {
-  email: string;
-  password: string;
-};
+// User types for ZenTalk
+export interface User {
+  id: string
+  username: string
+  email: string
+  firstName?: string
+  lastName?: string
+  avatar?: string
+  bio?: string
+  status: UserStatus
+  lastSeen: Date
+  createdAt: Date
+  updatedAt: Date
+}
 
-export type SignupType = LoginType & {
-  name: string;
-};
+export type UserStatus = 'online' | 'offline' | 'away' | 'busy'
 
-export type ErrorType = {
-  success: boolean;
-  message: string;
-  statusCode: number;
-  data: null;
-};
+export interface LoginCredentials {
+  email: string
+  password: string
+  rememberMe?: boolean
+}
 
-export type LoggedUserType = {
-  id: string;
-  name: string;
-  email: string;
-  profilePic: null | {
-    type: string;
-    data: Buffer;
-  };
-};
+export interface RegisterData {
+  username: string
+  email: string
+  password: string
+  confirmPassword: string
+  firstName?: string
+  lastName?: string
+}
 
-export type userType = LoggedUserType & {
-  _id: string;
-  __v: number;
-};
+export interface UserPreferences {
+  theme: 'light' | 'dark' | 'auto'
+  notifications: NotificationSettings
+  privacy: PrivacySettings
+  language: string
+}
 
-export type ChatListType = TimeStampType & {
-  _id: string;
-  chatName: string;
-  users?: (userType & TimeStampType)[];
-  latestMessage: MessageType;
-  __v: number;
-};
+export interface NotificationSettings {
+  messages: boolean
+  mentions: boolean
+  groupInvites: boolean
+  soundEnabled: boolean
+  desktopNotifications: boolean
+}
 
-export type MessageType = TimeStampType & {
-  _id: string;
-  sender: SenderType;
-  content: string;
-  chat: string;
-};
-
-export type SenderType = {
-  _id: string;
-  name: string;
-  email: string;
-};
-
-export type TimeStampType = {
-  createdAt: string;
-  updatedAt: string;
-};
-
-// export type ConversationType = TimeStampType & {
-//   _id: string;
-//   sender: SenderType;
-//   content: string;
-//   chat: ChatType;
-// };
-
-export type ChatType = {
-  _id: string;
-  users: string[];
-};
-
-export type CreateChatBodyType = {
-  userId: string;
-};
+export interface PrivacySettings {
+  showOnlineStatus: boolean
+  showLastSeen: boolean
+  allowDirectMessages: boolean
+  profileVisibility: 'public' | 'friends' | 'private'
+}
